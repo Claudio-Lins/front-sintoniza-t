@@ -1,5 +1,4 @@
 import React from 'react'
-import { Title } from '../Titles'
 
 interface SectioProps {
   sectioColor: boolean
@@ -13,11 +12,13 @@ export function Section({ sectioColor, children, id }: SectioProps) {
   return (
     <div
       id={id}
-      className={`
-      max-w-7xl min-h-[100vh] px-4 pt-10 pb-20
+      className={`flex min-h-[50vh] flex-col items-center px-4 pt-10 pb-20 shadow-xl
       ${sectioColor ? 'bg-green-50' : 'bg-white'}
-      `}>
-      {children}
+  `}
+    >
+      <div className="flex w-full max-w-7xl flex-col items-center justify-center">
+        {children}
+      </div>
     </div>
   )
 }
