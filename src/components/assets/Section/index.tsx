@@ -16,7 +16,7 @@ export function Section({ sectioColor, children, id }: SectioProps) {
       ${sectioColor ? 'bg-green-50' : 'bg-white'}
   `}
     >
-      <div className="flex w-full max-w-7xl flex-col items-center justify-center">
+      <div className="flex w-full max-w-7xl 2xl:max-w-[1480px] flex-col items-center justify-center">
         {children}
       </div>
     </div>
