@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Section } from '../components/assets/Section'
@@ -11,7 +11,6 @@ interface HomeProps {
 }
 
 const Home = ({ destaque }: HomeProps) => {
-  
   return (
     <>
       <Head>
@@ -23,7 +22,6 @@ const Home = ({ destaque }: HomeProps) => {
         <Section id="destaque" sectioColor={true}>
           <Title title="Destaque" delay={0.5} />
           <Destaque destaque={destaque} />
-          
         </Section>
         <Section id="equipa" sectioColor={false}>
           <Title title="Equipa" delay={1} />
@@ -36,17 +34,14 @@ const Home = ({ destaque }: HomeProps) => {
 export default Home
 
 
-export async function getStaticProps() {
-  try {
-    const res = await axios
-      .get(process.env.API_URL_STRAPI + '/articles?_sort=id:desc')
-    return {
-      props: {
-        destaque: res.data,
-      },
-      revalidate: 1,
-    }
-  } catch (err) {
-    return console.error(err)
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await axios.get(
+    process.env.API_URL_STRAPI + '/articles?_sort=id:desc'
+  )
+  return {
+    props: {
+      destaque: res.data,
+    },
+    revalidate: 1,
   }
 }
