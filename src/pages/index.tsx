@@ -44,6 +44,7 @@ export async function getStaticProps() {
       props: {
         destaque: res.data,
       },
+      revalidate: 1,
     }
   } catch (err) {
     return console.error(err)
