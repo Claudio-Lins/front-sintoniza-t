@@ -1,11 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
+type ContextType = {
+  children: React.ReactNode
+}
+type SetStateAction<S> = {
+  innerWidth: string
+  innerHeight: string
+}
+
+
+
+
 const WindowSizeContext = createContext({})
-
-export function WindowSizeProvider({ children }) {
-  const [windowWidth, setWindowWidth] = useState('')
-  const [windowHeight, setWindowHeight] = useState('')
-
+export function WindowSizeProvider({ children }: ContextType) {
+  const [windowWidth, setWindowWidth] = useState(0)
+  const [windowHeight, setWindowHeight] = useState(0)
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', () => {
       setWindowWidth(window.innerWidth)
@@ -18,16 +27,13 @@ export function WindowSizeProvider({ children }) {
       setWindowHeight(window.innerHeight)
     }
   }, [])
-
   // console.log('Hook: ', windowWidth)
-
   return (
     <WindowSizeContext.Provider value={{ windowWidth, windowHeight }}>
       {children}
     </WindowSizeContext.Provider>
   )
 }
-
 export function useWindowSize() {
   const context = useContext(WindowSizeContext)
   return context
