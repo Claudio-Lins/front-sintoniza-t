@@ -13,8 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "noImplicitAny": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/assets/Titles/index.jsx", "utils/Motion/useScroll.jsx", "src/pages/_app.jsx", "hooks/useWindowSize.js", "src/components/Destaque/index.jsx"],
-  "exclude": ["node_modules"]
+  
 }

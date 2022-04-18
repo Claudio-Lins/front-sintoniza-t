@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import { motion } from 'framer-motion'
 import { scaleUp } from '../../../utils/Motion/variants'
 // import { useScroll } from '../assets/useScroll'
-interface ArticleCardProps {
+export type ArticleCardProps = {
   destaque: any
 }
 
