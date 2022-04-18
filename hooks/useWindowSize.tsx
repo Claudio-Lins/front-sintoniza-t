@@ -1,14 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 
 type ContextType = {
-  children: React.ReactNode
+  children: ReactNode
 }
-type SetStateAction<S> = {
-  innerWidth: string
-  innerHeight: string
-}
-
-
+// type SetStateAction<S> = {
+//   innerWidth: string
+//   innerHeight: string
+// }
 
 
 const WindowSizeContext = createContext({})
