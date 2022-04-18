@@ -5,9 +5,12 @@ export type ContextType = {
   windowWidth?: any
   windowHeight?: any
 }
+type WindowSizeContextType = {
+  windowWidth: number
+  windowHeight: number
+}
 
-
-const WindowSizeContext = createContext({})
+const WindowSizeContext = createContext({} as WindowSizeContextType)
 
 export function WindowSizeProvider({ children }: ContextType) {
 

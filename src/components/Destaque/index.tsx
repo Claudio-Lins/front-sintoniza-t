@@ -12,6 +12,9 @@ interface DestaqueProps {
 
 export function Destaque({ destaque }: DestaqueProps) {
   const { windowWidth } = useWindowSize()
+
+  const windowSize = useWindowSize()
+  console.log(windowSize)
   return (
     <div>
       <div className="mt-10 flex items-center justify-between gap-6">
