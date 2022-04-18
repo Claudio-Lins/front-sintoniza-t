@@ -36,19 +36,22 @@ export default function ArticleCard({ destaque }: ArticleCardProps) {
             </time>
             <div>
               <h2 className="text-center text-lg font-bold leading-tight text-green-900 2xl:text-2xl">
-                {destaque.title}
+                {destaque.title.length > 55
+                  ? `${destaque.title.slice(0, 55)}...`
+                  : destaque.title
+                }
               </h2>
               <p className="mt-2 text-center text-sm font-semibold text-green-900">
                 {destaque.subtitle && destaque.subtitle.slice(0, 60)}
               </p>
             </div>
-            <p className="bg-gradient-to-b from-black to-white bg-clip-text text-justify text-sm font-light text-transparent antialiased md:leading-5 ">
+            <div className="bg-gradient-to-b from-black to-white bg-clip-text text-justify text-sm font-light text-transparent antialiased md:leading-5 ">
               <ReactMarkdown>
                 {destaque.content.length > 285
                   ? destaque.content.slice(0, 285) + '...'
                   : destaque.content}
               </ReactMarkdown>
-            </p>
+            </div>
           </div>
         </div>
       </motion.div>
