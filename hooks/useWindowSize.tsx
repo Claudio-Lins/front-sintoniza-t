@@ -2,8 +2,8 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 
 export type ContextType = {
   children: ReactNode
-  windowWidth?: number
-  windowHeight?: number
+  windowWidth?: any
+  windowHeight?: any
 }
 
 
