@@ -5,17 +5,11 @@ import Image from 'next/image'
 import { Section } from '../components/assets/Section'
 import { Title } from '../components/assets/Titles'
 import { Destaque } from '../components/Destaque'
+import { Team } from '../components/Team'
 
 interface HomeProps {
   destaque: any
-  team: {
-    name: string
-    email: string
-    cargo: string
-    nationality: string
-    telemovel: string
-    fileUrl: string
-  }
+  team: any
 }
 
 const Home = ({ destaque, team }: HomeProps) => {
@@ -33,7 +27,7 @@ const Home = ({ destaque, team }: HomeProps) => {
         </Section>
         <Section id="equipa" sectioColor={false}>
           <Title title="Equipa" delay={1} />
-          
+          <Team team={team} />
         </Section>
       </main>
     </>
@@ -48,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
     axios.get(`${process.env.API_URL_STRAPI}/articles?_sort=id:desc`),
     axios.get(`${process.env.API_URL_SINTONIZA_T}/team`),
   ])
-  
+
   return {
     props: {
       destaque: destaque.data,
@@ -57,7 +51,6 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: 1,
   }
 }
-
 
 // export const getStaticProps: GetStaticProps = async () => {
 //   const res = await axios.get(
