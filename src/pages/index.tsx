@@ -54,6 +54,7 @@ export const getStaticProps: GetStaticProps = async () => {
       destaque: destaque.data,
       team: team.data,
     },
+    revalidate: 1,
   }
 }
 
