@@ -36,7 +36,7 @@ export default Home
 
 export const getStaticProps: GetStaticProps = async () => {
   const res = await axios.get(
-    process.env.API_URL_STRAPI + '/articles?_sort=id:desc'
+    `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
   )
   return {
     props: {
