@@ -28,7 +28,7 @@ export function Title({ title, delay }) {
         ref={element}
         variants={scaleAnimationRight}
         animate={controls}
-        transition={{ delay: delay - 1, type: 'spring', duration: 3 }}
+        transition={{ delay: delay - 1, type: 'spring', duration: 1 }}
         className="my-2 w-full h-[2px] shadow-sm bg-gradient-to-r from-green-900 via-purple-700 to-green-800 rounded-lg"
       ></motion.div>
     </div>
