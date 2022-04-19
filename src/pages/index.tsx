@@ -8,9 +8,17 @@ import { Destaque } from '../components/Destaque'
 
 interface HomeProps {
   destaque: any
+  team: {
+    name: string
+    email: string
+    cargo: string
+    nationality: string
+    telemovel: string
+    fileUrl: string
+  }
 }
 
-const Home = ({ destaque }: HomeProps) => {
+const Home = ({ destaque, team }: HomeProps) => {
   return (
     <>
       <Head>
@@ -25,6 +33,7 @@ const Home = ({ destaque }: HomeProps) => {
         </Section>
         <Section id="equipa" sectioColor={false}>
           <Title title="Equipa" delay={1} />
+          
         </Section>
       </main>
     </>
@@ -33,15 +42,30 @@ const Home = ({ destaque }: HomeProps) => {
 
 export default Home
 
-
+// use axios.all to get all the data at once
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await axios.get(
-    `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
-  )
+  const [destaque, team] = await Promise.all([
+    axios.get(`${process.env.API_URL_STRAPI}/articles?_sort=id:desc`),
+    axios.get(`${process.env.API_URL_SINTONIZA_T}/team`),
+  ])
+  
   return {
     props: {
-      destaque: res.data,
+      destaque: destaque.data,
+      team: team.data,
     },
-    revalidate: 1,
   }
 }
+
+
+// export const getStaticProps: GetStaticProps = async () => {
+//   const res = await axios.get(
+//     `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
+//   )
+//   return {
+//     props: {
+//       destaque: res.data,
+//     },
+//     revalidate: 1,
+//   }
+// }
