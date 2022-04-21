@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import ReactCountryFlag from 'react-country-flag'
 
 interface TeamCardProps {
   name?: string
@@ -10,8 +11,9 @@ interface TeamCardProps {
 export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
   return (
     <div className="relative flex h-[350px] w-[250px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
-      <div className="h-[200px] w-[200px] rounded-full border-4 border-purple-600 bg-white shadow overflow-hidden mb-4">
+      <div className="mb-4 h-[200px] w-[200px] overflow-hidden rounded-full border-8 border-purple-800 bg-white shadow">
         <Image
+          className="grayscale"
           src={src ?? '/vercel.svg'}
           alt={name}
           width={200}
@@ -19,12 +21,24 @@ export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
           layout="responsive"
           objectFit="cover"
         />
-        <div className="absolute w-12 h-12 bg-green-900 rounded-full bottom-36 left-40 border-4 border-purple-600"></div>
+        <div className="absolute bottom-36 left-40 h-12 w-12 overflow-hidden rounded-full border-4 border-purple-800 bg-green-900 object-fill">
+          <ReactCountryFlag
+            countryCode="US"
+            svg
+            style={
+              { 
+                width: '3rem',
+                height: '3rem',
+                objectFit: 'cover',
+              }
+            }
+          />
+        </div>
       </div>
-      <div className="flex flex-col justify-center items-center w-full h-28 ">
-        <h3 className="text-xl text-center">{name}</h3>
-        <p className='text-xs'>{cargo}</p>
-        <p className='text-xs font-bold'>{nationality}</p>
+      <div className="flex h-28 w-full flex-col items-center justify-center ">
+        <h3 className="text-center text-xl">{name}</h3>
+        <p className="text-xs">{cargo}</p>
+        <p className="text-xs font-bold">{nationality}</p>
       </div>
     </div>
   )
