@@ -9,9 +9,6 @@ interface TeamProps {
   fileUrl?: string
 }
 
-interface TeamCardProps extends TeamProps {
-  ReactCountryFlag: string | undefined
-}
 
 export function Team({ team }: TeamProps) {
   return (
@@ -24,9 +21,7 @@ export function Team({ team }: TeamProps) {
             cargo={team.cargo}
             nationality={team.nationality}
             src={`https://api.sintoniza-t.pt/dev/public/team/${team.fileUrl}`} 
-            slice={function (start?: number, end?: number): string {
-              throw new Error('Function not implemented.')
-            } }          />
+            />
         </div>
       ))}
     </div>

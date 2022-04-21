@@ -6,7 +6,6 @@ interface TeamCardProps {
   cargo?: string
   nationality?: string | undefined
   src?: string
-  slice(start?: number | undefined, end?: number | undefined): string
   countryCode?: any
 }
 
