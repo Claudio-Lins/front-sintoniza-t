@@ -46,4 +46,3 @@ export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
     </div>
   )
 }
-
