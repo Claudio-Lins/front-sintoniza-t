@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
     axios.get(`${process.env.API_URL_STRAPI}/articles?_sort=id:desc`),
     axios.get(`${process.env.API_URL_SINTONIZA_T}/team`),
   ])
-
+  // console.log('destaque:', destaque)
   return {
     props: {
       destaque: destaque.data,
