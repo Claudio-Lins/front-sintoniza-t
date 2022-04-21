@@ -7,6 +7,7 @@ interface TeamProps {
   cargo?: string
   nationality?: string
   fileUrl?: string
+  ReactCountryFlag?: any
 }
 
 
