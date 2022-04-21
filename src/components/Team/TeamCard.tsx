@@ -7,6 +7,7 @@ interface TeamCardProps {
   nationality?: string | undefined
   src?: string
   slice(start?: number | undefined, end?: number | undefined): string
+  countryCode?: any
 }
 
 export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
@@ -45,6 +46,4 @@ export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
     </div>
   )
 }
-function slice(arg0: number, arg1: number): any {
-  throw new Error('Function not implemented.')
-}
+
