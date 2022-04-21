@@ -9,6 +9,10 @@ interface TeamProps {
   fileUrl?: string
 }
 
+interface TeamCardProps extends TeamProps {
+  ReactCountryFlag: string | undefined
+}
+
 export function Team({ team }: TeamProps) {
   return (
     <div className="flex w-full flex-wrap justify-center gap-8">
