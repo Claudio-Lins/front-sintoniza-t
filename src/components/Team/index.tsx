@@ -19,8 +19,10 @@ export function Team({ team }: TeamProps) {
             name={team.name}
             cargo={team.cargo}
             nationality={team.nationality}
-            src={`https://api.sintoniza-t.pt/dev/public/team/${team.fileUrl}`}
-          />
+            src={`https://api.sintoniza-t.pt/dev/public/team/${team.fileUrl}`} 
+            slice={function (start?: number, end?: number): string {
+              throw new Error('Function not implemented.')
+            } }          />
         </div>
       ))}
     </div>
