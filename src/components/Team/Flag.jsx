@@ -1,10 +1,10 @@
 import ReactCountryFlag from 'react-country-flag'
 
 
-export function Flag() {
+export function Flag({ nationality }) {
     return (
         <ReactCountryFlag
-            countryCode="PT"
+            countryCode={nationality}
             // countryCode={nationality?.slice(0, 2)}
             svg
             style={{
