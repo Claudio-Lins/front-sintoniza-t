@@ -12,7 +12,6 @@ interface TeamProps {
 }
 
 export function Team({ team }: TeamProps) {
-  console.log(process.env.API_URL_SINTONIZA_T)
   return (
     <div className="flex w-full flex-wrap justify-center gap-8 mt-10">
       {team.map((team: TeamProps) => (

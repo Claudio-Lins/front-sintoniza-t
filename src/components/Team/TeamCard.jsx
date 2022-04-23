@@ -14,8 +14,6 @@ import { useScroll } from '../../../utils/Motion/useScroll'
 
 export function TeamCard({ name, cargo, nationality, src, delay }) {
   const [element, controls] = useScroll()
-  const flag = nationality?.slice(0, 2)
-  console.log(typeof(flag))
   
   return (
     <motion.div
