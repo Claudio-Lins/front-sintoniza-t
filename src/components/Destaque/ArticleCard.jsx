@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { motion } from 'framer-motion'
-import { scaleUp } from '../../../utils/Motion/variants'
+import { scaleAnimationUp } from '../../../utils/Motion/Animations'
 import { useScroll } from '../../../utils/Motion/useScroll'
 
 
 
-export default function ArticleCard({ destaque }) {
+export default function ArticleCard({ destaque, delay }) {
   const [element, controls] = useScroll()
   const dataPost = Intl.DateTimeFormat('pt-PT').format(
     new Date(destaque.data ? destaque.data : destaque.published_at)
@@ -15,10 +15,11 @@ export default function ArticleCard({ destaque }) {
   return (
     <>
       <motion.div
-        variants={scaleUp('up', 1)}
         ref={element}
-        initial="initial"
-        animate="animate"
+        thresh={0}
+        variants={scaleAnimationUp}
+        animate={controls}
+        transition={{ delay: delay, type: 'tween' }}
         className="overflow-hidden rounded-2xl border bg-white shadow-md"
       >
         <div className="mx-auto h-[550px] max-w-md ">

@@ -19,7 +19,7 @@ export const animationDown = {
 };
 
 export const scaleAnimationUp = {
-  hidden: { scale: 0, opacity: 1 },
+  hidden: { scale: 0, opacity: 0 },
   show: { scale: 1, opacity: 1 },
 };
 

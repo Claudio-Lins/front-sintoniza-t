@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  env: {
+    API_URL_SINTONIZA_T:process.env.API_URL_SINTONIZA_T,
+    API_URL_STRAPI:process.env.API_URL_STRAPI,
+  },
   // reactStrictMode: true,
   images: {
     domains: [

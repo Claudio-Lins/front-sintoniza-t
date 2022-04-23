@@ -1,20 +1,30 @@
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Flag } from './Flag'
+import { scaleAnimationUp } from '../../../utils/Motion/Animations'
+import { useScroll } from '../../../utils/Motion/useScroll'
 
-interface TeamCardProps {
-  name?: string
-  cargo?: string
-  nationality?: string | undefined
-  src?: string
-  flag?: string
-}
+// interface TeamCardProps {
+//   name?: string
+//   cargo?: string
+//   nationality?: string | undefined
+//   src?: string
+//   flag?: string
+// }
 
-export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
+export function TeamCard({ name, cargo, nationality, src, delay }) {
+  const [element, controls] = useScroll()
   const flag = nationality?.slice(0, 2)
   console.log(typeof(flag))
   
   return (
-    <div className="relative flex h-[350px] w-[250px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
+    <motion.div
+    ref={element}
+    thresh={0}
+    variants={scaleAnimationUp}
+    animate={controls}
+    transition={{ delay: delay, type: 'tween' }}
+    className="relative flex h-[350px] w-[250px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
       <div className="mb-4 h-[200px] w-[200px] overflow-hidden rounded-full border-8 border-purple-800 bg-white shadow">
         <Image
           className="grayscale"
@@ -34,6 +44,6 @@ export function TeamCard({ name, cargo, nationality, src }: TeamCardProps) {
         <p className="text-xs">{cargo}</p>
         <p className="text-xs font-bold">{nationality?.slice(3)}</p>
       </div>
-    </div>
+    </motion.div>
   )
 }
