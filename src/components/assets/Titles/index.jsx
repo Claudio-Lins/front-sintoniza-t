@@ -15,6 +15,7 @@ export function Title({ title, delay }) {
     <div className="w-full flex flex-col justify-center items-center">
       <motion.h2
         ref={element}
+        thresh={0.5}
         variants={animationUp}
         animate={controls}
         transition={{ delay: delay, type: 'spring' }}
@@ -25,7 +26,6 @@ export function Title({ title, delay }) {
         </span>
       </motion.h2>
       <motion.div
-        ref={element}
         variants={scaleAnimationRight}
         animate={controls}
         transition={{ delay: delay - 1, type: 'spring', duration: 3 }}
