@@ -21,11 +21,11 @@ const Home = ({ destaque, team }: HomeProps) => {
       </Head>
 
       <main className="">
-        <Section id="destaque" sectioColor={true}>
+        <Section id="destaque" sectionColor={true}>
           <Title title="Destaque" delay={0.5} />
           <Destaque destaque={destaque} />
         </Section>
-        <Section id="equipa" sectioColor={false}>
+        <Section id="equipa" sectionColor={false}>
           <Title title="Equipa" delay={1} />
           <Team team={team} />
         </Section>
