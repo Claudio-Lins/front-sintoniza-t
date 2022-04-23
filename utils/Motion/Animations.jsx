@@ -25,7 +25,11 @@ export const scaleAnimationUp = {
 
 export const scaleAnimationRight = {
   hidden: { scale: 0, opacity: 1 },
-  show: { scale: 1, opacity: 1 },
+  show: { 
+    scale: 1, 
+    opacity: 1,
+    originX: 0,
+  },
 };
 
 export const scaleAnimationDown = {
