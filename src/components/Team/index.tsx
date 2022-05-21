@@ -1,4 +1,5 @@
-import { TeamCard } from './TeamCard'
+import { TeamCardV2 } from './TeamCardV2'
+
 
 interface TeamProps {
   team: any
@@ -13,11 +14,11 @@ interface TeamProps {
 
 export function Team({ team }: TeamProps) {
   return (
-    <div className="flex w-full flex-wrap justify-center gap-8 mt-10">
+    <div className="mt-10 flex w-full flex-wrap items-center justify-center gap-8">
       {team.map((team: TeamProps) => (
         <div key={team.id}>
-          <TeamCard
-            name={team.name}
+          <TeamCardV2
+            name={team.name ?? ""}
             cargo={team.cargo}
             nationality={team.nationality}
             src={`${process.env.API_URL_SINTONIZA_T}/public/team/${team.fileUrl}`}

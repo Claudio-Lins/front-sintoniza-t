@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/Destaque/ArticleCard.jsx", "src/components/Destaque/index.jsx", "src/components/Team/TeamCard.jsx"  ],
+, "src/components/Destaque/ArticleCard.jsx", "src/components/Destaque/index.jsx", "src/components/Team/TeamCard.jsx", "src/components/Team/TeamCardV2.jsx"  ],
   "exclude": [
     "node_modules"
   ]
