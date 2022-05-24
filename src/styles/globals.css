@@ -22,7 +22,9 @@ html {
     @media (max-width: 320px) {
         font-size: 66.67%;
     }
+    
 }
+
 
 body {
     -webkit-font-smoothing: antialiased;
