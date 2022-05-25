@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import styles from './menu.module.css'
+import LogoH from '../../../public/logo/sintoniza-t_hor.png'
 
 export function Navbar() {
   return (
@@ -12,7 +13,7 @@ export function Navbar() {
           <Link href="/" passHref>
             <a>
               <Image
-                src="/logo/sintoniza-t_hor.png"
+                src={LogoH}
                 alt="Sintoniza T"
                 width={250}
                 height={60}
@@ -34,8 +35,8 @@ export function Navbar() {
           </a>
           <a
             className={
-              
-              ' relative h-24 cursor-pointer font-bold leading-[6rem] text-green-900 '
+              styles.texto +
+              '  h-24 cursor-pointer font-bold leading-[6rem] text-green-900'
             }
           >
             Equipa
