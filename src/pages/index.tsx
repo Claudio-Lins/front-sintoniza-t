@@ -25,9 +25,27 @@ const Home = ({ destaque, team }: HomeProps) => {
           <Title title="Destaque" delay={0.5} />
           <Destaque destaque={destaque} />
         </Section>
-        <Section id="equipa" sectionColor={false}>
+        <Section id="quem-somos" sectionColor={false}>
+          <Title title="Quem somos" delay={1} />
+        </Section>
+        <Section id="programas" sectionColor={true}>
+          <Title title="Programas" delay={1} />
+        </Section>
+        <Section id="horarios" sectionColor={false}>
+          <Title title="Horários" delay={1} />
+        </Section>
+        <Section id="equipa" sectionColor={true}>
           <Title title="Equipa" delay={1} />
           <Team team={team} />
+        </Section>
+        <Section id="imprensa" sectionColor={false}>
+          <Title title="Imprensa" delay={1} />
+        </Section>
+        <Section id="colabore" sectionColor={true}>
+          <Title title="Colabore connosco" delay={1} />
+        </Section>
+        <Section id="contacto" sectionColor={false}>
+          <Title title="Contacto" delay={1} />
         </Section>
       </main>
     </>

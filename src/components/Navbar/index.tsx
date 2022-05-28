@@ -3,8 +3,12 @@ import Link from 'next/link'
 import React from 'react'
 import styles from './menu.module.css'
 import LogoH from '../../../public/logo/sintoniza-t_hor.png'
+import { navigationLinks } from '../../../utils/navigationLinks'
+import { useRouter } from 'next/router'
 
 export function Navbar() {
+  const router = useRouter()
+
   return (
     <header className="fixed z-50 flex h-24 w-full justify-center bg-white shadow">
       <div className="flex w-full max-w-7xl items-center 2xl:max-w-[1480px]">
@@ -25,22 +29,16 @@ export function Navbar() {
         {/* /Logo */}
         {/* Menu */}
         <nav className="flex h-[100%] flex-1 items-center justify-center gap-6">
-          <a
-            className={
-              styles.active +
-              ' relative h-24 cursor-pointer font-bold leading-[6rem] text-green-900 '
-            }
-          >
-            Destaque
-          </a>
-          <a
-            className={
-              styles.texto +
-              '  h-24 cursor-pointer font-bold leading-[6rem] text-green-900'
-            }
-          >
-            Equipa
-          </a>
+          {navigationLinks.map((link, i) => (
+            <Link href={link.path} passHref key={i}>
+              <a
+                className={`flex h-full items-center justify-center text-sm font-light uppercase text-green-900
+              `}
+              >
+                {link.label}
+              </a>
+            </Link>
+          ))}
         </nav>
       </div>
     </header>

@@ -1,7 +1,11 @@
+import { ReactElement } from 'react';
 import {Navbar } from './Navbar'
 
+interface LayoutProps {
+  children: ReactElement;
+}
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Navbar />
@@ -11,3 +15,4 @@ const Layout = ({ children }) => {
 }
 
 export default Layout
+ 

@@ -12,7 +12,7 @@ export function Section({ sectionColor, children, id }: SectionProps) {
   return (
     <div
       id={id}
-      className={`flex min-h-[50vh] flex-col items-center px-4 pt-10 pb-20 shadow-xl
+      className={`flex min-h-[50vh] flex-col items-center px-4 pt-10 pb-20 shadow-xl scroll-m-24
       ${sectionColor ? 'bg-gradient-to-b from-green-200 to-green-50 shadow-xl shadow-green-50' : 'bg-white'}
   `}
     >
