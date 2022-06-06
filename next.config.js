@@ -17,6 +17,7 @@
       'pixahive.com',
       'i.ytimg.com',
       'develop.sintoniza-t.pt',
+      'lh3.googleusercontent.com'
     ],
   },
 }
