@@ -28,11 +28,7 @@ export default function Signin() {
   const handdleSubmit = (e) => {
     e.preventDefault()
     if(!email) return false
-    signIn({
-      email,
-      redirect: false,
-      callbackUrl: '/admin',
-    })
+    signIn('email', {email, redirect: false})
   }
 
   return (
@@ -43,6 +39,7 @@ export default function Signin() {
         <div className="mb-4 flex flex-col items-center justify-center gap-2">
           <input
             type="email"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="w-full rounded-lg border border-gray-400 p-2"
