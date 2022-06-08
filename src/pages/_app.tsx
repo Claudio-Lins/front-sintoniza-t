@@ -3,9 +3,11 @@ import { ToastProvider } from '../../hooks/useToast'
 import { WindowSizeProvider } from '../../hooks/useWindowSize'
 import Layout from '../components/Layout'
 import '../styles/globals.css'
+import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   return (
+    <SessionProvider>
     <WindowSizeProvider>
       <ToastProvider>
         <Layout>
@@ -13,6 +15,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         </Layout>
       </ToastProvider>
     </WindowSizeProvider>
+    </SessionProvider>
   )
 }
 
