@@ -5,6 +5,7 @@ export default NextAuth({
   providers: [
     CredentialProvider({
       name: "credentials",
+      type: "credentials",
       credentials: {
         username: {
           label: "Email",
@@ -54,6 +55,6 @@ export default NextAuth({
     encryption: true,
   },
   // pages: {
-  //   signIn: "/api/auth/sigin",
+  //   signIn: "/login",
   // },
 });
