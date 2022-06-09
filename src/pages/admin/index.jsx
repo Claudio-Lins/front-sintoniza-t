@@ -1,5 +1,25 @@
 import React, { useRouter } from 'react'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signIn, signOut, getSession } from 'next-auth/react'
+import useRequireAuth from "../../../lib/useRequireAuth";
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+}
 
 export default function Admin() {
   const { data: session } = useSession()
