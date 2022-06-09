@@ -9,7 +9,7 @@ function useRequireAuth() {
 
   useEffect(() => {
     if (!session && typeof session != "undefined") {
-      router.push("/login");
+      router.push("/api/auth/signIn");
     }
   }, [session, router]);
 
