@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getSession } from 'next-auth/react'
+import { getAllNewsletters } from '../api/sintonizat-api/newsletter/getAllNewsletters'
 import React from 'react'
 
 
@@ -48,9 +49,7 @@ export default function Newsletter({ newsletter }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
-  const newsletter = await axios.get(
-    `${process.env.API_URL_SINTONIZA_T}/newsletter`
-  )
+  const newsletter = await getAllNewsletters()
 
   if (!session) {
     return {
@@ -64,7 +63,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
-      newsletter: newsletter.data,
+      newsletter: JSON.parse(JSON.stringify(newsletter)) 
     },
   }
 }
