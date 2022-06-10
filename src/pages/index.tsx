@@ -6,7 +6,7 @@ import { Section } from '../components/assets/Section'
 import { Title } from '../components/assets/Titles'
 import { Destaque } from '../components/Destaque'
 import { Team } from '../components/Team'
-import { Newsletter } from '../components/Newsletter'
+import { Newsletter } from '../components/newsletter'
 
 interface HomeProps {
   destaque: any
