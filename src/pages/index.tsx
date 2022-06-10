@@ -6,6 +6,7 @@ import { Section } from '../components/assets/Section'
 import { Title } from '../components/assets/Titles'
 import { Destaque } from '../components/Destaque'
 import { Team } from '../components/Team'
+import { Newsletter } from '../components/Newsletter'
 
 interface HomeProps {
   destaque: any
@@ -28,6 +29,7 @@ const Home = ({ destaque, team }: HomeProps) => {
         <Section id="quem-somos" sectionColor={false}>
           <Title title="Quem somos" delay={1} />
         </Section>
+        <Newsletter />
         <Section id="programas" sectionColor={true}>
           <Title title="Programas" delay={1} />
         </Section>
