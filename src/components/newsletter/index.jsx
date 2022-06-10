@@ -15,7 +15,7 @@ export function Newsletter() {
   async function create(data) {
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/sintonizat-api/newsletter/create`,
+        `/api/sintonizat-api/newsletter/create`,
         {
           body: JSON.stringify(data),
           headers: {
