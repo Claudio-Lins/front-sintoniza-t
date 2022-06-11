@@ -24,7 +24,7 @@ export const IconSchedule = <AiFillSchedule size={25} />
 
 export const IconVolunteer = <MdVolunteerActivism size={25} />
 
-export const IconSubscribe = <MdUnsubscribe size={25} />
+export const IconSubscribe = <MdUnsubscribe size={20} />
 
 export const IconLogout = <ImExit size={25} />
 

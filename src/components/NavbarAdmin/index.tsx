@@ -31,14 +31,17 @@ export function NavbarAdmin() {
         {/* Menu */}
         <nav className="flex h-[100%] flex-1 items-center justify-center gap-6">
           {navigationLinksAdmin.map((link, i) => (
-            <Link href={link.path} passHref key={i}>
-              <a
-                className={`flex h-full items-center justify-center text-sm font-light uppercase text-green-900
+            <div className="flex justify-center items-center gap-1">
+              <div>{link.icon}</div>
+              <Link href={link.path} passHref key={i}>
+                <a
+                  className={`flex h-full items-center justify-center text-sm font-light uppercase text-green-900
               `}
-              >
-                {link.label}
-              </a>
-            </Link>
+                >
+                  {link.label}
+                </a>
+              </Link>
+            </div>
           ))}
         </nav>
       </div>
