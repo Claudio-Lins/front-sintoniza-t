@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 // model Account {
@@ -60,4 +60,12 @@ model Newsletter {
   name      String
   email     String
   createdAt DateTime @default(now())
+}
+
+model Imprensa {
+  id            Int      @id @default(autoincrement())
+  title         String
+  linkYoutube   String?
+  datePublished DateTime @default(now())
+  fileUrl       String?
 }
