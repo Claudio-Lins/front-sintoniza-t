@@ -23,7 +23,6 @@ function Login() {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
 
-  console.log(session)
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()

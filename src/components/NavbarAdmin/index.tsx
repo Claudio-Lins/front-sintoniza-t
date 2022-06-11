@@ -1,13 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
-import styles from './menu.module.css'
 import LogoH from '../../../public/logo/sintoniza-t_hor.png'
 import { navigationLinksAdmin } from '../../../utils/navigationLinksAdmin'
-import { useRouter } from 'next/router'
+import { useSession, signIn, signOut, getSession } from 'next-auth/react'
 
 export function NavbarAdmin() {
   const router = useRouter()
+  const { data: session } = useSession()
 
   return (
     <header className="fixed z-50 flex h-24 w-full justify-center bg-white shadow">
@@ -40,6 +41,24 @@ export function NavbarAdmin() {
             </Link>
           ))}
         </nav>
+        <div className="flex flex-col justify-center items-center">
+          <div className="">
+            <Image
+              src={session.user.image}
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          </div>
+          <p className="text-xs font-bold">{session.user.name}</p>
+          {/* <p className="text-[8px] font-light">{session.user.email}</p> */}
+          <button
+            onClick={() => signOut()}
+            className="font-bold text-xs text-red-500 hover:text-red-700"
+          >
+            Sair
+          </button>
+        </div>
       </div>
     </header>
   )
