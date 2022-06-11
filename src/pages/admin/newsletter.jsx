@@ -1,10 +1,30 @@
-import axios from 'axios'
 import { getSession } from 'next-auth/react'
-import { getAllNewsletters } from '../api/sintonizat-api/newsletter/getAllNewsletters'
+import { useRouter } from 'next/router'
 import React from 'react'
-
+import { IconTrash } from '../../components/icons'
+import { getAllNewsletters } from '../api/sintonizat-api/newsletter/getAllNewsletters'
 
 export default function Newsletter({ newsletter }) {
+  const router = useRouter()
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
+
+  async function deleteNewsletter(id) {
+    try {
+      fetch(`/api/sintonizat-api/newsletter/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'DELETE',
+      }).then(() => {
+        refreshData()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="flex flex-col px-4">
       <div className="mt-8 rounded bg-white p-4 shadow 2xl:p-8">
@@ -17,7 +37,8 @@ export default function Newsletter({ newsletter }) {
               <tr className="w-full rounded bg-green-300 text-green-900">
                 <th className="p-4 text-left text-xs sm:text-lg">Nome</th>
                 <th className="p-4 text-left text-xs sm:text-lg">Email</th>
-                <th className="p-4 text-right text-xs sm:text-lg">Data</th>
+                <th className="p-4 text-center text-xs sm:text-lg">Delete</th>
+                <th className="p-4 text-center text-xs sm:text-lg">Data</th>
               </tr>
             </thead>
             <tbody>
@@ -32,7 +53,10 @@ export default function Newsletter({ newsletter }) {
                   <td className="p-4 text-left text-xs sm:text-base">
                     {newsletter.email}
                   </td>
-                  <td className="p-4 text-right text-xs sm:text-base">
+                  <td className="flex justify-center p-4 text-xs sm:text-base">
+                    <button onClick={() => deleteNewsletter(newsletter.id)}>{IconTrash}</button>
+                  </td>
+                  <td className="p-4 text-center text-xs sm:text-base">
                     {new Intl.DateTimeFormat('pt-PT').format(
                       new Date(newsletter.createdAt)
                     )}
@@ -63,7 +87,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
-      newsletter: JSON.parse(JSON.stringify(newsletter)) 
+      newsletter: JSON.parse(JSON.stringify(newsletter)),
     },
   }
 }

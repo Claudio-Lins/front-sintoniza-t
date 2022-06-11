@@ -7,15 +7,15 @@ import { SessionProvider } from 'next-auth/react'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <WindowSizeProvider>
-        <ToastProvider>
+    <WindowSizeProvider>
+      <ToastProvider>
+        <SessionProvider session={session}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </ToastProvider>
-      </WindowSizeProvider>
-    </SessionProvider>
+        </SessionProvider>
+      </ToastProvider>
+    </WindowSizeProvider>
   )
 }
 

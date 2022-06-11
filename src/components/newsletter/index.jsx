@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { fadeIn } from '../../../utils/Motion/variants'
+import { useToast } from '../../../hooks/useToast'
 
 export function Newsletter() {
+  const { toastSucess, toastFail } = useToast()
   const [dataForm, setDataForm] = useState({
     id: '',
     name: '',
@@ -14,29 +16,29 @@ export function Newsletter() {
 
   async function create(data) {
     try {
-      await fetch(
-        `/api/sintonizat-api/newsletter/create`,
-        {
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
+      await fetch(`/api/sintonizat-api/newsletter/create`, {
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
         },
-        ).then(() => setDataForm({ email: '', name: '' }))
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    
-    const handleSubmit = async(data) => {
-      try {
-        create(data) 
+        method: 'POST',
+      }).then(() => {
+        setDataForm({ email: '', name: '' })
+        toastSucess('Newsletter criada com sucesso!')
+      })
+      alert('Cadastro realizado com sucesso!')
     } catch (error) {
       console.error(error)
     }
-      
+  }
+
+  const handleSubmit = async (data) => {
+    try {
+      create(data)
+    } catch (error) {
+      console.error(error)
     }
+  }
 
   return (
     <motion.div
@@ -55,13 +57,13 @@ export function Newsletter() {
           </p>
         </div>
 
-        <form onSubmit={
-          (e) => {
+        <form
+          onSubmit={(e) => {
             e.preventDefault()
             handleSubmit(dataForm)
             console.log(dataForm)
-          }
-        }>
+          }}
+        >
           <div className="items-center justify-center md:flex md:space-x-3">
             <input
               type="text"
