@@ -32,6 +32,7 @@ export function TeamCard({ name, cargo, nationality, src, delay }) {
           height={200}
           layout="responsive"
           objectFit="cover"
+          priority
         />
         <div className="absolute bottom-36 left-40 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-4 border-purple-800 bg-green-900 object-fill">
           <Flag country={nationality?.slice(0, 2)}  />

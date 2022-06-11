@@ -37,6 +37,7 @@ export function TeamCardV2({ name, cargo, nationality, src, delay }) {
           height={200}
           layout="responsive"
           objectFit="cover"
+          priority
         />
       </div>
       <div className="mt-16 flex h-20 w-full flex-col items-center justify-center ">

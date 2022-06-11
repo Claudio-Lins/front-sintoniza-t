@@ -29,6 +29,7 @@ export default function ArticleCard({ destaque, delay }) {
               alt="images"
               layout="fill"
               objectFit="fill"
+              priority
             />
           </div>
           <div className="flex flex-col items-center justify-center p-6">

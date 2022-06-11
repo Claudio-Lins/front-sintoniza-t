@@ -22,6 +22,7 @@ export function Navbar() {
                 width={250}
                 height={60}
                 layout="responsive"
+                priority
               />
             </a>
           </Link>
