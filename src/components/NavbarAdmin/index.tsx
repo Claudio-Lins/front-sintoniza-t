@@ -32,7 +32,7 @@ export function NavbarAdmin() {
         <nav className="flex h-[100%] flex-1 items-center justify-center gap-6">
           {navigationLinksAdmin.map((link, i) => (
             <div className="flex items-center justify-center gap-1" key={i}>
-              <div>{link.icon}</div>
+              <div className='text-green-900 hover:text-green-600'>{link.icon}</div>
               <Link href={link.path} passHref>
                 <a className="flex h-full items-center justify-center text-sm font-light uppercase text-green-900">
                   {link.label}

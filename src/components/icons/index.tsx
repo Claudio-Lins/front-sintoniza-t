@@ -40,7 +40,7 @@ export const IconAvatar = <FaUserAlt size={35} />
 
 export const IconDestaque = <BsFileEarmarkPost size={25} />
 
-export const IconPress = <FaPaperclip size={25} />
+export const IconPress = <FaPaperclip size={15} />
 
 export const IconEdit = <FaRegEdit size={20} />
 

@@ -53,7 +53,7 @@ export default function Newsletter({ newsletter }) {
                   <td className="p-4 text-left text-xs sm:text-base">
                     {newsletter.email}
                   </td>
-                  <td className="flex justify-center p-4 text-xs sm:text-base">
+                  <td className="flex justify-center p-4 text-xs sm:text-base text-green-900 hover:text-red-700">
                     <button onClick={() => deleteNewsletter(newsletter.id)}>{IconTrash}</button>
                   </td>
                   <td className="p-4 text-center text-xs sm:text-base">
