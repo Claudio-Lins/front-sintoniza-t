@@ -1,7 +1,7 @@
 import Title from "./Title";
-import useAppData from "../../data/hook/useAppData";
 import BtnSwitchTheme from "./BtnSwitchTheme";
 import AvatarUser from './AvatarUser'
+import { signOut, useSession } from 'next-auth/react'
 
 interface TopBarProps {
   title: string;
@@ -9,7 +9,7 @@ interface TopBarProps {
 }
 
 export default function TopBar(props: TopBarProps) {
-  const { theme, switchTheme } = useAppData();
+  const { data: session } = useSession()
 
   return (
     <div className={`flex`}>
@@ -17,7 +17,7 @@ export default function TopBar(props: TopBarProps) {
       <div className={`
       flex flex-grow justify-end  items-center space-x-4
       `}>
-        <BtnSwitchTheme theme={theme} switchTheme={switchTheme} />
+        {/* <BtnSwitchTheme theme={theme} switchTheme={switchTheme} /> */}
         <AvatarUser />
       </div>
     </div>

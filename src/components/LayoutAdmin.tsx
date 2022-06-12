@@ -2,6 +2,7 @@ import Content from "./template/Content";
 import MenuLateral from "./template/MenuLateral";
 import TopBar from "./template/TopBar";
 
+
 interface LayoutProps {
   title: string;
   subtitle: string;
@@ -9,6 +10,7 @@ interface LayoutProps {
 }
 
 export default function Layout(props: LayoutProps) {
+
   return (
       <div className={`flex min-h-screen w-screen`}>
         <MenuLateral />

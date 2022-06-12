@@ -9,7 +9,7 @@ interface TableProps {
   viewImprensa?: any
 }
 
-export default function TableImprensa(props: TableProps) {
+export function TableImprensa(props: TableProps) {
   const showActions =
     props.selectImprensa || props.deleteImprensa || props.viewImprensa
 
@@ -18,7 +18,6 @@ export default function TableImprensa(props: TableProps) {
       <tr className=''>
         <th className='p-4 text-left'>Titúlo</th>
         <th className='p-4 text-center'>Data publicação</th>
-        {/* <th className='p-4 text-center'>LinkYoutube</th> */}
         {showActions ? <th className='p-4 text-center'>Ações</th> : false}
       </tr>
     )
@@ -29,7 +28,7 @@ export default function TableImprensa(props: TableProps) {
       return (
         <tr
           key={imprensa.id}
-          className={`${i % 2 === 0 ? 'bg-teal-200 ' : 'bg-teal-100'}`}
+          className={`${i % 2 === 0 ? 'bg-teal-200 text-green-900' : 'bg-teal-100 text-green-900'}`}
         >
           <td className='p-4 text-left'>{imprensa.title}</td>
           <td className='p-4 text-center'>
@@ -37,7 +36,6 @@ export default function TableImprensa(props: TableProps) {
               new Date(imprensa.datePublished)
             )}
           </td>
-          {/* <td className='p-4 text-left'>{imprensa.fileUrl}</td> */}
           {showActions ? renderActions(imprensa) : false}
         </tr>
       )

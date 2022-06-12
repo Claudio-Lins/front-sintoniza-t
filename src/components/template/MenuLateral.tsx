@@ -13,22 +13,22 @@ import {
   IconProgram
 } from "../icons";
 import Logo from "./Logo";
-import useAuth from "../../data/hook/useAuth";
+import { signOut, useSession } from 'next-auth/react'
 
 export default function MenuLateral() {
+  const { data: session } = useSession()
 
-  const { logout } = useAuth();
 
   return (
     <aside className={`
       flex flex-col
       bg-write text-teal-900
-      dark:bg-[#081f02]
+      dark:bg-green-900
       `}>
       <div
         className={`
         flex flex-col items-center 
-        justify-center h-24 w-24 bg-gradient-to-r from-purple-800 to-teal-900`}
+        justify-center h-24 w-24 bg-gradient-to-r from-purple-800 to-teal-700`}
       >
         <Logo />
       </div>
@@ -38,15 +38,15 @@ export default function MenuLateral() {
         `}
       >
         <MenuItem url="/" text="Home" icon={IconHome} />
-        <MenuItem url="/destaque" text="Destaque" icon={IconDestaque} />
+        {/* <MenuItem url="/destaque" text="Destaque" icon={IconDestaque} /> */}
         {/* <MenuItem url='https://boilerplate-api-mongo.herokuapp.com/admin' target="_blank" text="Destaque" icon={IconDestaque} /> */}
-        <MenuItem url="/imprensa" text="Imprensa" icon={IconPress} />
-        <MenuItem url="/team" text="Equipa" icon={IconTeam} />
-        <MenuItem url="/programas" text="Programas" icon={IconProgram} />
+        <MenuItem url="/admin/imprensa" text="Imprensa" icon={IconPress} />
+        {/* <MenuItem url="/team" text="Equipa" icon={IconTeam} /> */}
+        {/* <MenuItem url="/programas" text="Programas" icon={IconProgram} /> */}
         {/* <MenuItem url="/schedule" text="Horários" icon={IconSchedule} /> */}
-        <MenuItem url="/horarios" text="Horários" icon={IconClock} />
-        <MenuItem url="/volunteer" text="Voluntáriado" icon={IconVolunteer} />
-        <MenuItem url="/subscriber" text="Cadastros" icon={IconSubscribe} />
+        {/* <MenuItem url="/horarios" text="Horários" icon={IconClock} /> */}
+        {/* <MenuItem url="/volunteer" text="Voluntáriado" icon={IconVolunteer} /> */}
+        <MenuItem url="/admin/newsletter" text="Newsletter" icon={IconSubscribe} />
       </ul>
       <ul
 
@@ -59,7 +59,7 @@ export default function MenuLateral() {
         <MenuItem
           text="Sair"
           icon={IconLogout}
-          onClick={logout}
+          onClick={signOut}
           className={`
             text-red-500 dark:text-red-500
             hover:text-white hover:bg-red-800

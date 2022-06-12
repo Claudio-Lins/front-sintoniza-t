@@ -1,19 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import useAuth from '../../data/hook/useAuth'
+import { useSession } from 'next-auth/react'
 
 interface AvatarUserProps {
   className?: string
 }
 
 export default function AvatarUser(props: AvatarUserProps) {
-  const { user } = useAuth()
+  const { data: session } = useSession()
   return (
     <div className='flex flex-col  h-14 w-14 cursor-pointer'>
       <Link href='/profile' passHref>
         <a>
           <Image
-            src={user?.imageUrl ?? '/avatar/avatar.svg'}
+            src={session.user.image ?? '/avatar/avatar.svg'}
             alt='avatar'
             layout='responsive'
             width={56}
@@ -22,6 +22,7 @@ export default function AvatarUser(props: AvatarUserProps) {
           />
         </a>
       </Link>
+        <p className='text-[8px] text-center font-bold'>{session.user.name}</p>
     </div>
   )
 }

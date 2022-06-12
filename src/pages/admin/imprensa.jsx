@@ -1,5 +1,8 @@
 import { getSession } from 'next-auth/react'
+import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
+import { TableImprensa} from '../../components/imprensa/TableImprensa'
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
@@ -23,46 +26,63 @@ export async function getServerSideProps(context) {
 }
 
 export default function Imprensa({ imprensa }) {
+
+  const router = useRouter()
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
+
+  async function deleteImprensa(id) {
+    try {
+      fetch(`/api/sintonizat-api/imprensa/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'DELETE',
+      }).then(() => {
+        refreshData()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+    // VIEW
+    function viewImprensa(imprensa) {
+      setVisible('table')
+    }
+
+
+   // GET by ID
+   function selectImprensa(imprensa) {
+    setVisible('form')
+    // METHOD TO UPDATE
+    const response = fetch(
+      `${process.env.API_SINTONIZA_T}/imprensa/${imprensa.id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    setTitle(imprensa.title)
+    console.log(imprensa)
+  }
+  
   return (
-    <div className="flex flex-col px-4">
-      <div className="mt-8 rounded bg-white p-4 shadow 2xl:p-8">
-        <div className="p-4">
-          <h2 className="rounded-t-xl bg-gradient-to-r from-purple-800 to-green-800 p-2 text-center text-2xl font-semibold text-white">
-            Subscribers - Newsletter
-          </h2>
-          <table className="mt-2 w-full">
-            <thead>
-              <tr className="w-full rounded bg-green-300 text-green-900">
-                <th className="p-4 text-left text-xs sm:text-lg">Nome</th>
-                <th className="p-4 text-left text-xs sm:text-lg">Email</th>
-                <th className="p-4 text-center text-xs sm:text-lg">Ações</th>
-                <th className="p-4 text-center text-xs sm:text-lg">Data</th>
-              </tr>
-            </thead>
-            <tbody>
-              {imprensa.map((imprensa, i) => (
-                <tr
-                  key={i}
-                  className={`${i % 2 === 0 ? 'bg-white' : 'bg-green-100'} `}
-                >
-                  <td className="p-4 text-left text-xs font-semibold sm:text-base">
-                    {imprensa.title}
-                  </td>
-                  <td className="p-4 text-left text-xs sm:text-base">
-                    {imprensa.linkYoutube}
-                  </td>
-                  <td className="flex justify-center p-4 text-xs sm:text-base text-green-900 hover:text-red-700">
-                    {/* <button onClick={() => deleteNewsletter(newsletter.id)}>{IconTrash}</button> */}
-                  </td>
-                  <td className="p-4 text-center text-xs sm:text-base">
-                    {imprensa.datePublished}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <>
+      <HeaderContent
+        title={'Imprensa'}
+        subtitle="Materias relacionadas com a Sitoniza-t"
+      />
+      <TableImprensa 
+        imprensa={imprensa} 
+        viewImprensa={viewImprensa}
+        deleteImprensa={deleteImprensa}
+        selectImprensa={selectImprensa}
+      />
+    </>
+    
   )
 }
