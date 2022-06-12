@@ -1,0 +1,73 @@
+import MenuItem from "./MenuItem";
+import {
+  IconHome,
+  IconSchedule,
+  IconSubscribe,
+  IconTeam,
+  IconVolunteer,
+  IconLogout,
+  IconDestaque,
+  IconPress,
+  IconGoogle,
+  IconClock,
+  IconProgram
+} from "../icons";
+import Logo from "./Logo";
+import useAuth from "../../data/hook/useAuth";
+
+export default function MenuLateral() {
+
+  const { logout } = useAuth();
+
+  return (
+    <aside className={`
+      flex flex-col
+      bg-write text-teal-900
+      dark:bg-[#081f02]
+      `}>
+      <div
+        className={`
+        flex flex-col items-center 
+        justify-center h-24 w-24 bg-gradient-to-r from-purple-800 to-teal-900`}
+      >
+        <Logo />
+      </div>
+      <ul
+        className={`
+          flex-grow 
+        `}
+      >
+        <MenuItem url="/" text="Home" icon={IconHome} />
+        <MenuItem url="/destaque" text="Destaque" icon={IconDestaque} />
+        {/* <MenuItem url='https://boilerplate-api-mongo.herokuapp.com/admin' target="_blank" text="Destaque" icon={IconDestaque} /> */}
+        <MenuItem url="/imprensa" text="Imprensa" icon={IconPress} />
+        <MenuItem url="/team" text="Equipa" icon={IconTeam} />
+        <MenuItem url="/programas" text="Programas" icon={IconProgram} />
+        {/* <MenuItem url="/schedule" text="Horários" icon={IconSchedule} /> */}
+        <MenuItem url="/horarios" text="Horários" icon={IconClock} />
+        <MenuItem url="/volunteer" text="Voluntáriado" icon={IconVolunteer} />
+        <MenuItem url="/subscriber" text="Cadastros" icon={IconSubscribe} />
+      </ul>
+      <ul
+
+
+
+        className={`
+           
+        `}
+      >
+        <MenuItem
+          text="Sair"
+          icon={IconLogout}
+          onClick={logout}
+          className={`
+            text-red-500 dark:text-red-500
+            hover:text-white hover:bg-red-800
+            dark:hover:text-white
+            
+          `}
+        />
+      </ul>
+    </aside>
+  );
+}
