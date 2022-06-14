@@ -20,11 +20,7 @@ export default function MenuLateral() {
 
 
   return (
-    <aside className={`
-      flex flex-col
-      bg-write text-teal-900
-      dark:bg-green-900
-      `}>
+    <aside className='flex flex-col min-h-screen bg-write text-teal-900 bg-green-900'>
       <div
         className={`
         flex flex-col items-center 

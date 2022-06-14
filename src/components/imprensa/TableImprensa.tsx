@@ -15,7 +15,7 @@ export function TableImprensa(props: TableProps) {
 
   function renderHeader() {
     return (
-      <tr className=''>
+      <tr className=' text-xl'>
         <th className='p-4 text-left'>Titúlo</th>
         <th className='p-4 text-center'>Data publicação</th>
         {showActions ? <th className='p-4 text-center'>Ações</th> : false}

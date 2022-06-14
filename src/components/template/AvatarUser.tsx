@@ -9,7 +9,7 @@ interface AvatarUserProps {
 export default function AvatarUser(props: AvatarUserProps) {
   const { data: session } = useSession()
   return (
-    <div className='flex flex-col  h-14 w-14 cursor-pointer'>
+    <div className='flex flex-col  h-16 w-14 cursor-pointer'>
       <Link href='/profile' passHref>
         <a>
           <Image
