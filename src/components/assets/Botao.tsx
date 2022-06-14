@@ -5,7 +5,7 @@ interface BotaoProps {
   type?: string
 }
 
-export default function Botao(props: BotaoProps) {
+export function Botao(props: BotaoProps) {
   return (
     <button
       onClick={props.onClick}

@@ -9,7 +9,7 @@ interface EntradasProps {
   className?: string
 }
 
-export default function Entradas(props: EntradasProps) {
+export function Entradas(props: EntradasProps) {
   return (
     <div className='flex flex-col w-full'>
       <input
