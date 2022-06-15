@@ -3,16 +3,30 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Modal from 'react-modal'
 import { Botao } from '../../components/assets/Botao'
-import { IconEdit, IconTrash, IconView } from '../../components/icons'
+import { IconEdit, IconPDF, IconTrash, IconView } from '../../components/icons'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
 import { Entradas } from '../../components/assets/Entradas'
+import { ImLink } from 'react-icons/im'
+import { VscFilePdf } from 'react-icons/vsc'
 
 export default function Imprensa({ imprensa }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLink, setIsLink] = useState(false)
+  const [isPdf, setIsPdf] = useState(true)
+  const [toggleField, setToggleField] = useState(false)
   const router = useRouter()
+
+
   const refreshData = () => {
     router.replace(router.asPath)
+  }
+
+  const toggleLinkOrPdf = () => {
+    setToggleField(!toggleField)
+    setIsLink(!isLink)
+    setIsPdf(!isPdf)
+    console.log(isPdf)
   }
 
   const handleOpenModal = () => {
@@ -126,39 +140,53 @@ export default function Imprensa({ imprensa }) {
               <hr className="border-1 mt-2 w-full border-green-300" />
               <div className="flex w-full items-center justify-center">
                 <form
-                  onSubmit={''}
+                  className="w-full"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                  }}
                   encType="multipart/form-data"
-                  
                 >
-                  <div className="mt-4 w-full p-2 space-y-2">
-                  <div className="space-y-2">
-                  <Entradas
-                    name="title"
-                    type="text"
-                    placeholder="Titulo"
-                    className="w-full p-2 text-purple-800"
-                  />
-                  <Entradas
-                    name="linkYoutube"
-                    type="text"
-                    placeholder="Link Youtube"
-                    className="w-full p-2 text-purple-800"
-                  />
-                  </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <Entradas
-                      name="linkYoutube"
-                      type="date"
-                      placeholder="Link Youtube"
-                      className="w-full p-2 text-purple-800"
-                    />
-                    <Entradas
-                      name="linkYoutube"
-                      type="file"
-                      placeholder="Link Youtube"
-                      className="w-full p-2 text-purple-800"
-                    />
-                  </div>
+                  <div className="mt-4 w-full space-y-2 p-2">
+                    <div className="space-y-2">
+                      <Entradas
+                        name="title"
+                        type="text"
+                        placeholder="Titulo"
+                        className="w-full p-2 text-purple-800"
+                      />
+                      <div className=" flex">
+                        <div className="mr-4  rounded-xl border py-2 px-4">
+                          <button
+                            className="flex items-center justify-center gap-4"
+                            onClick={toggleLinkOrPdf}
+                          >
+                            <VscFilePdf size={20} color={isPdf  ? "#107970" : "#c1c1c1"} />
+                            <ImLink size={20} color={isLink  ? "#107970" : "#c1c1c1"} />
+                          </button>
+                        </div>
+                        {toggleField ? (
+                          <Entradas
+                            name="linkYoutube"
+                            type="text"
+                            placeholder="Link Youtube"
+                            className="p-2"
+                          />
+                        ) : (
+                          <Entradas
+                            name="file"
+                            type="file"
+                            
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <Entradas
+                        name="date"
+                        type="date"
+                        className="w-full p-2 text-purple-800"
+                      />
+                    </div>
                   </div>
                   <div className="mt-8 flex items-center justify-evenly">
                     <Botao>Enviar</Botao>

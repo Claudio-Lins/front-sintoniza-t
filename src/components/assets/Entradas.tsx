@@ -20,7 +20,7 @@ export function Entradas(props: EntradasProps) {
         placeholder={props.placeholder}
         onChange={props.onChange}
         className={`
-        border border-purple-700 bg-gray-100 rounded-lg dark:border-teal-400
+        border bg-gray-100 rounded-lg border-teal-400
         focus:border-teal-400 focus:outline-none 
         ${props.type === 'file' ? 'py-[6px] appearance-none' : ''}
         ${props.readonly ? '' : 'focus:bg-teal-50'}
