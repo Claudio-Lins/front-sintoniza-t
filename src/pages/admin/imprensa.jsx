@@ -9,12 +9,18 @@ import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
 import { Entradas } from '../../components/assets/Entradas'
 import { ImLink } from 'react-icons/im'
 import { VscFilePdf } from 'react-icons/vsc'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Imprensa({ imprensa }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isLink, setIsLink] = useState(true)
   const [isPdf, setIsPdf] = useState(false)
   const [toggleField, setToggleField] = useState(true)
+  const router = useRouter()
+
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
 
   const [dataForm, setDataForm] = useState({
     title: '',
@@ -49,24 +55,27 @@ export default function Imprensa({ imprensa }) {
 
   const handleSubmit = async (data) => {
     try {
-      create(data)
-      console.log('data:', data)
+      toast.promise(
+        create(data),
+        {
+          loading: 'Trabalhando nisso....',
+          success: 'Imprensa criado com secesso!',
+          error: 'Ooops! Algo deu errado.',
+        },
+        {
+          duration: 3000,
+        },
+        handleCloseModal()
+      )
     } catch (error) {
-      console.error(error)
+      toast.error(error)
     }
-  }
-
-  const router = useRouter()
-
-  const refreshData = () => {
-    router.replace(router.asPath)
   }
 
   const toggleLinkOrPdf = () => {
     setToggleField(!toggleField)
     setIsLink(!isLink)
     setIsPdf(!isPdf)
-    console.log(isPdf)
   }
 
   const handleOpenModal = () => {
@@ -91,54 +100,80 @@ export default function Imprensa({ imprensa }) {
     }
   }
 
+  async function editImprensa(id) {
+    try {
+      fetch(`/api/sintonizat-api/imprensa/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      }).then(() => {
+        body: JSON.stringify(dataForm),
+        refreshData()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="flex flex-col px-4">
       <HeaderContent
         title={'Imprensa'}
         subtitle="Materias relacionadas com a Sitoniza-t"
       />
+      <Toaster />
       <div className="my-4 mr-4 flex justify-end">
         <Botao onClick={handleOpenModal}>Nova Imprensa</Botao>
       </div>
-      <table className="w-full overflow-hidden rounded-xl">
+      <table className="w-full overflow-hidden rounded-t-xl shadow-md">
         <thead className="bg-gradient-to-r from-teal-700 to-teal-500 text-sm font-bold tracking-wider text-white">
           <tr className=" text-xl">
             <th className="p-4 text-left">Titúlo</th>
             <th className="p-4 text-center">Data publicação</th>
-            <th className="p-4 text-center">Ações</th>
+            <th className="p-4 text-right pr-9">Ações</th>
           </tr>
         </thead>
-        <tbody className="bg-white">
-          {imprensa?.map((imprensa, i) => {
-            return (
-              <tr
-                key={i}
-                className={`${
-                  i % 2 === 0
-                    ? 'bg-teal-200 text-green-900'
-                    : 'bg-teal-100 text-green-900'
-                }`}
-              >
-                <td className="p-4 text-left">{imprensa.title}</td>
-                <td className="p-4 text-center">
-                  {new Date(imprensa.datePublished).toLocaleDateString()}
-                </td>
-                <td className="flex items-center justify-center gap-2 p-4 text-center">
-                  <button onClick={() => deleteImprensa(imprensa.id)}>
-                    {IconEdit}
-                  </button>
-                  <button onClick={() => deleteImprensa(imprensa.id)}>
-                    {IconView}
-                  </button>
-                  <button onClick={() => deleteImprensa(imprensa.id)}>
-                    {IconTrash}
-                  </button>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
       </table>
+      <div className="max-h-[550px] w-full overflow-auto rounded-b-xl">
+        <table className="w-full overflow-hidden rounded-b-xl">
+          <tbody className="bg-white">
+            {imprensa?.map((imprensa, i) => {
+              return (
+                <tr
+                  key={i}
+                  className={`${
+                    i % 2 === 0
+                      ? 'bg-teal-200 text-green-900'
+                      : 'bg-teal-100 text-green-900'
+                  }`}
+                >
+                  <td className="p-4 text-left">{imprensa.title}</td>
+                  <td className="p-4 text-center">
+                    {new Date(imprensa.datePublished).toLocaleDateString()}
+                  </td>
+                  <td className="flex items-center justify-end mr-4 gap-2 p-4">
+                    <button onClick={() => {
+                      setDataForm(imprensa)
+                      setIsOpen(true)
+                      editImprensa(imprensa.id)
+                    }}>
+                      {IconEdit}
+                    </button>
+                    <button onClick={''}>
+                      {IconView}
+                    </button>
+                    <button onClick={() => deleteImprensa(imprensa.id)}>
+                      {IconTrash}
+                    </button>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+
       <Modal
         ariaHideApp={false}
         isOpen={isOpen}
@@ -159,7 +194,7 @@ export default function Imprensa({ imprensa }) {
               <hr className="border-1 mt-2 w-full border-green-300" />
               <div className="flex w-full items-center justify-center">
                 <form
-                  className="flex flex-col items-center justify-center w-full"
+                  className="flex w-full flex-col items-center justify-center"
                   onSubmit={(e) => {
                     e.preventDefault()
                     handleSubmit(dataForm)
@@ -176,12 +211,12 @@ export default function Imprensa({ imprensa }) {
                         onChange={onChangeInput}
                         value={dataForm.title}
                         placeholder="Titulo"
-                        className="p-2 border bg-gray-100 rounded-lg border-teal-400
-                            focus:border-teal-400 focus:outline-none w-full"
+                        className="w-full rounded-lg border border-teal-400 bg-gray-100
+                            p-2 focus:border-teal-400 focus:outline-none"
                       />
                       <div className=" flex">
                         <div className="mr-4  rounded-xl border py-2 px-4">
-                          <button
+                          <div
                             className="flex items-center justify-center gap-4"
                             onClick={toggleLinkOrPdf}
                           >
@@ -193,7 +228,7 @@ export default function Imprensa({ imprensa }) {
                               size={20}
                               color={isLink ? '#107970' : '#c1c1c1'}
                             />
-                          </button>
+                          </div>
                         </div>
                         {toggleField ? (
                           <input
@@ -202,23 +237,27 @@ export default function Imprensa({ imprensa }) {
                             onChange={onChangeInput}
                             value={dataForm.linkYoutube}
                             placeholder="Link Youtube"
-                            className="p-2 border bg-gray-100 rounded-lg border-teal-400
-                            focus:border-teal-400 focus:outline-none w-full"
+                            className="w-full rounded-lg border border-teal-400 bg-gray-100
+                            p-2 focus:border-teal-400 focus:outline-none"
                           />
                         ) : (
-                          <input className="p-2 border bg-gray-100 rounded-lg border-teal-400
-                          focus:border-teal-400 focus:outline-none w-full" name="file" type="file" />
+                          <input
+                            className="w-full rounded-lg border border-teal-400 bg-gray-100
+                          p-2 focus:border-teal-400 focus:outline-none"
+                            name="file"
+                            type="file"
+                          />
                         )}
                       </div>
                     </div>
                     <div className="flex items-center justify-between gap-2">
                       <input
                         name="datePublished"
-                        type='date'
+                        type="date"
                         onChange={onChangeInput}
                         value={dataForm.datePublished}
-                        className="p-2 border bg-gray-100 rounded-lg border-teal-400
-                            focus:border-teal-400 focus:outline-none w-full"
+                        className="w-full rounded-lg border border-teal-400 bg-gray-100
+                            p-2 focus:border-teal-400 focus:outline-none"
                       />
                     </div>
                   </div>
