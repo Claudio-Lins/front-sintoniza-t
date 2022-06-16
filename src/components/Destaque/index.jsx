@@ -8,7 +8,7 @@ export function Destaque({ destaque }) {
   return (
     <div>
       <div className="mt-10 flex items-center justify-between gap-6">
-        {destaque
+        {destaque && destaque
           .slice(0, windowWidth < 768 ? 1 : windowWidth < 1280 ? 2 : 3)
           .map((destaque) => (
             <div key={destaque.id} className="">

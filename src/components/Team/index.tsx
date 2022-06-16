@@ -15,7 +15,7 @@ interface TeamProps {
 export function Team({ team }: TeamProps) {
   return (
     <div className="mt-10 flex w-full flex-wrap items-center justify-center gap-8">
-      {team.map((team: TeamProps) => (
+      {team && team.map((team: TeamProps) => (
         <div key={team.id}>
           <TeamCardV2
             name={team.name ?? ""}
