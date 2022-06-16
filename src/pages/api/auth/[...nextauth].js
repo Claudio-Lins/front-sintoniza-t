@@ -17,15 +17,15 @@ export default NextAuth({
       authorize: (credentials) => {
         // database look up
         if (
-          credentials.username === 'sintoniza-t@gmail.com' &&
+          credentials.username === 'claudio.lins@gmail.com' &&
           credentials.password === '123456'
         ) {
           return {
             id: 2,
-            name: 'Sintoniza-t Admin',
+            name: 'Claudio Lins',
             email: 'sintoniza-t@gmail.com',
             image:
-              'https://admin-sintoniza-t.vercel.app/_next/image?url=%2Flogo%2FlogoIcon.png&w=3840&q=75',
+              'https://avatars.githubusercontent.com/u/69011104?s=400&u=15bc2ea0632da6b2b4ee636d522e6e5265a0238a&v=4',
           }
         }
 

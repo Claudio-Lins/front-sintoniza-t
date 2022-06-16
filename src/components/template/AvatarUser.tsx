@@ -8,15 +8,17 @@ interface AvatarUserProps {
 export default function AvatarUser(props: AvatarUserProps) {
   const { data: session } = useSession()
   return (
-    <div className="flex h-16  w-14 cursor-pointer flex-col">
+    <div className="flex cursor-pointer gap-1 flex-col justify-center items-center">
+      <div className="w-10 mt-2">
       <Image
-        src={session.user.image ?? '/avatar/avatar.svg'}
+        src={session.user.image ?? '/logo/logoicon.png'}
         alt="avatar"
         layout="responsive"
         width={56}
         height={56}
         className={`${props.className} rounded-full`}
       />
+      </div>
 
       <p className="text-center text-[8px] font-bold">{session.user.name}</p>
     </div>
