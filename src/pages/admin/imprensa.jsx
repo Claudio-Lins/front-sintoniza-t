@@ -12,11 +12,51 @@ import { VscFilePdf } from 'react-icons/vsc'
 
 export default function Imprensa({ imprensa }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [isLink, setIsLink] = useState(false)
-  const [isPdf, setIsPdf] = useState(true)
-  const [toggleField, setToggleField] = useState(false)
-  const router = useRouter()
+  const [isLink, setIsLink] = useState(true)
+  const [isPdf, setIsPdf] = useState(false)
+  const [toggleField, setToggleField] = useState(true)
 
+  const [dataForm, setDataForm] = useState({
+    title: '',
+    linkYoutube: '',
+    datePublished: new Date().toISOString(),
+    fileUrl: '',
+  })
+
+  const onChangeInput = (e) =>
+    setDataForm({ ...dataForm, [e.target.name]: e.target.value })
+
+  async function create(data) {
+    try {
+      await fetch(`/api/sintonizat-api/imprensa`, {
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      }).then(() => {
+        setDataForm({
+          title: '',
+          linkYoutube: '',
+          datePublished: '',
+          fileUrl: '',
+        })
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleSubmit = async (data) => {
+    try {
+      create(data)
+      console.log('data:', data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const router = useRouter()
 
   const refreshData = () => {
     router.replace(router.asPath)
@@ -81,7 +121,7 @@ export default function Imprensa({ imprensa }) {
               >
                 <td className="p-4 text-left">{imprensa.title}</td>
                 <td className="p-4 text-center">
-                  {new Intl.DateTimeFormat('pt-BR').format(imprensa.date)}
+                  {new Date(imprensa.datePublished).toLocaleDateString()}
                 </td>
                 <td className="flex items-center justify-center gap-2 p-4 text-center">
                   <button onClick={() => deleteImprensa(imprensa.id)}>
@@ -103,27 +143,6 @@ export default function Imprensa({ imprensa }) {
         ariaHideApp={false}
         isOpen={isOpen}
         onRequestClose={handleCloseModal}
-        style={{
-          overlay: {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(20, 53, 45, 0.9)',
-          },
-          content: {
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            right: 'auto%',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            border: '1px solid #ccc',
-            background: '#fff',
-          },
-        }}
       >
         <div className="relative flex">
           <Botao
@@ -140,19 +159,25 @@ export default function Imprensa({ imprensa }) {
               <hr className="border-1 mt-2 w-full border-green-300" />
               <div className="flex w-full items-center justify-center">
                 <form
-                  className="w-full"
+                  className="flex flex-col items-center justify-center w-full"
                   onSubmit={(e) => {
                     e.preventDefault()
+                    handleSubmit(dataForm)
+                    refreshData()
+                    handleCloseModal
+                    console.log(dataForm)
                   }}
-                  encType="multipart/form-data"
                 >
                   <div className="mt-4 w-full space-y-2 p-2">
                     <div className="space-y-2">
-                      <Entradas
+                      <input
                         name="title"
                         type="text"
+                        onChange={onChangeInput}
+                        value={dataForm.title}
                         placeholder="Titulo"
-                        className="w-full p-2 text-purple-800"
+                        className="p-2 border bg-gray-100 rounded-lg border-teal-400
+                            focus:border-teal-400 focus:outline-none w-full"
                       />
                       <div className=" flex">
                         <div className="mr-4  rounded-xl border py-2 px-4">
@@ -160,36 +185,45 @@ export default function Imprensa({ imprensa }) {
                             className="flex items-center justify-center gap-4"
                             onClick={toggleLinkOrPdf}
                           >
-                            <VscFilePdf size={20} color={isPdf  ? "#107970" : "#c1c1c1"} />
-                            <ImLink size={20} color={isLink  ? "#107970" : "#c1c1c1"} />
+                            <VscFilePdf
+                              size={20}
+                              color={isPdf ? '#107970' : '#c1c1c1'}
+                            />
+                            <ImLink
+                              size={20}
+                              color={isLink ? '#107970' : '#c1c1c1'}
+                            />
                           </button>
                         </div>
                         {toggleField ? (
-                          <Entradas
+                          <input
                             name="linkYoutube"
                             type="text"
+                            onChange={onChangeInput}
+                            value={dataForm.linkYoutube}
                             placeholder="Link Youtube"
-                            className="p-2"
+                            className="p-2 border bg-gray-100 rounded-lg border-teal-400
+                            focus:border-teal-400 focus:outline-none w-full"
                           />
                         ) : (
-                          <Entradas
-                            name="file"
-                            type="file"
-                            
-                          />
+                          <input className="p-2 border bg-gray-100 rounded-lg border-teal-400
+                          focus:border-teal-400 focus:outline-none w-full" name="file" type="file" />
                         )}
                       </div>
                     </div>
                     <div className="flex items-center justify-between gap-2">
-                      <Entradas
-                        name="date"
-                        type="date"
-                        className="w-full p-2 text-purple-800"
+                      <input
+                        name="datePublished"
+                        type='date'
+                        onChange={onChangeInput}
+                        value={dataForm.datePublished}
+                        className="p-2 border bg-gray-100 rounded-lg border-teal-400
+                            focus:border-teal-400 focus:outline-none w-full"
                       />
                     </div>
                   </div>
                   <div className="mt-8 flex items-center justify-evenly">
-                    <Botao>Enviar</Botao>
+                    <Botao type="submit">Enviar</Botao>
                     <Botao>Cancelar</Botao>
                   </div>
                 </form>

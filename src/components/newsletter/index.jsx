@@ -25,16 +25,13 @@ export function Newsletter() {
       }).then(() => {
         setDataForm({ email: '', name: '' })
       })
-      // alert('Cadastro realizado com sucesso!')
     } catch (error) {
-      toastFail('Erro ao criar newsletter!')
       console.error(error)
     }
   }
   
   const handleSubmit = async (data) => {
     try {
-      toastSucess('Newsletter criada com sucesso!')
       create(data)
     } catch (error) {
       console.error(error)
