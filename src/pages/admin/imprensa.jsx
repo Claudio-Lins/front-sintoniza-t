@@ -213,7 +213,7 @@ export default function Imprensa({ imprensa }) {
                 >
                   <div className="mt-4 w-full space-y-2 p-2">
                     <div className="space-y-2">
-                      <input
+                      <Entradas
                         name="title"
                         type="text"
                         onChange={onChangeInput}
