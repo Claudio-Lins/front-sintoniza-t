@@ -13,7 +13,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { useToast } from '../../../hooks/useToast'
 
 export default function Imprensa({ imprensa }) {
-  const {toastSucess, toastFail} = useToast()
+  const { toastSucess, toastFail } = useToast()
   const [isOpen, setIsOpen] = useState(false)
   const [isLink, setIsLink] = useState(true)
   const [isPdf, setIsPdf] = useState(false)
@@ -58,21 +58,22 @@ export default function Imprensa({ imprensa }) {
 
   const handleSubmit = async (data) => {
     try {
-      toast.promise(
-        create(data),
-        {
-          loading: 'Trabalhando nisso....',
-          success: 'Imprensa criado com secesso!',
-          error: 'Ooops! Algo deu errado.',
-        },
-        {
-          duration: 3000,
-        },
-      ).then(() => {
-        refreshData()
-        handleCloseModal()
-      }
-      )
+      toast
+        .promise(
+          create(data),
+          {
+            loading: 'Trabalhando nisso....',
+            success: 'Imprensa criado com secesso!',
+            error: 'Ooops! Algo deu errado.',
+          },
+          {
+            duration: 3000,
+          }
+        )
+        .then(() => {
+          refreshData()
+          handleCloseModal()
+        })
     } catch (error) {
       toast.error(error)
     }
@@ -91,20 +92,18 @@ export default function Imprensa({ imprensa }) {
     setIsOpen(false)
   }
 
-
   const handleUpdate = async () => {
     // const id = imprensa.id
     const data = await fetch(`/api/sintonizat-api/imprensa/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataForm),
-      }).then(() => {
-        alert(id)
-        refreshData()
-      }
-    )
+      },
+      body: JSON.stringify(dataForm),
+    }).then(() => {
+      alert(id)
+      refreshData()
+    })
   }
 
   async function handleDelete(id) {
@@ -117,13 +116,11 @@ export default function Imprensa({ imprensa }) {
       }).then(() => {
         toastSucess('Imprensa deletado com sucesso!')
         refreshData()
-      }
-    )
+      })
     } catch (error) {
       console.error(error)
     }
   }
-
 
   return (
     <div className="flex flex-col px-4">
@@ -187,6 +184,25 @@ export default function Imprensa({ imprensa }) {
         ariaHideApp={false}
         isOpen={isOpen}
         onRequestClose={handleCloseModal}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '50%',
+            padding: '4rem',
+            borderRadius: '4px',
+            backgroundColor: '#fff',
+            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
       >
         <div className="relative flex">
           <Botao
@@ -195,9 +211,9 @@ export default function Imprensa({ imprensa }) {
           >
             X
           </Botao>
-          <div className="mx-auto my-10 w-full rounded-lg bg-green-50 p-2 shadow-lg">
+          <div className=" mx-auto rounded-lg bg-green-300 p-8 shadow-lg">
             <div className="my-4 flex flex-col items-center justify-center">
-              <p className="text-xl font-semibold tracking-wide text-teal-900">
+              <p className="text-3xl font-bold tracking-wide text-teal-900">
                 Disponibilizar PDFs para leitura e download!
               </p>
               <hr className="border-1 mt-2 w-full border-green-300" />
@@ -223,23 +239,29 @@ export default function Imprensa({ imprensa }) {
                             p-2 focus:border-teal-400 focus:outline-none"
                       />
                       <div className=" flex">
-                        <div className="mr-4  rounded-xl border py-2 px-4">
+                        <div
+                          className={`
+                          mr-4 rounded-lg border border-teal-400 p-2 py-2
+                            px-4 focus:border-teal-400 focus:outline-none shadow-sm shadow-green-500
+                            ${isLink ? 'bg-gradient-to-r from-green-700 to-green-100' : 'bg-gradient-to-r from-green-100 to-green-700'}
+                          `}
+                        >
                           <div
-                            className="flex items-center justify-center gap-4"
+                            className="flex items-center justify-center gap-4 cursor-pointer"
                             onClick={toggleLinkOrPdf}
                           >
                             <VscFilePdf
                               size={20}
-                              color={isPdf ? '#107970' : '#c1c1c1'}
+                              color={isPdf ? '#107970' : '#FFF'}
                             />
                             <ImLink
                               size={20}
-                              color={isLink ? '#107970' : '#c1c1c1'}
+                              color={isLink ? '#107970' : '#FFF'}
                             />
                           </div>
                         </div>
                         {toggleField ? (
-                          <input
+                          <Entradas
                             name="linkYoutube"
                             type="text"
                             onChange={onChangeInput}
@@ -249,7 +271,7 @@ export default function Imprensa({ imprensa }) {
                             p-2 focus:border-teal-400 focus:outline-none"
                           />
                         ) : (
-                          <input
+                          <Entradas
                             className="w-full rounded-lg border border-teal-400 bg-gray-100
                           p-2 focus:border-teal-400 focus:outline-none"
                             name="file"
@@ -259,17 +281,17 @@ export default function Imprensa({ imprensa }) {
                       </div>
                     </div>
                     <div className="flex items-center justify-between gap-2">
-                      <input
+                      <Entradas
                         name="datePublished"
                         type="date"
                         onChange={onChangeInput}
                         value={dataForm.datePublished}
                         className="w-full rounded-lg border border-teal-400 bg-gray-100
-                            p-2 focus:border-teal-400 focus:outline-none"
+                            p-2 focus:border-teal-400 focus:outline-none text-gray-400"
                       />
                     </div>
                   </div>
-                  <div className="mt-8 flex items-center justify-evenly">
+                  <div className="mt-8 flex gap-4">
                     {!isUpdate ? (
                       <>
                         <Botao type="submit">Enviar</Botao>
@@ -277,10 +299,10 @@ export default function Imprensa({ imprensa }) {
                       </>
                     ) : null}
                   </div>
-                  <div className="mt-8 flex items-center justify-evenly">
+                  <div className="mt-8 flex gap-4">
                     {isUpdate ? (
                       <>
-                        <Botao onClick={handleUpdate} >Salvar</Botao>
+                        <Botao onClick={handleUpdate}>Salvar</Botao>
                         <Botao>Cancelar</Botao>
                       </>
                     ) : null}
