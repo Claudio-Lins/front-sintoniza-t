@@ -14,7 +14,8 @@ import { useToast } from '../../../hooks/useToast'
 
 export default function Imprensa({ imprensa }) {
   const { toastSucess, toastFail } = useToast()
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenCreateModal, setIsOpenCreateModal] = useState(false)
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false)
   const [isLink, setIsLink] = useState(true)
   const [isPdf, setIsPdf] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
@@ -25,10 +26,21 @@ export default function Imprensa({ imprensa }) {
     router.replace(router.asPath)
   }
 
+  function resetForm() {
+    setDataForm({
+      title: '',
+      linkYoutube: '',
+      datePublished: today,
+      fileUrl: '',
+    })
+  }
+
+  let today = new Date().toISOString().slice(0, 10)
+
   const [dataForm, setDataForm] = useState({
     title: '',
     linkYoutube: '',
-    datePublished: new Date().toISOString(),
+    datePublished: today,
     fileUrl: '',
   })
 
@@ -44,12 +56,7 @@ export default function Imprensa({ imprensa }) {
         },
         method: 'POST',
       }).then(() => {
-        setDataForm({
-          title: '',
-          linkYoutube: '',
-          datePublished: '',
-          fileUrl: '',
-        })
+        resetForm()
       })
     } catch (error) {
       console.error(error)
@@ -72,7 +79,31 @@ export default function Imprensa({ imprensa }) {
         )
         .then(() => {
           refreshData()
-          handleCloseModal()
+          handleCloseCreateModal()
+          resetForm()
+        })
+    } catch (error) {
+      toast.error(error)
+    }
+  }
+
+  const handleEditSubmit = async (id) => {
+    try {
+      toast
+        .promise(
+          handleUpdate(id),
+          {
+            loading: 'Trabalhando nisso....',
+            success: 'Imprensa criado com secesso!',
+            error: 'Ooops! Algo deu errado.',
+          },
+          {
+            duration: 3000,
+          }
+        )
+        .then(() => {
+          refreshData()
+          handleCloseEditModal()
         })
     } catch (error) {
       toast.error(error)
@@ -85,25 +116,34 @@ export default function Imprensa({ imprensa }) {
     setIsPdf(!isPdf)
   }
 
-  const handleOpenModal = () => {
-    setIsOpen(true)
+  const handleOpenCreateModal = () => {
+    setIsOpenCreateModal(true)
+    resetForm()
   }
-  const handleCloseModal = () => {
-    setIsOpen(false)
+  const handleCloseCreateModal = () => {
+    setIsOpenCreateModal(false)
   }
 
-  const handleUpdate = async () => {
-    // const id = imprensa.id
-    const data = await fetch(`/api/sintonizat-api/imprensa/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataForm),
-    }).then(() => {
-      alert(id)
-      refreshData()
-    })
+  const handleOpenEditModal = () => {
+    setIsOpenEditModal(true)
+  }
+  const handleCloseEditModal = () => {
+    setIsOpenEditModal(false)
+  }
+
+  async function handleUpdate(id) {
+    try {
+      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataForm),
+      }).then(() => {
+        alert(id)
+        refreshData()
+      })
+    } catch (error) {}
   }
 
   async function handleDelete(id) {
@@ -130,7 +170,7 @@ export default function Imprensa({ imprensa }) {
       />
       <Toaster />
       <div className="my-4 mr-4 flex justify-end">
-        <Botao onClick={handleOpenModal}>Nova Imprensa</Botao>
+        <Botao onClick={handleOpenCreateModal}>Nova Imprensa</Botao>
       </div>
       <table className="w-full overflow-hidden rounded-t-xl shadow-md">
         <thead className="bg-gradient-to-r from-teal-700 to-teal-500 text-sm font-bold tracking-wider text-white">
@@ -161,14 +201,24 @@ export default function Imprensa({ imprensa }) {
                   <td className="mr-4 flex items-center justify-end gap-2 p-4">
                     <button
                       onClick={() => {
-                        setDataForm(imprensa)
-                        setIsOpen(true)
-                        setIsUpdate(true)
+                        setDataForm({
+                          title: imprensa.title,
+                          linkYoutube: imprensa.linkYoutube,
+                          datePublished: imprensa.datePublished,
+                          fileUrl: imprensa.fileUrl,
+                        })
+                        setIsOpenEditModal(true)
                       }}
                     >
                       {IconEdit}
                     </button>
-                    <button onClick={''}>{IconView}</button>
+                    <button
+                      onClick={() => {
+                        alert(imprensa.linkYoutube)
+                      }}
+                    >
+                      {IconView}
+                    </button>
                     <button onClick={() => handleDelete(imprensa.id)}>
                       {IconTrash}
                     </button>
@@ -182,8 +232,8 @@ export default function Imprensa({ imprensa }) {
 
       <Modal
         ariaHideApp={false}
-        isOpen={isOpen}
-        onRequestClose={handleCloseModal}
+        isOpen={isOpenCreateModal}
+        onRequestClose={handleCloseCreateModal}
         style={{
           content: {
             top: '50%',
@@ -204,17 +254,17 @@ export default function Imprensa({ imprensa }) {
           },
         }}
       >
-        <div className="relative flex">
-          <Botao
-            onClick={handleCloseModal}
+        <div className="flex w-full">
+          {/* <Botao
+            onClick={handleCloseCreateModal}
             className="absolute -top-2 -right-2"
           >
             X
-          </Botao>
+          </Botao> */}
           <div className=" mx-auto rounded-lg bg-green-300 p-8 shadow-lg">
             <div className="my-4 flex flex-col items-center justify-center">
               <p className="text-3xl font-bold tracking-wide text-teal-900">
-                Disponibilizar PDFs para leitura e download!
+                Criar PDFs e/ou links para leitura e download!
               </p>
               <hr className="border-1 mt-2 w-full border-green-300" />
               <div className="flex w-full flex-col items-center justify-center">
@@ -224,7 +274,7 @@ export default function Imprensa({ imprensa }) {
                     e.preventDefault()
                     handleSubmit(dataForm)
                     refreshData()
-                    handleCloseModal
+                    handleCloseCreateModal
                   }}
                 >
                   <div className="mt-4 w-full space-y-2 p-2">
@@ -242,12 +292,16 @@ export default function Imprensa({ imprensa }) {
                         <div
                           className={`
                           mr-4 rounded-lg border border-teal-400 p-2 py-2
-                            px-4 focus:border-teal-400 focus:outline-none shadow-sm shadow-green-500
-                            ${isLink ? 'bg-gradient-to-r from-green-700 to-green-100' : 'bg-gradient-to-r from-green-100 to-green-700'}
+                            px-4 shadow-sm shadow-green-500 focus:border-teal-400 focus:outline-none
+                            ${
+                              isLink
+                                ? 'bg-gradient-to-r from-green-700 to-green-100'
+                                : 'bg-gradient-to-r from-green-100 to-green-700'
+                            }
                           `}
                         >
                           <div
-                            className="flex items-center justify-center gap-4 cursor-pointer"
+                            className="flex cursor-pointer items-center justify-center gap-4"
                             onClick={toggleLinkOrPdf}
                           >
                             <VscFilePdf
@@ -287,25 +341,141 @@ export default function Imprensa({ imprensa }) {
                         onChange={onChangeInput}
                         value={dataForm.datePublished}
                         className="w-full rounded-lg border border-teal-400 bg-gray-100
-                            p-2 focus:border-teal-400 focus:outline-none text-gray-400"
+                            p-2 text-gray-400 focus:border-teal-400 focus:outline-none"
                       />
                     </div>
                   </div>
                   <div className="mt-8 flex gap-4">
-                    {!isUpdate ? (
-                      <>
+                    
                         <Botao type="submit">Enviar</Botao>
-                        <Botao>Cancelar</Botao>
-                      </>
-                    ) : null}
+                        <Botao onClick={handleCloseCreateModal}>Cancelar</Botao>
+                      
+                  </div>
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        ariaHideApp={false}
+        isOpen={isOpenEditModal}
+        onRequestClose={handleCloseEditModal}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            width: '50%',
+            padding: '4rem',
+            borderRadius: '4px',
+            backgroundColor: '#fff',
+            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
+      >
+        <div className="flex flex-col w-full">
+          {/* <Botao
+            onClick={handleCloseEditModal}
+            className="absolute -top-2 -right-2"
+          >
+            X
+          </Botao> */}
+          <div className=" rounded-lg bg-green-300 p-8 shadow-lg">
+            <div className="my-4 flex flex-col items-center justify-center">
+              <p className="text-3xl w-full font-bold tracking-wide text-teal-900">
+                Editar!
+              </p>
+              <hr className="border-1 mt-2 w-full border-green-300" />
+              <div className="flex w-full flex-col items-center justify-center">
+                <form
+                  className="flex w-full flex-col items-center justify-center"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    handleEditSubmit(dataForm)
+                    refreshData()
+                    handleCloseEditModal
+                  }}
+                >
+                  <div className="mt-4 w-full space-y-2 p-2">
+                    <div className="space-y-2">
+                      <Entradas
+                        name="title"
+                        type="text"
+                        onChange={onChangeInput}
+                        value={dataForm.title}
+                        placeholder="Titulo"
+                        className="w-full rounded-lg border border-teal-400 bg-gray-100
+                            p-2 focus:border-teal-400 focus:outline-none"
+                      />
+                      <div className=" flex">
+                        <div
+                          className={`
+                          mr-4 rounded-lg border border-teal-400 p-2 py-2
+                            px-4 shadow-sm shadow-green-500 focus:border-teal-400 focus:outline-none
+                            ${
+                              isLink
+                                ? 'bg-gradient-to-r from-green-700 to-green-100'
+                                : 'bg-gradient-to-r from-green-100 to-green-700'
+                            }
+                          `}
+                        >
+                          <div
+                            className="flex cursor-pointer items-center justify-center gap-4"
+                            onClick={toggleLinkOrPdf}
+                          >
+                            <VscFilePdf
+                              size={20}
+                              color={isPdf ? '#107970' : '#FFF'}
+                            />
+                            <ImLink
+                              size={20}
+                              color={isLink ? '#107970' : '#FFF'}
+                            />
+                          </div>
+                        </div>
+                        {toggleField ? (
+                          <Entradas
+                            name="linkYoutube"
+                            type="text"
+                            onChange={onChangeInput}
+                            value={dataForm.linkYoutube}
+                            placeholder="Link Youtube"
+                            className="w-full rounded-lg border border-teal-400 bg-gray-100
+                            p-2 focus:border-teal-400 focus:outline-none"
+                          />
+                        ) : (
+                          <Entradas
+                            className="w-full rounded-lg border border-teal-400 bg-gray-100
+                          p-2 focus:border-teal-400 focus:outline-none"
+                            name="file"
+                            type="file"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <Entradas
+                        name="datePublished"
+                        type="date"
+                        onChange={onChangeInput}
+                        value={dataForm.datePublished}
+                        className="w-full rounded-lg border border-teal-400 bg-gray-100
+                            p-2 text-gray-400 focus:border-teal-400 focus:outline-none"
+                      />
+                    </div>
                   </div>
                   <div className="mt-8 flex gap-4">
-                    {isUpdate ? (
-                      <>
-                        <Botao onClick={handleUpdate}>Salvar</Botao>
-                        <Botao>Cancelar</Botao>
-                      </>
-                    ) : null}
+                    <Botao type="submit">Salvar</Botao>
+                    <Botao onClick={handleCloseEditModal}>Cancelar</Botao>
                   </div>
                 </form>
               </div>
