@@ -10,11 +10,14 @@ import { Entradas } from '../../components/assets/Entradas'
 import { ImLink } from 'react-icons/im'
 import { VscFilePdf } from 'react-icons/vsc'
 import toast, { Toaster } from 'react-hot-toast'
+import { useToast } from '../../../hooks/useToast'
 
 export default function Imprensa({ imprensa }) {
+  const {toastSucess, toastFail} = useToast()
   const [isOpen, setIsOpen] = useState(false)
   const [isLink, setIsLink] = useState(true)
   const [isPdf, setIsPdf] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false)
   const [toggleField, setToggleField] = useState(true)
   const router = useRouter()
 
@@ -34,7 +37,7 @@ export default function Imprensa({ imprensa }) {
 
   async function create(data) {
     try {
-      await fetch(`/api/sintonizat-api/imprensa`, {
+      await fetch(`/api/sintonizat-api/imprensa/`, {
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +68,10 @@ export default function Imprensa({ imprensa }) {
         {
           duration: 3000,
         },
+      ).then(() => {
+        refreshData()
         handleCloseModal()
+      }
       )
     } catch (error) {
       toast.error(error)
@@ -85,36 +91,39 @@ export default function Imprensa({ imprensa }) {
     setIsOpen(false)
   }
 
-  async function deleteImprensa(id) {
+
+  const handleUpdate = async () => {
+    // const id = imprensa.id
+    const data = await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataForm),
+      }).then(() => {
+        alert(id)
+        refreshData()
+      }
+    )
+  }
+
+  async function handleDelete(id) {
     try {
-      fetch(`/api/sintonizat-api/imprensa/${id}`, {
+      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        method: 'DELETE',
       }).then(() => {
+        toastSucess('Imprensa deletado com sucesso!')
         refreshData()
-      })
+      }
+    )
     } catch (error) {
       console.error(error)
     }
   }
 
-  async function editImprensa(id) {
-    try {
-      fetch(`/api/sintonizat-api/imprensa/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'PUT',
-      }).then(() => {
-        body: JSON.stringify(dataForm),
-        refreshData()
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   return (
     <div className="flex flex-col px-4">
@@ -131,7 +140,7 @@ export default function Imprensa({ imprensa }) {
           <tr className=" text-xl">
             <th className="p-4 text-left">Titúlo</th>
             <th className="p-4 text-center">Data publicação</th>
-            <th className="p-4 text-right pr-9">Ações</th>
+            <th className="p-4 pr-9 text-right">Ações</th>
           </tr>
         </thead>
       </table>
@@ -152,18 +161,18 @@ export default function Imprensa({ imprensa }) {
                   <td className="p-4 text-center">
                     {new Date(imprensa.datePublished).toLocaleDateString()}
                   </td>
-                  <td className="flex items-center justify-end mr-4 gap-2 p-4">
-                    <button onClick={() => {
-                      setDataForm(imprensa)
-                      setIsOpen(true)
-                      editImprensa(imprensa.id)
-                    }}>
+                  <td className="mr-4 flex items-center justify-end gap-2 p-4">
+                    <button
+                      onClick={() => {
+                        setDataForm(imprensa)
+                        setIsOpen(true)
+                        setIsUpdate(true)
+                      }}
+                    >
                       {IconEdit}
                     </button>
-                    <button onClick={''}>
-                      {IconView}
-                    </button>
-                    <button onClick={() => deleteImprensa(imprensa.id)}>
+                    <button onClick={''}>{IconView}</button>
+                    <button onClick={() => handleDelete(imprensa.id)}>
                       {IconTrash}
                     </button>
                   </td>
@@ -192,7 +201,7 @@ export default function Imprensa({ imprensa }) {
                 Disponibilizar PDFs para leitura e download!
               </p>
               <hr className="border-1 mt-2 w-full border-green-300" />
-              <div className="flex w-full items-center justify-center">
+              <div className="flex w-full flex-col items-center justify-center">
                 <form
                   className="flex w-full flex-col items-center justify-center"
                   onSubmit={(e) => {
@@ -200,7 +209,6 @@ export default function Imprensa({ imprensa }) {
                     handleSubmit(dataForm)
                     refreshData()
                     handleCloseModal
-                    console.log(dataForm)
                   }}
                 >
                   <div className="mt-4 w-full space-y-2 p-2">
@@ -262,8 +270,20 @@ export default function Imprensa({ imprensa }) {
                     </div>
                   </div>
                   <div className="mt-8 flex items-center justify-evenly">
-                    <Botao type="submit">Enviar</Botao>
-                    <Botao>Cancelar</Botao>
+                    {!isUpdate ? (
+                      <>
+                        <Botao type="submit">Enviar</Botao>
+                        <Botao>Cancelar</Botao>
+                      </>
+                    ) : null}
+                  </div>
+                  <div className="mt-8 flex items-center justify-evenly">
+                    {isUpdate ? (
+                      <>
+                        <Botao onClick={handleUpdate} >Salvar</Botao>
+                        <Botao>Cancelar</Botao>
+                      </>
+                    ) : null}
                   </div>
                 </form>
               </div>

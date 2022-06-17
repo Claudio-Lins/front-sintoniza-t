@@ -14,17 +14,22 @@ export default async function handler(
       },
     })
     res.status(200).json({ message: 'Imprensa deleted successfully' })
-  } else if (req.method === 'UPDATE') {
+  }
+
+  if (req.method === 'PUT') {
+    const imprensaId = req.query.id
+    const { title, linkYoutube, datePublished, fileUrl } = req.body
     const imprensa = await prisma.imprensa.update({
       where: {
         id: Number(imprensaId),
       },
       data: {
-        ...req.body,
+        title,
+        linkYoutube,
+        datePublished: new Date(datePublished),
+        fileUrl,
       },
     })
-    res.status(200).json({ message: 'Imprensa updated successfully' })
-  } else {
-    console.log('Not a DELETE or PUT request')
+    res.status(201).json({ message: 'Imprensa updated successfully' })
   }
 }

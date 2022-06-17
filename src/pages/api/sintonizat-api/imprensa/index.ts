@@ -5,27 +5,53 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req
-
-  if(method === 'GET') {
+  if (req.method === 'GET') {
     const imprensas = await prisma.imprensa.findMany()
     return res.status(200).json({
-      data: imprensas
+      data: imprensas,
     })
-  }else if (method === 'POST') {
+  }
+  if (req.method === 'POST') {
     const { title, linkYoutube, datePublished, fileUrl } = req.body
-    const imprensas = await prisma.imprensa.create({
+    const imprensa = await prisma.imprensa.create({
       data: {
         title,
         linkYoutube,
         datePublished: new Date(datePublished),
-        fileUrl
-      }
+        fileUrl,
+      },
     })
     return res.status(201).json({
-      data: imprensas
+      data: imprensa,
     })
   }
 
-  return res.status(404).json({message: 'Route not fount'})
+  if (req.method === 'PUT') {
+    const imprensaId = req.query.id
+    const { title, linkYoutube, datePublished, fileUrl } = req.body
+    const imprensa = await prisma.imprensa.update({
+      where: {
+        id: Number(imprensaId),
+      },
+      data: {
+        title,
+        linkYoutube,
+        datePublished: new Date(datePublished),
+        fileUrl,
+      },
+    })
+    return res.status(201).json({ message: 'Imprensa updated successfully' })
+  }
+
+  if (req.method === 'DELETE') {
+    const imprensaId = req.query.id
+    const imprensa = await prisma.imprensa.delete({
+      where: {
+        id: Number(imprensaId),
+      },
+    })
+    return res.status(200).json({ message: 'Imprensa deleted successfully' })
+  }
+
+  return res.status(404).json({ message: 'Route not fount' })
 }
