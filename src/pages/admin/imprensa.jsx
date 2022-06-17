@@ -204,7 +204,7 @@ export default function Imprensa({ imprensa }) {
                         setDataForm({
                           title: imprensa.title,
                           linkYoutube: imprensa.linkYoutube,
-                          datePublished: imprensa.datePublished,
+                          datePublished: new Date( imprensa.datePublished).toISOString().slice(0, 10),
                           fileUrl: imprensa.fileUrl,
                         })
                         setIsOpenEditModal(true)
