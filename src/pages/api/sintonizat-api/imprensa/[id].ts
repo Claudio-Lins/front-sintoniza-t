@@ -17,13 +17,14 @@ export default async function handler(
   }
 
   if (req.method === 'PUT') {
-    const imprensaId = req.query.id
-    const { title, linkYoutube, datePublished, fileUrl } = req.body
-    const imprensa = await prisma.imprensa.update({
+    // const imprensaId = req.query.id
+    const { id, title, linkYoutube, datePublished, fileUrl } = req.body
+    await prisma.imprensa.update({
       where: {
         id: Number(imprensaId),
       },
       data: {
+        id,
         title,
         linkYoutube,
         datePublished: new Date(datePublished),

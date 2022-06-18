@@ -1,14 +1,15 @@
+import React from 'react'
 import Modal from 'react-modal'
-import React, { useState } from 'react'
 
-export function ModalContent({ children, isOpen, onRequestClose }) {
+interface ModalContentProps {
+  isOpen: boolean
+  onRequestClose: () => void
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}
 
-  function handleCloseModal() {
-    setIsOpen(false)
-  }
-  function handleOpenModal() {
-    setIsOpen(true)
-  }
+export function ModalContent({ children, isOpen, onRequestClose }: ModalContentProps) {
 
   return (
     <div>
