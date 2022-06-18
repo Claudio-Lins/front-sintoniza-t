@@ -1,3 +1,4 @@
+import { data } from 'autoprefixer'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -78,7 +79,6 @@ export default function Imprensa({ imprensa }) {
         )
         .then(() => {
           refreshData()
-          handleCloseCreateModal()
           resetForm()
         })
     } catch (error) {
@@ -86,27 +86,6 @@ export default function Imprensa({ imprensa }) {
     }
   }
 
-  const handleEditSubmit = async (id) => {
-    try {
-      toast
-        .promise(
-          handleUpdate(id),
-          {
-            loading: 'Trabalhando nisso....',
-            success: 'Imprensa criado com secesso!',
-            error: 'Ooops! Algo deu errado.',
-          },
-          {
-            duration: 3000,
-          }
-        )
-        .then(() => {
-          refreshData()
-        })
-    } catch (error) {
-      toast.error(error)
-    }
-  }
 
   const toggleLinkOrPdf = () => {
     setToggleField(!toggleField)
@@ -118,24 +97,6 @@ export default function Imprensa({ imprensa }) {
     setIsOpenModal(true)
     setIsUpdate(false)
     resetForm()
-  }
-  const handleCloseCreateModal = () => {
-    setIsOpenCreateModal(false)
-  }
-
-  async function handleUpdate(id) {
-    try {
-      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataForm),
-      }).then(() => {
-        console.log(id), alert(typeof id)
-        refreshData()
-      })
-    } catch (error) {}
   }
 
   async function handleDelete(id) {
