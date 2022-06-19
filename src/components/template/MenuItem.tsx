@@ -16,12 +16,12 @@ export default function MenuItem(props: MenuItemProps) {
       <a
         className={`
         flex flex-col items-center justify-center 
-        w-24 h-20 p-4 text-teal-900 dark:text-teal-100
+        sm:w-24 h-20 text-teal-900 dark:text-teal-100
         ${props.className}
     `}
       >
         {props.icon}
-        <span className={`text-xs font-light`}>{props.text}</span>
+        <span className={`text-[10px] sm:text-xs font-light`}>{props.text}</span>
       </a>
     )
   }

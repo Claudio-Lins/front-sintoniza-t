@@ -20,11 +20,11 @@ export default function MenuLateral() {
 
 
   return (
-    <aside className='flex flex-col min-h-screen bg-write text-teal-900 bg-green-900'>
+    <aside className='flex flex-col min-h-screen w-16 sm:w-auto bg-write text-teal-900 bg-green-900'>
       <div
         className={`
         flex flex-col items-center 
-        justify-center h-24 w-24 bg-gradient-to-r from-purple-800 to-teal-700`}
+        justify-center h-16 w-16 sm:h-24 sm:w-24 bg-gradient-to-r from-purple-800 to-teal-700`}
       >
         <Logo />
       </div>
@@ -45,12 +45,6 @@ export default function MenuLateral() {
         <MenuItem url="/admin/newsletter" text="Newsletter" icon={IconSubscribe} />
       </ul>
       <ul
-
-
-
-        className={`
-           
-        `}
       >
         <MenuItem
           text="Sair"

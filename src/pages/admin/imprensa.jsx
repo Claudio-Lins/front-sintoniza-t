@@ -1,11 +1,9 @@
-import { data } from 'autoprefixer'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { ImLink } from 'react-icons/im'
 import { VscFilePdf } from 'react-icons/vsc'
-import Modal from 'react-modal'
 import { useToast } from '../../../hooks/useToast'
 import { Botao } from '../../components/assets/Botao'
 import { Entradas } from '../../components/assets/Entradas'
@@ -13,8 +11,13 @@ import { ModalContent } from '../../components/assets/ModalContent'
 import { IconEdit, IconTrash, IconView } from '../../components/icons'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
+import { AiOutlineEye } from 'react-icons/ai'
+import { FaRegEdit } from 'react-icons/fa'
+import { BsTrash } from 'react-icons/bs'
+import { useWindowSize } from '../../../hooks/useWindowSize'
 
 export default function Imprensa({ imprensa }) {
+  const { windowWidth, windowHeight } = useWindowSize()
   let today = new Date().toISOString().slice(0, 10)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [isLink, setIsLink] = useState(true)
@@ -122,7 +125,7 @@ export default function Imprensa({ imprensa }) {
     }
   }
   const handleUpdateSubmit = async (id) => {
-    console.log('handleUpdateSubmit: ',id)
+    console.log('handleUpdateSubmit: ', id)
     try {
       toast
         .promise(
@@ -158,13 +161,13 @@ export default function Imprensa({ imprensa }) {
   }
 
   return (
-    <div className="flex flex-col px-4">
+    <div className="flex flex-col">
       <HeaderContent
         title={'Imprensa'}
         subtitle="Materias relacionadas com a Sitoniza-t"
       />
       <Toaster />
-      <div className="my-4 mr-4 flex justify-end">
+      {/* <div className="my-4 mr-4 flex justify-end">
         <Botao onClick={handleOpenModal}>Nova Imprensa</Botao>
       </div>
       <table className="w-full overflow-hidden rounded-t-xl shadow-md">
@@ -232,7 +235,66 @@ export default function Imprensa({ imprensa }) {
             })}
           </tbody>
         </table>
-      </div>
+      </div> */}
+      {imprensa?.map((imprensa, i) => {
+        return (
+          <div className="mb-2 flex flex-col px-4" key={i}>
+            <div
+              className={`
+          flex max-w-xs justify-between divide-x-2 rounded-md border p-2 shadow-sm sm:max-w-full
+          ${
+            i % 2 === 0
+              ? 'bg-teal-300 text-green-900'
+              : 'bg-teal-100 text-green-900'
+          }
+        `}
+            >
+              <div className="flex flex-col">
+                <div className="text-[8px] font-bold text-green-700 sm:text-xs">
+                  {new Date(imprensa.datePublished).toLocaleDateString()}
+                </div>
+                <div className="flex flex-grow items-center justify-center text-xs font-bold sm:text-lg">
+                  {imprensa.title}
+                </div>
+              </div>
+              <div className="flex flex-col items-center justify-center pl-2 sm:gap-2">
+                <button
+                  onClick={() => {
+                    setDataForm({
+                      id: imprensa.id,
+                      title: imprensa.title,
+                      linkYoutube: imprensa.linkYoutube,
+                      datePublished: new Date(imprensa.datePublished)
+                        .toISOString()
+                        .slice(0, 10),
+                      fileUrl: imprensa.fileUrl,
+                    })
+                    setIsOpenModal(true)
+                    setIsUpdate(true)
+                  }}
+                  className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white"
+                >
+                  <FaRegEdit size={windowWidth < 768 ? 10 : 20} />
+                </button>
+                <button
+                  onClick={() => {
+                    alert(imprensa.linkYoutube)
+                  }}
+                  className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white"
+                >
+                  <AiOutlineEye size={windowWidth < 768 ? 15 : 20} />
+                </button>
+                <button
+                  onClick={() => handleDelete(imprensa.id)}
+                  className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white"
+                >
+                  <BsTrash size={windowWidth < 768 ? 12 : 20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      })}
 
       <ModalContent
         isOpen={isOpenModal}
@@ -253,7 +315,9 @@ export default function Imprensa({ imprensa }) {
                 className="flex w-full flex-col items-center justify-center"
                 onSubmit={(e) => {
                   e.preventDefault()
-                  isUpdate ? handleUpdateSubmit(dataForm.id) : handleSubmit(dataForm)
+                  isUpdate
+                    ? handleUpdateSubmit(dataForm.id)
+                    : handleSubmit(dataForm)
                   refreshData()
                   setIsOpenModal(false)
                   resetForm()

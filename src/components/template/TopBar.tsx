@@ -9,13 +9,15 @@ interface TopBarProps {
 export default function TopBar(props: TopBarProps) {
 
   return (
+    <>
     <div className={`flex`}>
       <Title title={props.title} subtitle={props.subtitle} />
       <div className={`
-      flex flex-grow justify-end  items-center space-x-4
+      flex justify-end  items-center space-x-4
       `}>
         <AvatarUser />
       </div>
     </div>
+    </>
   );
 }
