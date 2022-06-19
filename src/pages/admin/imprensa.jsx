@@ -167,81 +167,16 @@ export default function Imprensa({ imprensa }) {
         subtitle="Materias relacionadas com a Sitoniza-t"
       />
       <Toaster />
-      {/* <div className="my-4 mr-4 flex justify-end">
+
+      <div className="mb-2 flex w-auto justify-center sm:mr-4 sm:justify-end">
         <Botao onClick={handleOpenModal}>Nova Imprensa</Botao>
       </div>
-      <table className="w-full overflow-hidden rounded-t-xl shadow-md">
-        <thead className="bg-gradient-to-r from-teal-700 to-teal-500 text-sm font-bold tracking-wider text-white">
-          <tr className=" text-xl">
-            <th className="p-4 text-left">Titúlo</th>
-            <th className="p-4 text-center">Data publicação</th>
-            <th className="p-4 pr-9 text-right">Ações</th>
-          </tr>
-        </thead>
-      </table>
-      <div className="max-h-[550px] w-full overflow-auto rounded-b-xl">
-        <table className="w-full overflow-hidden rounded-b-xl">
-          <tbody className="bg-white">
-            {imprensa?.map((imprensa, i) => {
-              return (
-                <tr
-                  key={i}
-                  className={`${
-                    i % 2 === 0
-                      ? 'bg-teal-200 text-green-900'
-                      : 'bg-teal-100 text-green-900'
-                  }`}
-                >
-                  <td className="p-4 text-left">{imprensa.title}</td>
-                  <td className="p-4 text-center">
-                    {new Date(imprensa.datePublished).toLocaleDateString()}
-                  </td>
-                  <td className="mr-4 flex items-center justify-end gap-2 p-4">
-                    <button
-                      className="rounded-full bg-white p-2 shadow-sm hover:bg-teal-700 hover:text-white"
-                      onClick={() => {
-                        setDataForm({
-                          id: imprensa.id,
-                          title: imprensa.title,
-                          linkYoutube: imprensa.linkYoutube,
-                          datePublished: new Date(imprensa.datePublished)
-                            .toISOString()
-                            .slice(0, 10),
-                          fileUrl: imprensa.fileUrl,
-                        })
-                        setIsOpenModal(true)
-                        setIsUpdate(true)
-                      }}
-                    >
-                      {IconEdit}
-                    </button>
-                    <button
-                      className="rounded-full bg-white p-1 shadow-sm hover:bg-teal-700 hover:text-white"
-                      onClick={() => {
-                        alert(imprensa.linkYoutube)
-                      }}
-                    >
-                      {IconView}
-                    </button>
-                    <button
-                      className="rounded-full bg-white p-2 shadow-sm hover:bg-teal-700 hover:text-white"
-                      onClick={() => handleDelete(imprensa.id)}
-                    >
-                      {IconTrash}
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div> */}
       {imprensa?.map((imprensa, i) => {
         return (
-          <div className="mb-2 flex flex-col px-4" key={i}>
+          <div className="mb-2 flex flex-col sm:px-4" key={i}>
             <div
               className={`
-          flex max-w-xs justify-between divide-x-2 rounded-md border p-2 shadow-sm sm:max-w-full
+          flex justify-between divide-x-2 rounded-md border p-2 shadow-sm sm:max-w-full
           ${
             i % 2 === 0
               ? 'bg-teal-300 text-green-900'
@@ -276,13 +211,15 @@ export default function Imprensa({ imprensa }) {
                 >
                   <FaRegEdit size={windowWidth < 768 ? 10 : 20} />
                 </button>
-                <button
-                  onClick={() => {
-                    alert(imprensa.linkYoutube)
-                  }}
-                  className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white"
-                >
-                  <AiOutlineEye size={windowWidth < 768 ? 15 : 20} />
+                <button className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white">
+                  {imprensa.linkYoutube ? (
+                    <a
+                      target={'_blank'}
+                      href={`https://${imprensa.linkYoutube}`}
+                    >
+                      <AiOutlineEye size={windowWidth < 768 ? 15 : 20} />
+                    </a>
+                  ) : null}
                 </button>
                 <button
                   onClick={() => handleDelete(imprensa.id)}
@@ -300,16 +237,13 @@ export default function Imprensa({ imprensa }) {
         isOpen={isOpenModal}
         onRequestClose={() => setIsOpenModal(false)}
       >
-        <div className=" ">
-          <div className="flex min-w-[650px] text-green-900">
-            <h3>
+        <div className="max-w-sm p-4 sm:min-w-[650px]">
+          <div className="mt-2 rounded-md border p-4 shadow-inner ">
+            <h3 className=" px-2 text-lg text-teal-900 sm:text-2xl">
               {isUpdate
                 ? 'Editar Imprensa'
                 : 'Criar PDFs e/ou links para leitura e download!'}
             </h3>
-          </div>
-          <hr />
-          <div className="mt-4 rounded-md border p-4 shadow-inner ">
             <div className="flex w-full flex-col items-center justify-center">
               <form
                 className="flex w-full flex-col items-center justify-center"
@@ -367,13 +301,13 @@ export default function Imprensa({ imprensa }) {
                           onChange={onChangeInput}
                           value={dataForm.linkYoutube}
                           placeholder="Link Youtube"
-                          className="rounded-lg border border-teal-400 bg-gray-100
-                            p-2 focus:border-teal-400 focus:outline-none"
+                          className="w-[150px] rounded-lg border border-teal-400
+                            bg-gray-100 p-2 focus:border-teal-400 focus:outline-none sm:w-auto"
                         />
                       ) : (
                         <Entradas
-                          className="w-full rounded-lg border border-teal-400 bg-gray-100
-                          p-2 focus:border-teal-400 focus:outline-none "
+                          className="w-[150px] rounded-lg border border-teal-400 bg-gray-100 p-2
+                          focus:border-teal-400 focus:outline-none sm:w-auto "
                           name="file"
                           type="file"
                         />
