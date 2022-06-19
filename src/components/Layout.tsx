@@ -17,10 +17,12 @@ const Layout = ({ children, title, subtitle }: LayoutProps) => {
   return (
     <>
       {session && router.pathname !== '/' ? (
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-screen">
+          <div className="flex-none">
           <MenuLateral />
+          </div>
 
-          <div className="max-w-[255px] px-2 sm:w-full sm:max-w-full">
+          <div className="w-[calc(100%-4rem)] px-2 sm:w-full sm:max-w-full">
             {children}
           </div>
         </div>
