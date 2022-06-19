@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const imprensaId = req.query.id
+  let imprensaId = req.query.id
 
   if (req.method === 'DELETE') {
     const imprensa = await prisma.imprensa.delete({
@@ -13,15 +13,15 @@ export default async function handler(
         id: Number(imprensaId),
       },
     })
-    res.status(200).json({ message: 'Imprensa deleted successfully' })
+    res.status(200).json(imprensa)
   }
 
   if (req.method === 'PUT') {
-    // const imprensaId = req.query.id
-    const { id, title, linkYoutube, datePublished, fileUrl } = req.body
+    try {
+      const { id, title, linkYoutube, datePublished, fileUrl } = req.body
     await prisma.imprensa.update({
       where: {
-        id: Number(imprensaId),
+        id: Number(req.query.id),
       },
       data: {
         id,
@@ -32,5 +32,8 @@ export default async function handler(
       },
     })
     res.status(201).json({ message: 'Imprensa updated successfully' })
+    } catch (error) {
+      console.error('Method:PUT',error)
+    }
   }
 }

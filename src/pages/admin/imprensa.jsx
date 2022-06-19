@@ -23,6 +23,7 @@ export default function Imprensa({ imprensa }) {
   const [toggleField, setToggleField] = useState(true)
   const router = useRouter()
   const [dataForm, setDataForm] = useState({
+    id: '',
     title: '',
     linkYoutube: '',
     datePublished: today,
@@ -56,7 +57,42 @@ export default function Imprensa({ imprensa }) {
         },
         method: 'POST',
       }).then(() => {
+        console.log('Create')
         resetForm()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function update(id) {
+    console.log('update: ', id)
+    try {
+      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+        body: JSON.stringify(dataForm),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      }).then(() => {
+        console.log('update')
+        resetForm()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(() => {
+        toastSucess('Imprensa deletado com sucesso!')
+        refreshData()
       })
     } catch (error) {
       console.error(error)
@@ -85,7 +121,29 @@ export default function Imprensa({ imprensa }) {
       toast.error(error)
     }
   }
-
+  const handleUpdateSubmit = async (id) => {
+    console.log('handleUpdateSubmit: ',id)
+    try {
+      toast
+        .promise(
+          update(id),
+          {
+            loading: 'Trabalhando nisso....',
+            success: 'Imprensa criado com secesso!',
+            error: 'Ooops! Algo deu errado.',
+          },
+          {
+            duration: 3000,
+          }
+        )
+        .then(() => {
+          refreshData()
+          resetForm()
+        })
+    } catch (error) {
+      toast.error(error)
+    }
+  }
 
   const toggleLinkOrPdf = () => {
     setToggleField(!toggleField)
@@ -97,22 +155,6 @@ export default function Imprensa({ imprensa }) {
     setIsOpenModal(true)
     setIsUpdate(false)
     resetForm()
-  }
-
-  async function handleDelete(id) {
-    try {
-      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(() => {
-        toastSucess('Imprensa deletado com sucesso!')
-        refreshData()
-      })
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   return (
@@ -156,6 +198,7 @@ export default function Imprensa({ imprensa }) {
                       className="rounded-full bg-white p-2 shadow-sm hover:bg-teal-700 hover:text-white"
                       onClick={() => {
                         setDataForm({
+                          id: imprensa.id,
                           title: imprensa.title,
                           linkYoutube: imprensa.linkYoutube,
                           datePublished: new Date(imprensa.datePublished)
@@ -196,11 +239,11 @@ export default function Imprensa({ imprensa }) {
         onRequestClose={() => setIsOpenModal(false)}
       >
         <div className=" ">
-          <div className="flex text-green-900 min-w-[650px]">
+          <div className="flex min-w-[650px] text-green-900">
             <h3>
-            {isUpdate
-              ? 'Editar Imprensa'
-              : 'Criar PDFs e/ou links para leitura e download!'}
+              {isUpdate
+                ? 'Editar Imprensa'
+                : 'Criar PDFs e/ou links para leitura e download!'}
             </h3>
           </div>
           <hr />
@@ -210,7 +253,7 @@ export default function Imprensa({ imprensa }) {
                 className="flex w-full flex-col items-center justify-center"
                 onSubmit={(e) => {
                   e.preventDefault()
-                  handleSubmit(dataForm)
+                  isUpdate ? handleUpdateSubmit(dataForm.id) : handleSubmit(dataForm)
                   refreshData()
                   setIsOpenModal(false)
                   resetForm()
@@ -285,7 +328,9 @@ export default function Imprensa({ imprensa }) {
                   </div>
                 </div>
                 <div className="my-8 flex gap-4">
-                  <Botao type="submit">Enviar</Botao>
+                  <Botao type="submit">
+                    {isUpdate ? 'Atualizar' : 'Salvar'}
+                  </Botao>
                   <Botao onClick={() => setIsOpenModal(false)}>Cancelar</Botao>
                 </div>
               </form>

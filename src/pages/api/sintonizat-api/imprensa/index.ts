@@ -40,7 +40,7 @@ export default async function handler(
         fileUrl,
       },
     })
-    return res.status(201).json({ message: 'Imprensa updated successfully' })
+    return res.status(201).json(imprensa)
   }
 
   if (req.method === 'DELETE') {
