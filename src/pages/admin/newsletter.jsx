@@ -29,16 +29,16 @@ export default function Newsletter({ newsletter }) {
   return (
     <div className="flex flex-col">
       <HeaderContent
-        title={'Imprensa'}
+        title={'Newsletter'}
         subtitle="Materias relacionadas com a Sitoniza-t"
       />
       <Toaster />
-      <div className="flex w-full flex-wrap justify-center gap-2 sm:px-4">
+      <div className="flex w-full flex-wrap justify-center gap-2 px-2">
         {newsletter?.map((newsletter, i) => {
           return (
             <div
               key={newsletter.id}
-              className="relative mb-2 w-full max-w-md rounded-lg border bg-teal-100 p-2 shadow-md sm:p-4"
+              className="relative mb-2 w-full max-w-md rounded-lg border bg-teal-300 p-4 shadow-md sm:p-4"
             >
               <button
                 onClick={() => deleteNewsletter(newsletter.id)}
@@ -56,37 +56,7 @@ export default function Newsletter({ newsletter }) {
           )
         })}
       </div>
-      {/* <table className="overflow-hidden rounded-xl">
-        <thead className="bg-gradient-to-r from-teal-700 to-teal-500 text-sm font-bold tracking-wider text-white">
-          <tr className=" text-xl">
-            <th className="p-4 text-left">Nome</th>
-            <th className="p-4 text-center">Email</th>
-            <th className="p-4 text-center">Delete</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white">
-          {newsletter?.map((newsletter, i) => {
-            return (
-              <tr
-                key={newsletter.id}
-                className={`${
-                  i % 2 === 0
-                    ? 'bg-teal-200 text-green-900'
-                    : 'bg-teal-100 text-green-900'
-                }`}
-              >
-                <td className="p-4 text-left">{newsletter.name}</td>
-                <td className="p-4 text-center">{newsletter.email}</td>
-                <td className="p-4 text-center">
-                  <button onClick={() => deleteNewsletter(newsletter.id)}>
-                    {IconTrash}
-                  </button>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table> */}
+      
     </div>
   )
 }

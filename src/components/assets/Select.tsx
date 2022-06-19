@@ -16,7 +16,7 @@ export default function Select(props: SelectProps) {
         onChange={props.onChange}
         name={props.name}
         className={`
-        border border-purple-700 bg-gray-100 bg-clip-padding transition ease-in-out rounded-lg dark:border-teal-400
+        border border-purple-700 bg-gray-100 bg-clip-padding transition ease-in-out rounded-lg 
         focus:border-teal-400 focus:outline-none
         ${props.className}
       `}

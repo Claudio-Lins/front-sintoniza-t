@@ -49,9 +49,7 @@ export default function MenuLateral() {
           icon={IconLogout}
           onClick={signOut}
           className={`
-            text-red-500 dark:text-red-500
-            hover:text-white hover:bg-red-800
-            dark:hover:text-white
+            text-white hover:bg-red-800
             
           `}
         />

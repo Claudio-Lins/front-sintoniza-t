@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 interface MenuItemProps {
   text: string
@@ -11,12 +12,14 @@ interface MenuItemProps {
 }
 
 export default function MenuItem(props: MenuItemProps) {
+  const router = useRouter()
   function renderLink() {
     return (
       <a
         className={`
         flex flex-col items-center justify-center 
-        sm:w-24 h-20 text-teal-900 dark:text-teal-100
+        sm:w-24 h-20 
+        ${router.pathname === props.url ? 'text-teal-900' : 'text-teal-100'}
         ${props.className}
     `}
       >
@@ -30,7 +33,8 @@ export default function MenuItem(props: MenuItemProps) {
     <li
       onClick={props.onClick}
       className={`
-        hover:bg-gray-100 dark:hover:bg-[#1B5B48] cursor-pointer
+        hover:bg-teal-400 cursor-pointer
+        ${router.pathname === props.url ? 'bg-teal-400' : ''}
       `}
     >
       {props.url ? <Link href={props.url}>{renderLink()}</Link> : renderLink()}

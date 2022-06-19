@@ -20,7 +20,7 @@ export default function Entradas(props: EntradasProps) {
         placeholder={props.placeholder}
         onChange={props.onChange}
         className={`
-        border border-purple-700 bg-gray-100 rounded-lg dark:border-teal-400
+        border border-purple-700 bg-gray-100 rounded-lg
         focus:border-teal-400 focus:outline-none 
         ${props.readonly ? '' : 'focus:bg-teal-50'}
         ${props.className}
