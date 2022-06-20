@@ -1,21 +1,20 @@
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { ImLink } from 'react-icons/im'
 import { VscFilePdf } from 'react-icons/vsc'
 import { useToast } from '../../../hooks/useToast'
 import { Botao } from '../../components/assets/Botao'
 import { Entradas } from '../../components/assets/Entradas'
 import { ModalContent } from '../../components/assets/ModalContent'
-import { IconEdit, IconTrash, IconView } from '../../components/icons'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
 // import { AiOutlineEye } from 'react-icons/ai'
 // import { FaRegEdit } from 'react-icons/fa'
 // import { BsTrash } from 'react-icons/bs'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-import { CardImprensa} from '../../components/imprensa/CardImprensa'
+import { CardImprensa } from '../../components/imprensa/CardImprensa'
 
 export default function Imprensa({ imprensa }) {
   const { windowWidth, windowHeight } = useWindowSize()
