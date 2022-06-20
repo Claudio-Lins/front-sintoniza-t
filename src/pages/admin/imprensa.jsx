@@ -25,6 +25,7 @@ export default function Imprensa({ imprensa }) {
   const [isUpdate, setIsUpdate] = useState(false)
   const [toggleField, setToggleField] = useState(true)
   const router = useRouter()
+  const [upload, setUpload] = useState('')
   const [dataForm, setDataForm] = useState({
     id: '',
     title: '',
@@ -250,6 +251,7 @@ export default function Imprensa({ imprensa }) {
                           focus:border-teal-400 focus:outline-none sm:w-auto "
                           name="file"
                           type="file"
+                          // onChange={(e) => setUpload(e.target.files[0])}
                         />
                       )}
                     </div>
