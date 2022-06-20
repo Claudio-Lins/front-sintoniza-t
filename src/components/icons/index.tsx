@@ -24,7 +24,7 @@ export const IconSchedule = <AiFillSchedule size={25} />
 
 export const IconVolunteer = <MdVolunteerActivism size={25} />
 
-export const IconSubscribe = <MdUnsubscribe size={20} />
+export const IconSubscribe = <MdUnsubscribe size={25} />
 
 export const IconLogout = <ImExit size={25} />
 
@@ -40,7 +40,7 @@ export const IconAvatar = <FaUserAlt size={35} />
 
 export const IconDestaque = <BsFileEarmarkPost size={25} />
 
-export const IconPress = <FaPaperclip size={15} />
+export const IconPress = <FaPaperclip size={20} />
 
 export const IconEdit = <FaRegEdit size={20} />
 
