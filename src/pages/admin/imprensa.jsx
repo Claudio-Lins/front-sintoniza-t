@@ -216,8 +216,8 @@ export default function Imprensa({ imprensa }) {
                             px-4 shadow-sm shadow-green-500 focus:border-teal-400 focus:outline-none
                             ${
                               isLink
-                                ? 'bg-gradient-to-r from-green-700 to-green-100'
-                                : 'bg-gradient-to-r from-green-100 to-green-700'
+                                ? 'bg-gradient-to-r from-teal-700 to-teal-400'
+                                : 'bg-gradient-to-r from-teal-400 to-teal-700'
                             }
                           `}
                       >
@@ -251,6 +251,7 @@ export default function Imprensa({ imprensa }) {
                           focus:border-teal-400 focus:outline-none sm:w-auto "
                           name="file"
                           type="file"
+                          placeholder='PDF'
                           // onChange={(e) => setUpload(e.target.files[0])}
                         />
                       )}
