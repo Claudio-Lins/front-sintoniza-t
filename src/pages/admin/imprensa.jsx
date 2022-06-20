@@ -11,10 +11,11 @@ import { ModalContent } from '../../components/assets/ModalContent'
 import { IconEdit, IconTrash, IconView } from '../../components/icons'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
-import { AiOutlineEye } from 'react-icons/ai'
-import { FaRegEdit } from 'react-icons/fa'
-import { BsTrash } from 'react-icons/bs'
+// import { AiOutlineEye } from 'react-icons/ai'
+// import { FaRegEdit } from 'react-icons/fa'
+// import { BsTrash } from 'react-icons/bs'
 import { useWindowSize } from '../../../hooks/useWindowSize'
+import { CardImprensa} from '../../components/imprensa/CardImprensa'
 
 export default function Imprensa({ imprensa }) {
   const { windowWidth, windowHeight } = useWindowSize()
@@ -86,21 +87,21 @@ export default function Imprensa({ imprensa }) {
     }
   }
 
-  async function handleDelete(id) {
-    try {
-      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(() => {
-        toastSucess('Imprensa deletado com sucesso!')
-        refreshData()
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // async function handleDelete(id) {
+  //   try {
+  //     await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     }).then(() => {
+  //       toastSucess('Imprensa deletado com sucesso!')
+  //       refreshData()
+  //     })
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
   const handleSubmit = async (data) => {
     try {
@@ -166,72 +167,12 @@ export default function Imprensa({ imprensa }) {
         title={'Imprensa'}
         subtitle="Materias relacionadas com a Sitoniza-t"
       />
-      <Toaster />
+      {/* <Toaster /> */}
 
       <div className="mb-2 flex w-auto justify-center sm:mr-4 sm:justify-end">
         <Botao onClick={handleOpenModal}>Nova Imprensa</Botao>
       </div>
-      {imprensa?.map((imprensa, i) => {
-        return (
-          <div className="mb-2 flex flex-col sm:px-4" key={i}>
-            <div
-              className={`
-          flex justify-between divide-x-2 rounded-md border p-2 shadow-sm sm:max-w-full
-          ${
-            i % 2 === 0
-              ? 'bg-teal-300 text-green-900'
-              : 'bg-teal-100 text-green-900'
-          }
-        `}
-            >
-              <div className="flex flex-col">
-                <div className="text-[8px] font-bold text-green-700 sm:text-xs">
-                  {new Date(imprensa.datePublished).toLocaleDateString()}
-                </div>
-                <div className="flex flex-grow items-center justify-center text-xs font-bold sm:text-lg">
-                  {imprensa.title}
-                </div>
-              </div>
-              <div className="flex flex-col items-center justify-center pl-2 sm:gap-2">
-                <button
-                  onClick={() => {
-                    setDataForm({
-                      id: imprensa.id,
-                      title: imprensa.title,
-                      linkYoutube: imprensa.linkYoutube,
-                      datePublished: new Date(imprensa.datePublished)
-                        .toISOString()
-                        .slice(0, 10),
-                      fileUrl: imprensa.fileUrl,
-                    })
-                    setIsOpenModal(true)
-                    setIsUpdate(true)
-                  }}
-                  className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white"
-                >
-                  <FaRegEdit size={windowWidth < 768 ? 10 : 20} />
-                </button>
-                <button className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white">
-                  {imprensa.linkYoutube ? (
-                    <a
-                      target={'_blank'}
-                      href={`https://${imprensa.linkYoutube}`}
-                    >
-                      <AiOutlineEye size={windowWidth < 768 ? 15 : 20} />
-                    </a>
-                  ) : null}
-                </button>
-                <button
-                  onClick={() => handleDelete(imprensa.id)}
-                  className="rounded-full  shadow-sm hover:bg-teal-700 hover:text-white"
-                >
-                  <BsTrash size={windowWidth < 768 ? 12 : 20} />
-                </button>
-              </div>
-            </div>
-          </div>
-        )
-      })}
+      <CardImprensa imprensa={imprensa} />
 
       <ModalContent
         isOpen={isOpenModal}
