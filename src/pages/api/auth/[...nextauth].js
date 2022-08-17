@@ -17,7 +17,7 @@ export default NextAuth({
       authorize: (credentials) => {
         // database look up
         if (
-          credentials.username === 'claudio.lins@gmail.com' &&
+          credentials.username === 'sintoniza-t@gmail.com' &&
           credentials.password === '123456'
         ) {
           return {
