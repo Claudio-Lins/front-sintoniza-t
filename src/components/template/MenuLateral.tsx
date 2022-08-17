@@ -31,7 +31,7 @@ export default function MenuLateral() {
       <ul
         className={`grow`}
       >
-        <MenuItem url="/" text="Home" icon={IconHome} />
+        <MenuItem url="/admin" text="Home" icon={IconHome} />
         {/* <MenuItem url="/destaque" text="Destaque" icon={IconDestaque} /> */}
         {/* <MenuItem url='https://boilerplate-api-mongo.herokuapp.com/admin' target="_blank" text="Destaque" icon={IconDestaque} /> */}
         <MenuItem url="/admin/imprensa" text="Imprensa" icon={IconPress} />
