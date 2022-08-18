@@ -37,7 +37,8 @@ export default function Login() {
       if (router.query.callbackUrl) {
         router.push(router.query.callbackUrl as string)
       } else {
-        router.push('/')
+        console.log('router', router.query.callbackUrl as string)
+        router.push('/admin/login')
       }
     } else {
       errorText()
