@@ -54,6 +54,34 @@ datasource db {
 
 //   @@unique([identifier, token])
 // }
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  active    Boolean  @default(true)
+  role      Role     @default(USER)
+  photos    Photo[]
+
+  @@map("users")
+}
+
+
+model Photo {
+  id     Int     @id @default(autoincrement())
+  url    String
+  legend String?
+  userId Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("photos")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
 
 model Newsletter {
   id        Int      @id @default(autoincrement())
