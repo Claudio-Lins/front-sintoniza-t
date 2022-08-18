@@ -42,14 +42,14 @@ export function NavbarAdmin() {
           ))}
         </nav>
         <div className="flex flex-col items-center justify-center">
-          <div className="">
+          {/* <div className="">
             <Image
               src={session.user.image}
               width={40}
               height={40}
               className="rounded-full"
             />
-          </div>
+          </div> */}
           <p className="text-xs font-bold text-green-800">
             {session.user.name}
           </p>
