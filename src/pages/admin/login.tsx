@@ -1,8 +1,8 @@
-import { signIn } from 'next-auth/react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import AuthInput from '../../components/assets/auth/AuthInput'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -34,7 +34,11 @@ export default function Login() {
     })
     setLoading(false)
     if (request && request.ok) {
-      router.push('/admin')
+      if (router.query.callbackUrl) {
+        router.push(router.query.callbackUrl as string)
+      } else {
+        router.push('/')
+      }
     } else {
       errorText()
     }
