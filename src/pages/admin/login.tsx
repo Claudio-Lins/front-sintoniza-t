@@ -34,11 +34,7 @@ export default function Login() {
     })
     setLoading(false)
     if (request && request.ok) {
-      if (router.query.callbackUrl) {
-        router.push(router.query.callbackUrl as string)
-      } else {
-        router.push('/admin')
-      }
+      router.push('/admin')
     } else {
       errorText()
     }
