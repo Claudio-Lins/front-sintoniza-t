@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import AuthInput from '../../components/assets/auth/AuthInput'
 import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import AuthInput from '../../components/assets/auth/AuthInput'
 
 export default function Login() {
   const [email, setEmail] = useState('')
