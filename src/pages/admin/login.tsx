@@ -14,8 +14,6 @@ export default function Login() {
 
   useEffect(() => {
     setTimeout(() => setLoginError(''), 9000)
-    setTimeout(() => setEmail(''), 10000)
-    setTimeout(() => setPassword(''), 10000)
   }, [errorText])
 
   function errorText() {
