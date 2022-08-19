@@ -1,5 +1,5 @@
 interface EntradasProps {
-  type?: 'text' | 'date' | 'file' | 'time' | 'datetime' | 'number' 
+  type?: 'text' | 'date' | 'file' | 'time' | 'datetime' | 'number' | 'email' | 'password' | 'phone'
   placeholder?: string
   name?: string
   value?: any

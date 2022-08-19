@@ -35,7 +35,7 @@ export default function MenuLateral() {
         {/* <MenuItem url="/destaque" text="Destaque" icon={IconDestaque} /> */}
         {/* <MenuItem url='https://boilerplate-api-mongo.herokuapp.com/admin' target="_blank" text="Destaque" icon={IconDestaque} /> */}
         <MenuItem url="/admin/imprensa" text="Imprensa" icon={IconPress} />
-        {/* <MenuItem url="/team" text="Equipa" icon={IconTeam} /> */}
+        <MenuItem url="/admin/equipa" text="Equipa" icon={IconTeam} />
         {/* <MenuItem url="/programas" text="Programas" icon={IconProgram} /> */}
         {/* <MenuItem url="/schedule" text="Horários" icon={IconSchedule} /> */}
         {/* <MenuItem url="/horarios" text="Horários" icon={IconClock} /> */}

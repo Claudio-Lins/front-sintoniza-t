@@ -20,7 +20,7 @@ export default function AvatarUser(props: AvatarUserProps) {
       />
       </div> */}
 
-      <p className="text-center text-[8px] font-bold">{session.user.name}</p>
+      <p className="text-center text-[12px] font-bold">{session.user.name}</p>
     </div>
   )
 }

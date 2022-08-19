@@ -27,7 +27,7 @@ export function TeamCardV2({ name, cargo, nationality, src, delay }) {
     animate={controls}
     transition={{ delay: delay, type: 'tween' }}
     
-    className="relative mt-10 flex w-[250px] flex-col items-center justify-start rounded-md bg-white p-4 shadow-md hover:shadow-lg border border-gray-50">
+    className="relative mt-10 flex w-[300px] flex-col items-center justify-start rounded-md bg-white p-4 shadow-md hover:shadow-lg border border-gray-50">
       <div className="absolute -top-12 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-white bg-red-500 shadow-lg">
         <Image
           className="grayscale"
