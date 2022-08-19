@@ -107,6 +107,5 @@ model Equipa {
   datePublished DateTime @default(now())
   fileUrl       String?
 
-  @@map("equipas")
 }
 
