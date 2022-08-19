@@ -66,7 +66,6 @@ model User {
   @@map("users")
 }
 
-
 model Photo {
   id     Int     @id @default(autoincrement())
   url    String
@@ -97,3 +96,17 @@ model Imprensa {
   datePublished DateTime @default(now())
   fileUrl       String?
 }
+
+model Equipa {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String?
+  telemovel     String?
+  nationality   String?
+  cargo         String
+  datePublished DateTime @default(now())
+  fileUrl       String?
+
+  @@map("equipas")
+}
+
