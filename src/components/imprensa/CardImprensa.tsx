@@ -67,7 +67,7 @@ export function CardImprensa({imprensa}) {
     }
   }
 
-  async function update(id) {
+  async function update(id: any) {
     console.log('update: ', id)
     try {
       await fetch(`/api/sintonizat-api/imprensa/${id}`, {
@@ -85,7 +85,7 @@ export function CardImprensa({imprensa}) {
     }
   }
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (data: { id: string; title: string; linkYoutube: string; datePublished: string; fileUrl: string }) => {
     try {
       toast
         .promise(
@@ -107,6 +107,7 @@ export function CardImprensa({imprensa}) {
       toast.error(error)
     }
   }
+  
   const handleUpdateSubmit = async (id) => {
     console.log('handleUpdateSubmit: ', id)
     try {

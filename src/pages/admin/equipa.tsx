@@ -1,12 +1,14 @@
 import { getSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { Key, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useToast } from '../../../hooks/useToast'
 import { Botao } from '../../components/assets/Botao'
 import { Entradas } from '../../components/assets/Entradas'
 import { SelectFlag } from '../../components/Team/SelectFlag'
 import { TeamCardV2 } from '../../components/Team/TeamCardV2'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
-import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
 
 interface EquipaProps {
   id: Number
@@ -16,22 +18,83 @@ interface EquipaProps {
 }
 
 export default function Equipa({ equipa }) {
+  let today = new Date().toISOString().slice(0, 10)
   const [upload, setUpload] = useState('')
   const [isUpdate, setIsUpdate] = useState(false)
+  const router = useRouter()
   const [dataForm, setDataForm] = useState({
+    id: '',
     name: '',
     nationality: '',
     telemovel: '',
     email: '',
     cargo: '',
     fileUrl: 'https://avatars.githubusercontent.com/u/69011104?v=4',
+    datePublished: today,
   })
+
+  function resetForm() {
+    setDataForm({
+      id: '',
+      name: '',
+      nationality: '',
+      telemovel: '',
+      email: '',
+      cargo: '',
+      fileUrl: 'https://avatars.githubusercontent.com/u/69011104?v=4',
+      datePublished: today,
+    })
+  }
+  
+  const refreshData = () => {
+    router.replace(router.asPath)
+  }
 
   const onChangeInput = (e) =>
     setDataForm({ ...dataForm, [e.target.name]: e.target.value })
 
-  function handleUpdate() {
-    alert('Update Successfully')
+  async function updateEquipa(id: any) {
+    console.log('aqui', id)
+    try {
+      await fetch(`/api/sintonizat-api/equipa/${id}`, {
+        body: JSON.stringify(dataForm),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      }).then(() => {})
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function handleUpdate(id: string) {
+    try {
+      toast
+        .promise(
+          updateEquipa(id),
+          {
+            loading: 'Trabalhando nisso....',
+            success: 'Equipa alterada com sucesso',
+            error: 'Opppps! Algo deu errado',
+          },
+          {
+            duration: 3000,
+          }
+        )
+        .then(() => {
+          resetForm()
+          setIsUpdate(false)
+          refreshData ()
+        })
+    } catch (err) {
+      // toast.error(err.message)
+    }
+  }
+
+  function cancelUpdate() {
+    resetForm()
+    setIsUpdate(false)
   }
 
   return (
@@ -98,7 +161,20 @@ export default function Equipa({ equipa }) {
                       className="p-2"
                     />
                   </div>
-                  {isUpdate ? <Botao>Alterar</Botao> : <Botao>Cadastrar</Botao>}
+                  {isUpdate ? (
+                    <div className="flex gap-4">
+                      <Botao
+                        onClick={() => {
+                          handleUpdate(dataForm.id)
+                        }}
+                      >
+                        Alterar
+                      </Botao>
+                      <Botao onClick={cancelUpdate}>Cancel</Botao>
+                    </div>
+                  ) : (
+                    <Botao>Cadastrar</Botao>
+                  )}
                 </div>
               </form>
             </div>
@@ -117,19 +193,49 @@ export default function Equipa({ equipa }) {
       <hr />
       <div className="flex flex-wrap justify-center gap-2 p-4">
         {equipa &&
-          equipa.map((equipa, i) => {
-            return (
-              <div className="cursor-pointer" key={i} onClick={handleUpdate}>
-                <TeamCardV2
-                  name={equipa.name}
-                  cargo={equipa.cargo}
-                  nationality={equipa.nationality}
-                  src={'https://avatars.githubusercontent.com/u/69011104?v=4'}
-                  delay={300}
-                />
-              </div>
-            )
-          })}
+          equipa.map(
+            (
+              equipa: {
+                telemovel: string
+                email: string
+                fileUrl: string
+                datePublished: string
+                id: string
+                name: string
+                cargo: string
+                nationality: string
+              },
+              i: Key
+            ) => {
+              return (
+                <div
+                  className="cursor-pointer"
+                  key={i}
+                  onClick={() => {
+                    setDataForm({
+                      id: equipa.id,
+                      name: equipa.name,
+                      nationality: equipa.nationality,
+                      telemovel: equipa.telemovel,
+                      email: equipa.email,
+                      cargo: equipa.cargo,
+                      fileUrl: equipa.fileUrl,
+                      datePublished: equipa.datePublished,
+                    })
+                    setIsUpdate(true)
+                  }}
+                >
+                  <TeamCardV2
+                    name={equipa.name}
+                    cargo={equipa.cargo}
+                    nationality={equipa.nationality}
+                    src={'https://avatars.githubusercontent.com/u/69011104?v=4'}
+                    delay={300}
+                  />
+                </div>
+              )
+            }
+          )}
       </div>
     </div>
   )
