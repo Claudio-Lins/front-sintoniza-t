@@ -12,9 +12,17 @@ interface TeamCardProps {
   src?: string
   flag?: string
   onClick?: (event: MouseEvent) => void
+  deleteBtn?: boolean
 }
 
-export function TeamCardV2({ name, cargo, nationality, src, onClick }) {
+export function TeamCardV2({
+  name,
+  cargo,
+  nationality,
+  deleteBtn,
+  src,
+  onClick,
+}) {
   return (
     <div className="relative mt-10 flex w-[300px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
       <div className="absolute -top-12 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-white shadow-lg">
@@ -29,12 +37,14 @@ export function TeamCardV2({ name, cargo, nationality, src, onClick }) {
           priority
         />
       </div>
-      <button
-        onClick={onClick}
-        className="absolute top-0 right-0 h-6 w-6 rounded-full bg-red-500 text-white shadow-sm"
-      >
-        X
-      </button>
+      {deleteBtn && (
+        <button
+          onClick={onClick}
+          className="absolute top-0 right-0 h-6 w-6 rounded-full bg-red-500 text-white shadow-sm"
+        >
+          X
+        </button>
+      )}
       <div className="mt-16 flex h-20 w-full flex-col items-center justify-center ">
         <h3 className="mb-4 text-center text-lg leading-5">{name}</h3>
         <div className="flex w-full items-center justify-between">

@@ -254,6 +254,7 @@ export default function Equipa({ equipa }) {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <TeamCardV2
+           deleteBtn={false}
             name={dataForm.name ? dataForm.name : 'Nome'}
             cargo={dataForm.cargo ? dataForm.cargo : 'Cargo'}
             nationality={dataForm.nationality ? dataForm.nationality : 'UN'}
@@ -300,6 +301,7 @@ export default function Equipa({ equipa }) {
                     }}
                   >
                     <TeamCardV2
+                      deleteBtn
                       onClick={() => {handleDelete(equipa.id)}}
                       name={equipa.name}
                       cargo={equipa.cargo}
