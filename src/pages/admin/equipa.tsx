@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Key, useState } from 'react'
-import toast from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import { useToast } from '../../../hooks/useToast'
 import { Botao } from '../../components/assets/Botao'
 import { Entradas } from '../../components/assets/Entradas'
@@ -45,7 +45,7 @@ export default function Equipa({ equipa }) {
       datePublished: today,
     })
   }
-  
+
   const refreshData = () => {
     router.replace(router.asPath)
   }
@@ -85,10 +85,10 @@ export default function Equipa({ equipa }) {
         .then(() => {
           resetForm()
           setIsUpdate(false)
-          refreshData ()
+          refreshData()
         })
     } catch (err) {
-      // toast.error(err.message)
+      toast.error(err.message)
     }
   }
 
@@ -99,13 +99,21 @@ export default function Equipa({ equipa }) {
 
   return (
     <div className="flex flex-col">
+       <Toaster />
       <HeaderContent title={'Equipa'} subtitle="Membros da equipa Sitoniza-t" />
       <div className="flex justify-between divide-x-2 p-8">
         <div className="flex w-3/5 items-center justify-center">
           <div className="max-w-sm p-4 sm:min-w-[650px]">
             <h4 className="text-center">Cadastre um novo mebro da equipa.</h4>
             <div className="mt-2 rounded-md border p-4 shadow-inner ">
-              <form className="flex w-full flex-col items-center justify-center">
+              <form
+                className="flex w-full flex-col items-center justify-center"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleUpdate(dataForm.id)
+                  refreshData()
+                }}
+              >
                 <div className="mt-4 w-full space-y-2 p-2">
                   <Entradas
                     name="name"
@@ -163,13 +171,7 @@ export default function Equipa({ equipa }) {
                   </div>
                   {isUpdate ? (
                     <div className="flex gap-4">
-                      <Botao
-                        onClick={() => {
-                          handleUpdate(dataForm.id)
-                        }}
-                      >
-                        Alterar
-                      </Botao>
+                      <Botao type="submit">Alterar</Botao>
                       <Botao onClick={cancelUpdate}>Cancel</Botao>
                     </div>
                   ) : (
