@@ -2,9 +2,9 @@ import React from 'react'
 import Select from '../assets/Select'
 
 interface SelectProps {
-  dataForm: any
+  // dataForm: any
   defaultValue?: string
-  value?: any
+  value?: string
   name?: string
   target?: string
   onChange?: (value: any) => void
@@ -16,7 +16,7 @@ export function SelectFlag(props: SelectProps) {
     <Select
       onChange={props.onChange}
       name={props.name}
-      value={props.dataForm}
+      value={props.value}
       className={`
         border border-purple-700 bg-gray-100 bg-clip-padding transition ease-in-out rounded-lg dark:border-teal-400
         focus:border-teal-400 focus:outline-none mb-2

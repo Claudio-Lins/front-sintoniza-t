@@ -1,4 +1,4 @@
-import { getSession } from 'next-auth/react'
+import { getSession, GetSessionParams } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Key, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
@@ -29,7 +29,7 @@ export default function Equipa({ equipa }) {
     telemovel: '',
     email: '',
     cargo: '',
-    fileUrl: 'https://avatars.githubusercontent.com/u/69011104?v=4',
+    fileUrl: '',
     datePublished: today,
   })
 
@@ -41,7 +41,7 @@ export default function Equipa({ equipa }) {
       telemovel: '',
       email: '',
       cargo: '',
-      fileUrl: 'https://avatars.githubusercontent.com/u/69011104?v=4',
+      fileUrl: '',
       datePublished: today,
     })
   }
@@ -53,8 +53,21 @@ export default function Equipa({ equipa }) {
   const onChangeInput = (e) =>
     setDataForm({ ...dataForm, [e.target.name]: e.target.value })
 
+  async function create(data: any) {
+    try {
+      await fetch(`/api/sintonizat-api/equipa/`, {
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      }).then(() => {
+        resetForm()
+      })
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
   async function updateEquipa(id: any) {
-    console.log('aqui', id)
     try {
       await fetch(`/api/sintonizat-api/equipa/${id}`, {
         body: JSON.stringify(dataForm),
@@ -65,6 +78,29 @@ export default function Equipa({ equipa }) {
       }).then(() => {})
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  const handleSubmit = async (data: any) => {
+    try {
+      toast
+        .promise(
+          create(data),
+          {
+            loading: 'Trabalhando nisso....',
+            success: 'Equipa criada com secesso!',
+            error: 'Ooops! Algo deu errado.',
+          },
+          {
+            duration: 3000,
+          }
+        )
+        .then(() => {
+          refreshData()
+          resetForm()
+        })
+    } catch (err) {
+      toast.error(err)
     }
   }
 
@@ -92,6 +128,31 @@ export default function Equipa({ equipa }) {
     }
   }
 
+  function handleDelete(id: string) {
+    try {
+      toast
+        .promise(
+          fetch(`/api/sintonizat-api/equipa/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+          }),
+          {
+            loading: 'Trabalhando nisso....',
+            success: 'Equipa deletada com secesso!',
+            error: 'Ooops! Algo deu errado.',
+          },
+          {
+            duration: 3000,
+          }
+        )
+        .then(() => {
+          refreshData()
+        })
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
   function cancelUpdate() {
     resetForm()
     setIsUpdate(false)
@@ -99,7 +160,7 @@ export default function Equipa({ equipa }) {
 
   return (
     <div className="flex flex-col">
-       <Toaster />
+      <Toaster />
       <HeaderContent title={'Equipa'} subtitle="Membros da equipa Sitoniza-t" />
       <div className="flex justify-between divide-x-2 p-8">
         <div className="flex w-3/5 items-center justify-center">
@@ -110,7 +171,7 @@ export default function Equipa({ equipa }) {
                 className="flex w-full flex-col items-center justify-center"
                 onSubmit={(e) => {
                   e.preventDefault()
-                  handleUpdate(dataForm.id)
+                  isUpdate ? handleUpdate(dataForm.id) : handleSubmit(dataForm)
                   refreshData()
                 }}
               >
@@ -158,7 +219,6 @@ export default function Equipa({ equipa }) {
                       name="nationality"
                       onChange={onChangeInput}
                       value={dataForm.nationality}
-                      dataForm={undefined}
                       className="p-2 text-gray-400"
                     />
                     <Entradas
@@ -170,9 +230,19 @@ export default function Equipa({ equipa }) {
                     />
                   </div>
                   {isUpdate ? (
-                    <div className="flex gap-4">
-                      <Botao type="submit">Alterar</Botao>
-                      <Botao onClick={cancelUpdate}>Cancel</Botao>
+                    <div className="flex justify-between">
+                      <div className="flex gap-4">
+                        <Botao type="submit">Alterar</Botao>
+                        <Botao onClick={cancelUpdate}>Cancel</Botao>
+                      </div>
+                      {/* <Botao
+                        type="button"
+                        className="bg-gradient-to-r from-red-400 to-red-700  shadow-red-500/30
+                                   hover:shadow-red-700"
+                        onClick={() => {handleDelete(equipa.id)}}
+                      >
+                        {equipa.name}
+                      </Botao> */}
                     </div>
                   ) : (
                     <Botao>Cadastrar</Botao>
@@ -187,8 +257,8 @@ export default function Equipa({ equipa }) {
             name={dataForm.name ? dataForm.name : 'Nome'}
             cargo={dataForm.cargo ? dataForm.cargo : 'Cargo'}
             nationality={dataForm.nationality ? dataForm.nationality : 'UN'}
-            src={'https://avatars.githubusercontent.com/u/69011104?v=4'}
-            delay={300}
+            src={'/assets/alien-fill.svg'}
+            onClick={() =>{}}
           />
         </div>
       </div>
@@ -198,6 +268,7 @@ export default function Equipa({ equipa }) {
           equipa.map(
             (
               equipa: {
+                src: string
                 telemovel: string
                 email: string
                 fileUrl: string
@@ -210,31 +281,43 @@ export default function Equipa({ equipa }) {
               i: Key
             ) => {
               return (
-                <div
-                  className="cursor-pointer"
-                  key={i}
-                  onClick={() => {
-                    setDataForm({
-                      id: equipa.id,
-                      name: equipa.name,
-                      nationality: equipa.nationality,
-                      telemovel: equipa.telemovel,
-                      email: equipa.email,
-                      cargo: equipa.cargo,
-                      fileUrl: equipa.fileUrl,
-                      datePublished: equipa.datePublished,
-                    })
-                    setIsUpdate(true)
-                  }}
-                >
-                  <TeamCardV2
-                    name={equipa.name}
-                    cargo={equipa.cargo}
-                    nationality={equipa.nationality}
-                    src={'https://avatars.githubusercontent.com/u/69011104?v=4'}
-                    delay={300}
-                  />
-                </div>
+                <>
+                  <div
+                    className="cursor-pointer"
+                    key={i}
+                    onClick={() => {
+                      setDataForm({
+                        id: equipa.id,
+                        name: equipa.name,
+                        nationality: equipa.nationality,
+                        telemovel: equipa.telemovel,
+                        email: equipa.email,
+                        cargo: equipa.cargo,
+                        fileUrl: equipa.fileUrl,
+                        datePublished: equipa.datePublished,
+                      })
+                      setIsUpdate(true)
+                    }}
+                  >
+                    <TeamCardV2
+                      onClick={() => {handleDelete(equipa.id)}}
+                      name={equipa.name}
+                      cargo={equipa.cargo}
+                      nationality={equipa.nationality}
+                      src={equipa.fileUrl}
+                    />
+                  </div>
+                  {/* <Botao
+                    type="button"
+                    className="bg-gradient-to-r from-red-400 to-red-700  shadow-red-500/30
+                                   hover:shadow-red-700"
+                    onClick={() => {
+                      handleDelete(equipa.id)
+                    }}
+                  >
+                    {equipa.name}
+                  </Botao> */}
+                </>
               )
             }
           )}
@@ -243,7 +326,7 @@ export default function Equipa({ equipa }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetSessionParams) {
   const session = await getSession(context)
   const equipa = await getAllEquipa()
 
