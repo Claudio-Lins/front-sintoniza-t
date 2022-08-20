@@ -5,10 +5,19 @@ import { Entradas } from '../../components/assets/Entradas'
 import { SelectFlag } from '../../components/Team/SelectFlag'
 import { TeamCardV2 } from '../../components/Team/TeamCardV2'
 import { HeaderContent } from '../../components/template/HeaderContent'
+import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
 import { getAllImprensa } from '../api/sintonizat-api/imprensa/getAllImprensa'
 
-export default function Equipa() {
+interface EquipaProps {
+  id: Number
+  name: string
+  cargo: string
+  nationality: string
+}
+
+export default function Equipa({ equipa }) {
   const [upload, setUpload] = useState('')
+  const [isUpdate, setIsUpdate] = useState(false)
   const [dataForm, setDataForm] = useState({
     name: '',
     nationality: '',
@@ -20,6 +29,10 @@ export default function Equipa() {
 
   const onChangeInput = (e) =>
     setDataForm({ ...dataForm, [e.target.name]: e.target.value })
+
+  function handleUpdate() {
+    alert('Update Successfully')
+  }
 
   return (
     <div className="flex flex-col">
@@ -85,9 +98,7 @@ export default function Equipa() {
                       className="p-2"
                     />
                   </div>
-                  <Botao>
-                    Cadastrar
-                  </Botao>
+                  {isUpdate ? <Botao>Alterar</Botao> : <Botao>Cadastrar</Botao>}
                 </div>
               </form>
             </div>
@@ -104,13 +115,29 @@ export default function Equipa() {
         </div>
       </div>
       <hr />
+      <div className="flex flex-wrap justify-center gap-2 p-4">
+        {equipa &&
+          equipa.map((equipa, i) => {
+            return (
+              <div className="cursor-pointer" key={i} onClick={handleUpdate}>
+                <TeamCardV2
+                  name={equipa.name}
+                  cargo={equipa.cargo}
+                  nationality={equipa.nationality}
+                  src={'https://avatars.githubusercontent.com/u/69011104?v=4'}
+                  delay={300}
+                />
+              </div>
+            )
+          })}
+      </div>
     </div>
   )
 }
 
 export async function getServerSideProps(context) {
   const session = await getSession(context)
-  // const imprensa = await getAllImprensa()
+  const equipa = await getAllEquipa()
 
   if (!session) {
     return {
@@ -124,7 +151,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
-      // imprensa: JSON.parse(JSON.stringify(imprensa)),
+      equipa: JSON.parse(JSON.stringify(equipa)),
     },
   }
 }
