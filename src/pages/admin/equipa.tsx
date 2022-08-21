@@ -235,14 +235,6 @@ export default function Equipa({ equipa }) {
                         <Botao type="submit">Alterar</Botao>
                         <Botao onClick={cancelUpdate}>Cancel</Botao>
                       </div>
-                      {/* <Botao
-                        type="button"
-                        className="bg-gradient-to-r from-red-400 to-red-700  shadow-red-500/30
-                                   hover:shadow-red-700"
-                        onClick={() => {handleDelete(equipa.id)}}
-                      >
-                        {equipa.name}
-                      </Botao> */}
                     </div>
                   ) : (
                     <Botao>Cadastrar</Botao>
@@ -254,12 +246,12 @@ export default function Equipa({ equipa }) {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <TeamCardV2
-           deleteBtn={false}
+            deleteBtn={false}
             name={dataForm.name ? dataForm.name : 'Nome'}
             cargo={dataForm.cargo ? dataForm.cargo : 'Cargo'}
             nationality={dataForm.nationality ? dataForm.nationality : 'UN'}
             src={'/assets/alien-fill.svg'}
-            onClick={() =>{}}
+            onClick={() => {}}
           />
         </div>
       </div>
@@ -282,44 +274,34 @@ export default function Equipa({ equipa }) {
               i: Key
             ) => {
               return (
-                <>
-                  <div
-                    className="cursor-pointer"
-                    key={i}
-                    onClick={() => {
-                      setDataForm({
-                        id: equipa.id,
-                        name: equipa.name,
-                        nationality: equipa.nationality,
-                        telemovel: equipa.telemovel,
-                        email: equipa.email,
-                        cargo: equipa.cargo,
-                        fileUrl: equipa.fileUrl,
-                        datePublished: equipa.datePublished,
-                      })
-                      setIsUpdate(true)
-                    }}
-                  >
-                    <TeamCardV2
-                      deleteBtn
-                      onClick={() => {handleDelete(equipa.id)}}
-                      name={equipa.name}
-                      cargo={equipa.cargo}
-                      nationality={equipa.nationality}
-                      src={equipa.fileUrl}
-                    />
-                  </div>
-                  {/* <Botao
-                    type="button"
-                    className="bg-gradient-to-r from-red-400 to-red-700  shadow-red-500/30
-                                   hover:shadow-red-700"
+                <div
+                  className="cursor-pointer"
+                  key={i}
+                  onClick={() => {
+                    setDataForm({
+                      id: equipa.id,
+                      name: equipa.name,
+                      nationality: equipa.nationality,
+                      telemovel: equipa.telemovel,
+                      email: equipa.email,
+                      cargo: equipa.cargo,
+                      fileUrl: equipa.fileUrl,
+                      datePublished: equipa.datePublished,
+                    })
+                    setIsUpdate(true)
+                  }}
+                >
+                  <TeamCardV2
+                    deleteBtn
                     onClick={() => {
                       handleDelete(equipa.id)
                     }}
-                  >
-                    {equipa.name}
-                  </Botao> */}
-                </>
+                    name={equipa.name}
+                    cargo={equipa.cargo}
+                    nationality={equipa.nationality}
+                    src={equipa.fileUrl}
+                  />
+                </div>
               )
             }
           )}
