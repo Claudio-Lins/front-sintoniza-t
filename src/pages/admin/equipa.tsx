@@ -147,6 +147,7 @@ export default function Equipa({ equipa }) {
         )
         .then(() => {
           refreshData()
+          resetForm()
         })
     } catch (err) {
       console.error(err.message)

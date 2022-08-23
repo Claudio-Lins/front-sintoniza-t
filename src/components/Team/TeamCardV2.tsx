@@ -4,6 +4,7 @@ import { Flag } from './Flag'
 import { scaleAnimationUp } from '../../../utils/Motion/Animations'
 import { useScroll } from '../../../utils/Motion/useScroll'
 import { Ref } from 'react'
+import { BsTrash } from 'react-icons/bs'
 
 interface TeamCardProps {
   name: string
@@ -40,9 +41,9 @@ export function TeamCardV2({
       {deleteBtn && (
         <button
           onClick={onClick}
-          className="absolute top-0 right-0 h-6 w-6 rounded-full bg-red-500 text-white shadow-sm"
+          className="absolute top-1 hover:text-red-600 right-1 flex h-6 w-6 items-center justify-center rounded-full text-gray-400 shadow-sm"
         >
-          X
+          {<BsTrash size={20} />}
         </button>
       )}
       <div className="mt-16 flex h-20 w-full flex-col items-center justify-center ">
