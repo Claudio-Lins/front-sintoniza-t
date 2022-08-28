@@ -165,8 +165,9 @@ export default function Equipa({ equipa }: EquipaProps) {
           }
         )
         .then(() => {
-          refreshData()
           resetForm()
+          refreshData()
+          setIsUpdate(false)
         })
     } catch (err) {
       console.error(err.message)
@@ -191,8 +192,7 @@ export default function Equipa({ equipa }: EquipaProps) {
                 className="flex w-full flex-col items-center justify-center"
                 onSubmit={(e) => {
                   e.preventDefault()
-                  isUpdate ? handleUpdate(dataForm.id) : (handleSubmit(dataForm), 
-                  handleUpload)
+                  isUpdate ? handleUpdate(dataForm.id) : handleSubmit(dataForm)
                   refreshData()
                 }}
               >
