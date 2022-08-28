@@ -7,6 +7,8 @@ interface EntradasProps {
   readonly?: boolean
   onChange?: (value: any) => void
   className?: string
+  id?: string
+  accept?: string
 }
 
 export function Entradas(props: EntradasProps) {
@@ -15,6 +17,8 @@ export function Entradas(props: EntradasProps) {
       <input
         type={props.type ?? 'text'}
         name={props.name}
+        id={props.id}
+        accept={props.accept}
         value={props.value}
         readOnly={props.readonly}
         placeholder={props.placeholder}

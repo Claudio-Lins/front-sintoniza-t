@@ -19,7 +19,8 @@
       'develop.sintoniza-t.pt',
       'lh3.googleusercontent.com',
       'admin-sintoniza-t.vercel.app',
-      'avatars.githubusercontent.com'
+      'avatars.githubusercontent.com',
+      'yvzqnnojfxtvewtgmepp.supabase.co'
     ],
   },
   headers: async () => {

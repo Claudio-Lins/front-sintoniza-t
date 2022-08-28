@@ -1,9 +1,8 @@
 import { getSession, GetSessionParams } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { ChangeEvent, Key, useState } from 'react'
+import { Key, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { useToast } from '../../../hooks/useToast'
-import supabase from '../../../utils/supabaseClient'
 import { Botao } from '../../components/assets/Botao'
 import { Entradas } from '../../components/assets/Entradas'
 import { SelectFlag } from '../../components/Team/SelectFlag'
@@ -12,14 +11,13 @@ import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
 
 interface EquipaProps {
-  equipa: []
   id: Number
   name: string
   cargo: string
   nationality: string
 }
 
-export default function Equipa({ equipa }: EquipaProps) {
+export default function Equipa({ equipa }) {
   let today = new Date().toISOString().slice(0, 10)
   const [upload, setUpload] = useState('')
   const [isUpdate, setIsUpdate] = useState(false)
@@ -80,24 +78,6 @@ export default function Equipa({ equipa }: EquipaProps) {
       }).then(() => {})
     } catch (err) {
       console.log(err)
-    }
-
-  }
-  
-  const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    let file
-    
-    if(e.target.files) {
-      file = e.target.files[0]
-    }
-    const {data, error} = await supabase.storage
-    .from("sintonizat")
-    .upload('equipa/' + file?.name, file as File)
-
-    if (data) {
-      console.log(data)
-    } else if (error) {
-      console.log(error)
     }
   }
 
@@ -192,7 +172,7 @@ export default function Equipa({ equipa }: EquipaProps) {
                 className="flex w-full flex-col items-center justify-center"
                 onSubmit={(e) => {
                   e.preventDefault()
-                  isUpdate ? handleUpdate(dataForm.id) : (handleSubmit(dataForm))
+                  isUpdate ? handleUpdate(dataForm.id) : handleSubmit(dataForm)
                   refreshData()
                 }}
               >
@@ -245,10 +225,7 @@ export default function Equipa({ equipa }: EquipaProps) {
                     <Entradas
                       type="file"
                       name="fileUpload"
-                      accept='image/*'
-                      id='file_input'
-                      value={dataForm.fileUrl}
-                      onChange={(e) => {handleUpload(e)}}
+                      onChange={(e) => setUpload(e.target.files[0])}
                       placeholder="Foto"
                       className="p-2"
                     />
