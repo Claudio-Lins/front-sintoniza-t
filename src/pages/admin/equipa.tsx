@@ -55,7 +55,7 @@ export default function Equipa({ equipa }: EquipaProps) {
   const onChangeInput = (e) =>
     setDataForm({ ...dataForm, [e.target.name]: e.target.value })
 
-  async function create(data: any) {
+  async function create(data: []) {
     try {
       await fetch(`/api/sintonizat-api/equipa/`, {
         body: JSON.stringify(data),
@@ -85,7 +85,7 @@ export default function Equipa({ equipa }: EquipaProps) {
   }
   
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    let file
+    let file: File
     
     if(e.target.files) {
       file = e.target.files[0]
@@ -95,7 +95,6 @@ export default function Equipa({ equipa }: EquipaProps) {
     .upload('equipa/' + file?.name, file as File)
 
     if (data) {
-      console.log(data)
     } else if (error) {
       console.log(error)
     }
@@ -192,7 +191,8 @@ export default function Equipa({ equipa }: EquipaProps) {
                 className="flex w-full flex-col items-center justify-center"
                 onSubmit={(e) => {
                   e.preventDefault()
-                  isUpdate ? handleUpdate(dataForm.id) : (handleSubmit(dataForm))
+                  isUpdate ? handleUpdate(dataForm.id) : (handleSubmit(dataForm), 
+                  handleUpload)
                   refreshData()
                 }}
               >
@@ -247,7 +247,7 @@ export default function Equipa({ equipa }: EquipaProps) {
                       name="fileUpload"
                       accept='image/*'
                       id='file_input'
-                      value={dataForm.fileUrl}
+                      // value={dataForm.fileUrl}
                       onChange={(e) => {handleUpload(e)}}
                       placeholder="Foto"
                       className="p-2"
@@ -288,7 +288,7 @@ export default function Equipa({ equipa }: EquipaProps) {
                 src: string
                 telemovel: string
                 email: string
-                fileUrl: string
+                fileUrl: any
                 datePublished: string
                 id: string
                 name: string
