@@ -12,7 +12,7 @@ interface TeamCardProps {
   nationality?: string | undefined
   src?: string
   flag?: string
-  onClick?: (event: MouseEvent) => void
+  onClick?: () => void
   deleteBtn?: boolean
 }
 
@@ -23,7 +23,7 @@ export function TeamCardV2({
   deleteBtn,
   src,
   onClick,
-}) {
+}:TeamCardProps) {
   return (
     <div className="relative mt-10 flex w-[300px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
       <div className="absolute -top-12 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-white shadow-lg">

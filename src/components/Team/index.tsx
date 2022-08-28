@@ -10,19 +10,19 @@ interface TeamProps {
   fileUrl?: string
   ReactCountryFlag?: any
   src?: any
+  onClick?: (event: Event) => void
 }
 
-export function Team({ team }: TeamProps) {
+export function Team({ team, onClick }: TeamProps) {
   return (
     <div className="mt-10 flex w-full flex-wrap items-center justify-center gap-8">
-      {team && team.map((team: TeamProps) => (
+      {team && team.map((team: any) => (
         <div key={team.id}>
           <TeamCardV2
             name={team.name ?? ""}
             cargo={team.cargo}
             nationality={team.nationality}
             src={`${process.env.API_URL_SINTONIZA_T}/public/team/${team.fileUrl}`}
-            delay={1}
           />
         </div>
       ))}
