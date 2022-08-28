@@ -11,13 +11,14 @@ import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
 
 interface EquipaProps {
+  equipa: []
   id: Number
   name: string
   cargo: string
   nationality: string
 }
 
-export default function Equipa({ equipa }) {
+export default function Equipa({ equipa }: EquipaProps) {
   let today = new Date().toISOString().slice(0, 10)
   const [upload, setUpload] = useState('')
   const [isUpdate, setIsUpdate] = useState(false)
