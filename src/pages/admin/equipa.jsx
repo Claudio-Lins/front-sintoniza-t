@@ -1,21 +1,14 @@
-import { getSession, GetSessionParams } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { Key, useState } from 'react'
+import { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { useToast } from '../../../hooks/useToast'
+import supabase from '../../../utils/supabaseClient'
 import { Botao } from '../../components/assets/Botao'
 import { Entradas } from '../../components/assets/Entradas'
 import { SelectFlag } from '../../components/Team/SelectFlag'
 import { TeamCardV2 } from '../../components/Team/TeamCardV2'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
-
-interface EquipaProps {
-  id: Number
-  name: string
-  cargo: string
-  nationality: string
-}
 
 export default function Equipa({ equipa }) {
   let today = new Date().toISOString().slice(0, 10)
@@ -53,7 +46,7 @@ export default function Equipa({ equipa }) {
   const onChangeInput = (e) =>
     setDataForm({ ...dataForm, [e.target.name]: e.target.value })
 
-  async function create(data: any) {
+  async function create(data) {
     try {
       await fetch(`/api/sintonizat-api/equipa/`, {
         body: JSON.stringify(data),
@@ -67,7 +60,7 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  async function updateEquipa(id: any) {
+  async function updateEquipa(id) {
     try {
       await fetch(`/api/sintonizat-api/equipa/${id}`, {
         body: JSON.stringify(dataForm),
@@ -81,7 +74,23 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  const handleSubmit = async (data: any) => {
+  const handleUpload = async (e) => {
+    let file
+    
+    if(e.target.files) {
+      file = e.target.files[0]
+    }
+    const {data, error} = await supabase.storage
+    .from("sintonizat")
+    .upload('equipa/' + file?.name, file)
+
+    if (data) {
+    } else if (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSubmit = async (data) => {
     try {
       toast
         .promise(
@@ -104,7 +113,7 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  async function handleUpdate(id: string) {
+  async function handleUpdate(id) {
     try {
       toast
         .promise(
@@ -128,7 +137,7 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  function handleDelete(id: string) {
+  function handleDelete(id) {
     try {
       toast
         .promise(
@@ -223,9 +232,12 @@ export default function Equipa({ equipa }) {
                       className="p-2 text-gray-400"
                     />
                     <Entradas
-                      type="file"
+                      type='file'
                       name="fileUpload"
-                      onChange={(e) => setUpload(e.target.files[0])}
+                      accept='image/*'
+                      id='file_input'
+                      // onChange={(e) => setUpload(e.target.files[0])}
+                      onChange={(e) => {handleUpload(e)}}
                       placeholder="Foto"
                       className="p-2"
                     />
@@ -259,26 +271,15 @@ export default function Equipa({ equipa }) {
       <hr />
       <div className="flex flex-wrap justify-center gap-2 p-4">
         {equipa &&
-          equipa.map(
-            (
-              equipa: {
-                src: string
-                telemovel: string
-                email: string
-                fileUrl: string
-                datePublished: string
-                id: string
-                name: string
-                cargo: string
-                nationality: string
-              },
-              i: Key
-            ) => {
-              return (
-                <div
-                  className="cursor-pointer"
-                  key={i}
-                  onClick={() => {
+          equipa.map((equipa, i) => {
+            return (
+              <div className="" key={i}>
+                <TeamCardV2
+                  deleteBtn
+                  onDelete={() => {
+                    handleDelete(equipa.id)
+                  }}
+                  onEdit={() => {
                     setDataForm({
                       id: equipa.id,
                       name: equipa.name,
@@ -291,27 +292,20 @@ export default function Equipa({ equipa }) {
                     })
                     setIsUpdate(true)
                   }}
-                >
-                  <TeamCardV2
-                    deleteBtn
-                    onClick={() => {
-                      handleDelete(equipa.id)
-                    }}
-                    name={equipa.name}
-                    cargo={equipa.cargo}
-                    nationality={equipa.nationality}
-                    src={equipa.fileUrl}
-                  />
-                </div>
-              )
-            }
-          )}
+                  name={equipa.name}
+                  cargo={equipa.cargo}
+                  nationality={equipa.nationality ? equipa.nationality : 'UN'}
+                  src={equipa.fileUrl}
+                />
+              </div>
+            )
+          })}
       </div>
     </div>
   )
 }
 
-export async function getServerSideProps(context: GetSessionParams) {
+export async function getServerSideProps(context) {
   const session = await getSession(context)
   const equipa = await getAllEquipa()
 

@@ -9,6 +9,8 @@ interface TeamCardProps {
   nationality?: string | undefined
   src?: string
   flag?: string
+  onDelete?: () => void
+  onEdit?: () => void
   onClick?: () => void
   deleteBtn?: boolean
   editBtn?: boolean
@@ -19,9 +21,10 @@ export function TeamCardV2({
   cargo,
   nationality,
   deleteBtn,
-  editBtn,
+  onEdit,
   src,
-  onClick,
+  onDelete,
+  onClick
 }: TeamCardProps) {
   return (
     <div className="relative mt-10 flex w-[300px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
@@ -39,11 +42,11 @@ export function TeamCardV2({
       </div>
       {deleteBtn && (
         <div className="absolute top-1 right-1 flex flex-col items-center justify-center gap-2 rounded-full text-gray-400 shadow-sm">
-          <button onClick={onClick} className=" hover:text-red-600">
+          <button onClick={onDelete} className=" hover:text-red-600">
             {<BsTrash size={20} />}
           </button>
 
-          <button onClick={onClick} className=" hover:text-green-600">
+          <button onClick={onEdit} className=" hover:text-green-600">
             {<FiEdit size={20} />}
           </button>
         </div>
