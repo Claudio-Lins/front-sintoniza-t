@@ -316,6 +316,7 @@ export default function Equipa({ equipa }: EquipaProps) {
                 >
                   <TeamCardV2
                     deleteBtn
+                    editBtn
                     onClick={() => {
                       handleDelete(equipa.id)
                     }}

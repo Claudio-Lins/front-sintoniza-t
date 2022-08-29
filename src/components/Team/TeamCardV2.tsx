@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { BsTrash } from 'react-icons/bs'
+import { FiEdit } from 'react-icons/fi'
 import { Flag } from './Flag'
 
 interface TeamCardProps {
@@ -10,6 +11,7 @@ interface TeamCardProps {
   flag?: string
   onClick?: () => void
   deleteBtn?: boolean
+  editBtn?: boolean
 }
 
 export function TeamCardV2({
@@ -17,9 +19,10 @@ export function TeamCardV2({
   cargo,
   nationality,
   deleteBtn,
+  editBtn,
   src,
   onClick,
-}:TeamCardProps) {
+}: TeamCardProps) {
   return (
     <div className="relative mt-10 flex w-[300px] flex-col items-center justify-start rounded-md border border-gray-50 bg-white p-4 shadow-md hover:shadow-lg">
       <div className="absolute -top-12 h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-white shadow-lg">
@@ -35,12 +38,15 @@ export function TeamCardV2({
         />
       </div>
       {deleteBtn && (
-        <button
-          onClick={onClick}
-          className="absolute top-1 hover:text-red-600 right-1 flex h-6 w-6 items-center justify-center rounded-full text-gray-400 shadow-sm"
-        >
-          {<BsTrash size={20} />}
-        </button>
+        <div className="absolute top-1 right-1 flex flex-col items-center justify-center gap-2 rounded-full text-gray-400 shadow-sm">
+          <button onClick={onClick} className=" hover:text-red-600">
+            {<BsTrash size={20} />}
+          </button>
+
+          <button onClick={onClick} className=" hover:text-green-600">
+            {<FiEdit size={20} />}
+          </button>
+        </div>
       )}
       <div className="mt-16 flex h-20 w-full flex-col items-center justify-center ">
         <h3 className="mb-4 text-center text-lg leading-5">{name}</h3>
