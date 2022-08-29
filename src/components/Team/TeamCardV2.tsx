@@ -1,10 +1,6 @@
-import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Flag } from './Flag'
-import { scaleAnimationUp } from '../../../utils/Motion/Animations'
-import { useScroll } from '../../../utils/Motion/useScroll'
-import { Ref } from 'react'
 import { BsTrash } from 'react-icons/bs'
+import { Flag } from './Flag'
 
 interface TeamCardProps {
   name: string

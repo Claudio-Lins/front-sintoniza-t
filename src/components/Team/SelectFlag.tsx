@@ -24,9 +24,9 @@ export function SelectFlag(props: SelectProps) {
       `}
     >
       <option>Nacionalidade</option>
-      <option value='UN'>Não declarar</option>
+      <option value='UN-United Nation'>Não declarar</option>
       <option value='AF-Afghanistan'>Afghanistan</option>
-      <option value='AB-Albania'>Albania</option>
+      <option value='AL-Albania'>Albania</option>
       <option value='DZ-Algeria'>Algeria</option>
       <option value='AD-Andorra'>Andorra</option>
       <option value='AO-Angola'>Angola</option>
