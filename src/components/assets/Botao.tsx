@@ -1,5 +1,5 @@
 interface BotaoProps {
-  children?: any
+  children?: React.ReactNode
   onClick?: any
   className?: string
   type?: string

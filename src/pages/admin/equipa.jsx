@@ -13,6 +13,7 @@ import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
 export default function Equipa({ equipa }) {
   let today = new Date().toISOString().slice(0, 10)
   const [upload, setUpload] = useState('')
+  const [image, setImage] = useState('')
   const [isUpdate, setIsUpdate] = useState(false)
   const router = useRouter()
   const [dataForm, setDataForm] = useState({
@@ -74,23 +75,23 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  const handleUpload = async (e) => {
-    let file
-    
-    if(e.target.files) {
-      file = e.target.files[0]
-    }
-    const {data, error} = await supabase.storage
-    .from("sintonizat")
-    .upload('equipa/' + file?.name, file)
+  // const handleUpload = async (e) => {
+  //   let file
 
-    if (data) {
-    } else if (error) {
-      console.log(error)
-    }
-  }
+  //   if (e.target.files) {
+  //     file = e.target.files[0]
+  //   }
+  //   const { data, error } = await supabase.storage
+  //     .from('sintonizat')
+  //     .upload('equipa/' + file?.name, file)
 
-  const handleSubmit = async (data) => {
+  //   if (data) {
+  //   } else if (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  const handleSubmitData = async (data) => {
     try {
       toast
         .promise(
@@ -113,7 +114,7 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  async function handleUpdate(id) {
+  const handleUpdate = (id) => {
     try {
       toast
         .promise(
@@ -129,8 +130,8 @@ export default function Equipa({ equipa }) {
         )
         .then(() => {
           resetForm()
-          setIsUpdate(false)
           refreshData()
+          setIsUpdate(false)
         })
     } catch (err) {
       toast.error(err.message)
@@ -168,6 +169,25 @@ export default function Equipa({ equipa }) {
     setIsUpdate(false)
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (image) {
+      const { data, error } = await supabase.storage
+        .from('sintonizat')
+        .upload(`equipa/${Date.now()}_${image.name}`, image)
+
+      if (error) {
+        console.error(error.message)
+      }
+
+      if (data) {
+        console.log('Upload Ok')
+      }
+    }
+    isUpdate ? handleUpdate(dataForm.id) : handleSubmitData(dataForm)
+  }
+
   return (
     <div className="flex flex-col">
       <Toaster />
@@ -178,12 +198,8 @@ export default function Equipa({ equipa }) {
             <h4 className="text-center">Cadastre um novo mebro da equipa.</h4>
             <div className="mt-2 rounded-md border p-4 shadow-inner ">
               <form
+                onSubmit={handleSubmit}
                 className="flex w-full flex-col items-center justify-center"
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  isUpdate ? handleUpdate(dataForm.id) : handleSubmit(dataForm)
-                  refreshData()
-                }}
               >
                 <div className="mt-4 w-full space-y-2 p-2">
                   <Entradas
@@ -232,13 +248,9 @@ export default function Equipa({ equipa }) {
                       className="p-2 text-gray-400"
                     />
                     <Entradas
-                      type='file'
-                      name="fileUpload"
-                      accept='image/*'
-                      id='file_input'
-                      // onChange={(e) => setUpload(e.target.files[0])}
-                      onChange={(e) => {handleUpload(e)}}
-                      placeholder="Foto"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setImage(e.target.files[0])}
                       className="p-2"
                     />
                   </div>
@@ -250,7 +262,7 @@ export default function Equipa({ equipa }) {
                       </div>
                     </div>
                   ) : (
-                    <Botao>Cadastrar</Botao>
+                    <Botao type="submit">Cadastrar</Botao>
                   )}
                 </div>
               </form>
