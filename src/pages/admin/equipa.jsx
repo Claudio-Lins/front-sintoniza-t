@@ -274,7 +274,7 @@ export default function Equipa({ equipa }) {
             name={dataForm.name ? dataForm.name : 'Nome'}
             cargo={dataForm.cargo ? dataForm.cargo : 'Cargo'}
             nationality={dataForm.nationality ? dataForm.nationality : 'UN'}
-            src={'/assets/alien-fill.svg'}
+            src={'/assets/user-circle-fill.svg'}
             onClick={() => {}}
           />
         </div>
@@ -306,7 +306,7 @@ export default function Equipa({ equipa }) {
                   name={equipa.name}
                   cargo={equipa.cargo}
                   nationality={equipa.nationality ? equipa.nationality : 'UN'}
-                  src={equipa.fileUrl}
+                  src={equipa.fileUrl ? `${process.env.NEXT_PUBLIC_URL_EQUIPA_IMG}${equipa.fileUrl}` : '/assets/user-circle-fill.svg'}
                 />
               </div>
             )
