@@ -12,7 +12,6 @@ import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
 
 export default function Equipa({ equipa }) {
   let today = new Date().toISOString().slice(0, 10)
-  const [upload, setUpload] = useState('')
   const [image, setImage] = useState('')
   const [isUpdate, setIsUpdate] = useState(false)
   const router = useRouter()
