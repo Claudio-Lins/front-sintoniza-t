@@ -33,15 +33,13 @@ export default function Equipa({ equipa }) {
   // })
 
   function resetForm() {
-    // setDataForm({
-    //   id: '',
-    //   name: '',
-    //   nationality: '',
-    //   telemovel: '',
-    //   email: '',
-    //   cargo: '',
-    //   datePublished: today,
-    // })
+    setName(''),
+    setNationality(''),
+    setTelemovel(''),
+    setEmail(''),
+    setCargo(''),
+    setFileUrl(''),
+    setDatePublished(today)
   }
 
   const refreshData = () => {
@@ -51,24 +49,55 @@ export default function Equipa({ equipa }) {
   const onChangeInput = (e) =>
     setDataForm({ ...dataForm, [e.target.name]: e.target.value })
 
-  async function create(data) {
-    try {
-      await fetch(`/api/sintonizat-api/equipa/`, {
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      }).then(() => {
-        resetForm()
-      })
-    } catch (error) {
+  async function create() {
+    let fileUrl = ''
+
+    if (image) {
+      const { data, error } = await supabase.storage
+        .from('sintonizat')
+        .upload(`equipa/${Date.now()}_${image.name}`, image)
+
+      if (error) {
+        alert(error)
+      }
+
+      if (data) {
+        setFileUrl(data.path)
+        fileUrl = data.path.slice(7)
+      }
+    }
+
+    const { data, error } = await supabase.from('Equipa').insert([
+      {
+        name: name,
+        nationality: nationality,
+        telemovel: telemovel,
+        email: email,
+        cargo: cargo,
+        fileUrl: fileUrl,
+      },
+    ])
+
+    if (error) {
       console.error(error.message)
+    }
+
+    if (data) {
+      console.log('ok')
     }
   }
 
   async function updateEquipa(id) {
     try {
       await fetch(`/api/sintonizat-api/equipa/${id}`, {
-        body: JSON.stringify(dataForm),
+        body: JSON.stringify({
+          name,
+          nationality,
+          telemovel,
+          email,
+          cargo,
+          fileUrl,
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -79,27 +108,11 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  // const handleUpload = async (e) => {
-  //   let file
-
-  //   if (e.target.files) {
-  //     file = e.target.files[0]
-  //   }
-  //   const { data, error } = await supabase.storage
-  //     .from('sintonizat')
-  //     .upload('equipa/' + file?.name, file)
-
-  //   if (data) {
-  //   } else if (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  const handleSubmitData = async (data) => {
+  const handleSubmitData = async () => {
     try {
       toast
         .promise(
-          create(data),
+          create(),
           {
             loading: 'Trabalhando nisso....',
             success: 'Equipa criada com secesso!',
@@ -175,69 +188,8 @@ export default function Equipa({ equipa }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    let fileUrl = ''
-
-    if (image) {
-      const { data, error } = await supabase.storage
-        .from('sintonizat')
-        .upload(`equipa/${Date.now()}_${image.name}`, image)
-
-      if (error) {
-        console.error(error.message)
-      }
-
-      if (data) {
-        setFileUrl(data.path)
-        fileUrl = data.path
-        console.log(fileUrl)
-      }
-    }
-
-    const { data, error } = await supabase
-      .from('Equipa')
-      .insert([{ fileUrl: 'fileUrl' }], { upsert: true })
-
-    isUpdate ? handleUpdate(dataForm.id) : handleSubmitData(dataForm)
-    console.log(fileUrl)
-  }
-
-  const handleSubmitForm = async (event) => {
-    event.preventDefault()
-    let fileUrl = ''
-    
-    if(image) {
-      const { data, error } = await supabase.storage
-        .from('sintonizat')
-        .upload(`equipa/${Date.now()}_${image.name}`, image)
-
-
-        if (error) {
-          alert(error)
-        }
-
-        if(data) {
-          setFileUrl(data.path)
-          fileUrl = data.path.slice(7)
-        }
-    }
-
-    const { data, error } = await supabase.from('Equipa')
-    .insert([
-    {name: name,
-    nationality: nationality,
-    telemovel: telemovel,
-    email: email,
-    cargo: cargo,
-    fileUrl: fileUrl}
-    ])
-
-    if(error) {
-      console.error(error.message)
-    }
-
-    if(data) {
-      console.log('ok')
-    }
+    isUpdate ? handleUpdate(equipa.id) : handleSubmitData()
+    // console.log(fileUrl)
   }
 
   return (
@@ -250,7 +202,7 @@ export default function Equipa({ equipa }) {
             <h4 className="text-center">Cadastre um novo mebro da equipa.</h4>
             <div className="mt-2 rounded-md border p-4 shadow-inner ">
               <form
-                onSubmit={handleSubmitForm}
+                onSubmit={handleSubmit}
                 className="flex w-full flex-col items-center justify-center"
               >
                 <div className="mt-4 w-full space-y-2 p-2">
@@ -303,7 +255,8 @@ export default function Equipa({ equipa }) {
                       type="file"
                       accept="image/*"
                       onChange={(e) => setImage(e.target.files[0])}
-                      className="p-2"
+                      placeholder="Nationality"
+                      className=" file:py-1 file:mr-4  file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-teal-700 hover:file:bg-blue-100 cursor-pointer file:cursor-pointer"
                     />
                   </div>
                   {isUpdate ? (
@@ -326,8 +279,12 @@ export default function Equipa({ equipa }) {
             deleteBtn={false}
             name={name ? name : 'Nome'}
             cargo={cargo ? cargo : 'Cargo'}
-            nationality={nationality ? nationality : 'UN'}
-            src={'/assets/user-circle-fill.svg'}
+            nationality={nationality ? nationality : 'UN-Nações Unidas'}
+            src={
+              image
+                ? URL.createObjectURL(image)
+                : '/assets/user-circle-fill.svg'
+            }
             onClick={() => {}}
           />
         </div>
@@ -344,21 +301,19 @@ export default function Equipa({ equipa }) {
                     handleDelete(equipa.id)
                   }}
                   onEdit={() => {
-                    setDataForm({
-                      id: equipa.id,
-                      name: equipa.name,
-                      nationality: equipa.nationality,
-                      telemovel: equipa.telemovel,
-                      email: equipa.email,
-                      cargo: equipa.cargo,
-                      fileUrl: equipa.fileUrl,
-                      datePublished: equipa.datePublished,
-                    })
-                    setIsUpdate(true)
+                    id: equipa.id,
+                      setName(equipa.name),
+                      setNationality(equipa.nationality),
+                      setTelemovel(equipa.telemovel),
+                      setEmail(equipa.email),
+                      setCargo(equipa.cargo),
+                      setFileUrl(equipa.fileUrl),
+                      setDatePublished(equipa.datePublished),
+                      setIsUpdate(true)
                   }}
                   name={equipa.name}
                   cargo={equipa.cargo}
-                  nationality={equipa.nationality ? equipa.nationality : 'UN'}
+                  nationality={equipa.nationality ? equipa.nationality : 'UN-Nações Unidas'}
                   src={
                     equipa.fileUrl
                       ? `${process.env.NEXT_PUBLIC_URL_EQUIPA_IMG}${equipa.fileUrl}`
