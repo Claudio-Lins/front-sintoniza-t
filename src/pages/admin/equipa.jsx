@@ -12,31 +12,36 @@ import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
 
 export default function Equipa({ equipa }) {
   let today = new Date().toISOString().slice(0, 10)
+  const router = useRouter()
   const [image, setImage] = useState('')
   const [isUpdate, setIsUpdate] = useState(false)
-  const router = useRouter()
-  const [dataForm, setDataForm] = useState({
-    id: '',
-    name: '',
-    nationality: '',
-    telemovel: '',
-    email: '',
-    cargo: '',
-    fileUrl: '',
-    datePublished: today,
-  })
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [telemovel, setTelemovel] = useState('')
+  const [nationality, setNationality] = useState('')
+  const [cargo, setCargo] = useState('')
+  const [datePublished, setDatePublished] = useState(today)
+  const [fileUrl, setFileUrl] = useState('')
+  // const [dataForm, setDataForm] = useState({
+  //   id: '',
+  //   name: '',
+  //   nationality: '',
+  //   telemovel: '',
+  //   email: '',
+  //   cargo: '',
+  //   datePublished: today,
+  // })
 
   function resetForm() {
-    setDataForm({
-      id: '',
-      name: '',
-      nationality: '',
-      telemovel: '',
-      email: '',
-      cargo: '',
-      fileUrl: '',
-      datePublished: today,
-    })
+    // setDataForm({
+    //   id: '',
+    //   name: '',
+    //   nationality: '',
+    //   telemovel: '',
+    //   email: '',
+    //   cargo: '',
+    //   datePublished: today,
+    // })
   }
 
   const refreshData = () => {
@@ -170,6 +175,7 @@ export default function Equipa({ equipa }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    let fileUrl = ''
 
     if (image) {
       const { data, error } = await supabase.storage
@@ -181,10 +187,57 @@ export default function Equipa({ equipa }) {
       }
 
       if (data) {
-        console.log('Upload Ok')
+        setFileUrl(data.path)
+        fileUrl = data.path
+        console.log(fileUrl)
       }
     }
+
+    const { data, error } = await supabase
+      .from('Equipa')
+      .insert([{ fileUrl: 'fileUrl' }], { upsert: true })
+
     isUpdate ? handleUpdate(dataForm.id) : handleSubmitData(dataForm)
+    console.log(fileUrl)
+  }
+
+  const handleSubmitForm = async (event) => {
+    event.preventDefault()
+    let fileUrl = ''
+    
+    if(image) {
+      const { data, error } = await supabase.storage
+        .from('sintonizat')
+        .upload(`equipa/${Date.now()}_${image.name}`, image)
+
+
+        if (error) {
+          alert(error)
+        }
+
+        if(data) {
+          setFileUrl(data.path)
+          fileUrl = data.path.slice(7)
+        }
+    }
+
+    const { data, error } = await supabase.from('Equipa')
+    .insert([
+    {name: name,
+    nationality: nationality,
+    telemovel: telemovel,
+    email: email,
+    cargo: cargo,
+    fileUrl: fileUrl}
+    ])
+
+    if(error) {
+      console.error(error.message)
+    }
+
+    if(data) {
+      console.log('ok')
+    }
   }
 
   return (
@@ -197,15 +250,15 @@ export default function Equipa({ equipa }) {
             <h4 className="text-center">Cadastre um novo mebro da equipa.</h4>
             <div className="mt-2 rounded-md border p-4 shadow-inner ">
               <form
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmitForm}
                 className="flex w-full flex-col items-center justify-center"
               >
                 <div className="mt-4 w-full space-y-2 p-2">
                   <Entradas
                     name="name"
                     type="text"
-                    onChange={onChangeInput}
-                    value={dataForm.name}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
                     placeholder="Nome"
                     className="w-full rounded-lg border border-teal-400 bg-gray-100
                             p-2 focus:border-teal-400 focus:outline-none"
@@ -213,8 +266,8 @@ export default function Equipa({ equipa }) {
                   <Entradas
                     name="email"
                     type="email"
-                    onChange={onChangeInput}
-                    value={dataForm.email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                     placeholder="Email"
                     className="w-full rounded-lg border border-teal-400 bg-gray-100
                             p-2 focus:border-teal-400 focus:outline-none"
@@ -223,8 +276,8 @@ export default function Equipa({ equipa }) {
                     <Entradas
                       name="telemovel"
                       type="phone"
-                      onChange={onChangeInput}
-                      value={dataForm.telemovel}
+                      onChange={(e) => setTelemovel(e.target.value)}
+                      value={telemovel}
                       placeholder="Telemovel"
                       className="w-full rounded-lg border border-teal-400 bg-gray-100
                             p-2 focus:border-teal-400 focus:outline-none"
@@ -232,8 +285,8 @@ export default function Equipa({ equipa }) {
                     <Entradas
                       name="cargo"
                       type="text"
-                      onChange={onChangeInput}
-                      value={dataForm.cargo}
+                      onChange={(e) => setCargo(e.target.value)}
+                      value={cargo}
                       placeholder="Cargo"
                       className="w-full rounded-lg border border-teal-400 bg-gray-100
                             p-2 focus:border-teal-400 focus:outline-none"
@@ -242,8 +295,8 @@ export default function Equipa({ equipa }) {
                   <div className="flex gap-2">
                     <SelectFlag
                       name="nationality"
-                      onChange={onChangeInput}
-                      value={dataForm.nationality}
+                      onChange={(e) => setNationality(e.target.value)}
+                      value={nationality}
                       className="p-2 text-gray-400"
                     />
                     <Entradas
@@ -271,9 +324,9 @@ export default function Equipa({ equipa }) {
         <div className="flex flex-1 items-center justify-center">
           <TeamCardV2
             deleteBtn={false}
-            name={dataForm.name ? dataForm.name : 'Nome'}
-            cargo={dataForm.cargo ? dataForm.cargo : 'Cargo'}
-            nationality={dataForm.nationality ? dataForm.nationality : 'UN'}
+            name={name ? name : 'Nome'}
+            cargo={cargo ? cargo : 'Cargo'}
+            nationality={nationality ? nationality : 'UN'}
             src={'/assets/user-circle-fill.svg'}
             onClick={() => {}}
           />
@@ -306,8 +359,15 @@ export default function Equipa({ equipa }) {
                   name={equipa.name}
                   cargo={equipa.cargo}
                   nationality={equipa.nationality ? equipa.nationality : 'UN'}
-                  src={equipa.fileUrl ? `${process.env.NEXT_PUBLIC_URL_EQUIPA_IMG}${equipa.fileUrl}` : '/assets/user-circle-fill.svg'}
+                  src={
+                    equipa.fileUrl
+                      ? `${process.env.NEXT_PUBLIC_URL_EQUIPA_IMG}${equipa.fileUrl}`
+                      : '/assets/user-circle-fill.svg'
+                  }
                 />
+                {/* <pre>
+                  {JSON.stringify(equipa, null, 2)}
+                </pre> */}
               </div>
             )
           })}

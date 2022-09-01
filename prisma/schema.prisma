@@ -99,11 +99,11 @@ model Imprensa {
 
 model Equipa {
   id            Int      @id @default(autoincrement())
-  name          String
+  name          String?
   email         String?
   telemovel     String?
   nationality   String?
-  cargo         String
+  cargo         String?
   datePublished DateTime @default(now())
   fileUrl       String?
 
