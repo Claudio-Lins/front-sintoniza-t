@@ -22,15 +22,6 @@ export default function Equipa({ equipa }) {
   const [cargo, setCargo] = useState('')
   const [datePublished, setDatePublished] = useState(today)
   const [fileUrl, setFileUrl] = useState('')
-  // const [dataForm, setDataForm] = useState({
-  //   id: '',
-  //   name: '',
-  //   nationality: '',
-  //   telemovel: '',
-  //   email: '',
-  //   cargo: '',
-  //   datePublished: today,
-  // })
 
   function resetForm() {
     setName(''),

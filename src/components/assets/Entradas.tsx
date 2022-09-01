@@ -26,7 +26,7 @@ export function Entradas(props: EntradasProps) {
         className={`
         border bg-gray-100 rounded-lg border-teal-400
         focus:border-teal-400 focus:outline-none 
-        ${props.type === 'file' ? 'py-[5px] appearance-none text-gray-400' : ''}
+        ${props.type === 'file' ? 'py-[6px] appearance-none text-gray-400' : ''}
         ${props.readonly ? '' : 'focus:bg-teal-50'}
         ${props.className}
       `}
