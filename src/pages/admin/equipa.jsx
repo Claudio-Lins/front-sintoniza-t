@@ -25,20 +25,25 @@ export default function Equipa({ equipa }) {
 
   function resetForm() {
     setName(''),
-    setNationality(''),
-    setTelemovel(''),
-    setEmail(''),
-    setCargo(''),
-    setFileUrl(''),
-    setDatePublished(today)
+      setNationality(''),
+      setTelemovel(''),
+      setEmail(''),
+      setCargo(''),
+      setFileUrl(''),
+      setDatePublished(today)
   }
 
   const refreshData = () => {
     router.replace(router.asPath)
   }
 
-  const onChangeInput = (e) =>
-    setDataForm({ ...dataForm, [e.target.name]: e.target.value })
+  function cancelUpdate() {
+    resetForm()
+    setIsUpdate(false)
+  }
+
+  // const onChangeInput = (e) =>
+  //   setDataForm({ ...dataForm, [e.target.name]: e.target.value })
 
   async function create() {
     let fileUrl = ''
@@ -172,11 +177,6 @@ export default function Equipa({ equipa }) {
     }
   }
 
-  function cancelUpdate() {
-    resetForm()
-    setIsUpdate(false)
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     isUpdate ? handleUpdate(equipa.id) : handleSubmitData()
@@ -247,7 +247,7 @@ export default function Equipa({ equipa }) {
                       accept="image/*"
                       onChange={(e) => setImage(e.target.files[0])}
                       placeholder="Nationality"
-                      className=" file:py-1 file:mr-4  file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-teal-700 hover:file:bg-blue-100 cursor-pointer file:cursor-pointer"
+                      className=" cursor-pointer file:mr-4  file:cursor-pointer file:rounded-full file:border-0 file:bg-blue-50 file:py-1 file:px-4 file:text-sm file:font-semibold file:text-teal-700 hover:file:bg-blue-100"
                     />
                   </div>
                   {isUpdate ? (
@@ -304,7 +304,9 @@ export default function Equipa({ equipa }) {
                   }}
                   name={equipa.name}
                   cargo={equipa.cargo}
-                  nationality={equipa.nationality ? equipa.nationality : 'UN-Nações Unidas'}
+                  nationality={
+                    equipa.nationality ? equipa.nationality : 'UN-Nações Unidas'
+                  }
                   src={
                     equipa.fileUrl
                       ? `${process.env.NEXT_PUBLIC_URL_EQUIPA_IMG}${equipa.fileUrl}`
