@@ -31,11 +31,11 @@ export default {
     return users;
   },
 
-  addUser: async (name: string, email: string) => {
-    return await prisma.user.create({
-      data: { name, email },
-    });
-  },
+  // addUser: async (name: string, email: string) => {
+  //   return await prisma.user.create({
+  //     data: { name, email },
+  //   });
+  // },
 
   getUserByEmail: async (email: string) => {
     const user = await prisma.user.findFirst({
