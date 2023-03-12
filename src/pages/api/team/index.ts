@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../../../lib/prisma'
+import prisma from '../../../../lib/prisma'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const equipas = await prisma.equipa.findMany()
+    const equipas = await prisma.team.findMany()
     return res.status(200).json({
       data: equipas,
     })
@@ -21,7 +21,7 @@ export default async function handler(
       datePublished,
       fileUrl,
     } = req.body
-    const equipa = await prisma.equipa.create({
+    const equipa = await prisma.team.create({
       data: {
         name,
         email,
@@ -48,7 +48,7 @@ export default async function handler(
       datePublished,
       fileUrl,
     } = req.body
-    const equipa = await prisma.equipa.update({
+    const equipa = await prisma.team.update({
       where: {
         id: Number(equipaId),
       },
@@ -67,7 +67,7 @@ export default async function handler(
 
   if (req.method === 'DELETE') {
     const equipaId = req.query.id
-    const equipa = await prisma.equipa.delete({
+    const equipa = await prisma.team.delete({
       where: {
         id: Number(equipaId),
       },

@@ -9,9 +9,19 @@ import { Team } from '../components/Team'
 import { Newsletter } from '../components/newsletter'
 import prisma from '../../lib/prisma'
 
+interface TeamsProps {
+  id: number
+  name: string
+  email: string
+  telemovel: string
+  cargo: string
+  nationality: string
+  fileUrl: string
+}
+
 interface HomeProps {
   destaque: any
-  team: any
+  team: TeamsProps
 }
 
 const Home = ({ destaque, team }: HomeProps) => {
@@ -37,10 +47,10 @@ const Home = ({ destaque, team }: HomeProps) => {
         {/* <Section id="horarios" sectionColor={false}>
           <Title title="Horários" delay={1} />
         </Section> */}
-        {/* <Section id="equipa" sectionColor={true}>
+        <Section id="equipa" sectionColor={true}>
           <Title title="Equipa" delay={1} />
           <Team team={team} />
-        </Section> */}
+        </Section>
         {/* <Section id="imprensa" sectionColor={false}>
           <Title title="Imprensa" delay={1} />
         </Section> */}
@@ -76,9 +86,11 @@ export const getStaticProps: GetStaticProps = async () => {
   const res = await axios.get(
     `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
   )
+  const team = await prisma.team.findMany()
   return {
     props: {
       destaque: res.data,
+      team: JSON.parse(JSON.stringify(team)),
     },
     revalidate: 1,
   }

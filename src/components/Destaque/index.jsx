@@ -13,9 +13,9 @@ export function Destaque({ destaque }) {
           .map((destaque) => (
             <div key={destaque.id} className="">
               {/* <Link href={`/articles/${destaque.slug}`}> */}
-                <a className="">
+                {/* <a className=""> */}
                   <ArticleCard destaque={destaque} delay={1} />
-                </a>
+                {/* </a> */}
               {/* </Link> */}
             </div>
           ))}

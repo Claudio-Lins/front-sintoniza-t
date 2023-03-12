@@ -8,7 +8,7 @@ import { Entradas } from '../../components/assets/Entradas'
 import { SelectFlag } from '../../components/Team/SelectFlag'
 import { TeamCardV2 } from '../../components/Team/TeamCardV2'
 import { HeaderContent } from '../../components/template/HeaderContent'
-import { getAllEquipa } from '../api/sintonizat-api/equipa/getAllEquipa'
+import { getAllEquipa } from '../api/team/getAllEquipa'
 
 export default function Equipa({ equipa }) {
   let today = new Date().toISOString().slice(0, 10)

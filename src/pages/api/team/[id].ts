@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../../../lib/prisma'
+import prisma from '../../../../lib/prisma'
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,7 +8,7 @@ export default async function handler(
   let equipaId = req.query.id
 
   if (req.method === 'DELETE') {
-    const equipa = await prisma.equipa.delete({
+    const equipa = await prisma.team.delete({
       where: {
         id: Number(equipaId),
       },
@@ -27,7 +27,7 @@ export default async function handler(
         datePublished,
         fileUrl,
       } = req.body
-    await prisma.equipa.update({
+    await prisma.team.update({
       where: {
         id: Number(req.query.id),
       },
