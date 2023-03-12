@@ -22,7 +22,7 @@ export function Team({ team, onClick }: TeamProps) {
             name={team.name ?? ""}
             cargo={team.cargo}
             nationality={team.nationality}
-            src={`${process.env.API_URL_SINTONIZA_T}/public/team/${team.fileUrl}`}
+            src={`/team/${team.fileUrl}`}
           />
         </div>
       ))}

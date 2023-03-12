@@ -7,6 +7,7 @@ import { Title } from '../components/assets/Titles'
 import { Destaque } from '../components/Destaque'
 import { Team } from '../components/Team'
 import { Newsletter } from '../components/newsletter'
+import prisma from '../../lib/prisma'
 
 interface HomeProps {
   destaque: any
@@ -30,19 +31,19 @@ const Home = ({ destaque, team }: HomeProps) => {
           <Title title="Quem somos" delay={1} />
         </Section>
         <Newsletter />
-        <Section id="programas" sectionColor={true}>
+        {/* <Section id="programas" sectionColor={true}>
           <Title title="Programas" delay={1} />
-        </Section>
-        <Section id="horarios" sectionColor={false}>
+        </Section> */}
+        {/* <Section id="horarios" sectionColor={false}>
           <Title title="Horários" delay={1} />
-        </Section>
-        <Section id="equipa" sectionColor={true}>
+        </Section> */}
+        {/* <Section id="equipa" sectionColor={true}>
           <Title title="Equipa" delay={1} />
           <Team team={team} />
-        </Section>
-        <Section id="imprensa" sectionColor={false}>
+        </Section> */}
+        {/* <Section id="imprensa" sectionColor={false}>
           <Title title="Imprensa" delay={1} />
-        </Section>
+        </Section> */}
         <Section id="colabore" sectionColor={true}>
           <Title title="Colabore connosco" delay={1} />
         </Section>
@@ -57,29 +58,28 @@ const Home = ({ destaque, team }: HomeProps) => {
 export default Home
 
 // use axios.all to get all the data at once
-export const getStaticProps: GetStaticProps = async () => {
-  const [destaque, team] = await Promise.all([
-    axios.get(`${process.env.API_URL_STRAPI}/articles?_sort=id:desc`),
-    axios.get(`${process.env.API_URL_SINTONIZA_T}/team`),
-  ])
-  // console.log('destaque:', destaque)
-  return {
-    props: {
-      destaque: destaque.data,
-      team: team.data,
-    },
-    revalidate: 1,
-  }
-}
-
 // export const getStaticProps: GetStaticProps = async () => {
-//   const res = await axios.get(
-//     `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
-//   )
+//   const [destaque, team] = await Promise.all([
+//     axios.get(`${process.env.API_URL_STRAPI}/articles?_sort=id:desc`),
+//     prisma.equipa.findMany({}),
+//   ])
 //   return {
 //     props: {
-//       destaque: res.data,
+//       destaque: destaque.data,
+//       team: JSON.parse(JSON.stringify(team)),
 //     },
 //     revalidate: 1,
 //   }
 // }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await axios.get(
+    `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
+  )
+  return {
+    props: {
+      destaque: res.data,
+    },
+    revalidate: 1,
+  }
+}
