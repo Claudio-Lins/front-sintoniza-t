@@ -67,21 +67,6 @@ const Home = ({ destaque, team }: HomeProps) => {
 
 export default Home
 
-// use axios.all to get all the data at once
-// export const getStaticProps: GetStaticProps = async () => {
-//   const [destaque, team] = await Promise.all([
-//     axios.get(`${process.env.API_URL_STRAPI}/articles?_sort=id:desc`),
-//     prisma.equipa.findMany({}),
-//   ])
-//   return {
-//     props: {
-//       destaque: destaque.data,
-//       team: JSON.parse(JSON.stringify(team)),
-//     },
-//     revalidate: 1,
-//   }
-// }
-
 export const getStaticProps: GetStaticProps = async () => {
   const res = await axios.get(
     `${process.env.API_URL_STRAPI}/articles?_sort=id:desc`
