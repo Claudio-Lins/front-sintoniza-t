@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { IconTrash } from '../../components/icons'
-import { getAllNewsletters } from '../api/sintonizat-api/newsletter/getAllNewsletters'
+import { getAllNewsletters } from '../api/newsletter/getAllNewsletters'
 import { HeaderContent } from '../../components/template/HeaderContent'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -13,7 +13,7 @@ export default function Newsletter({ newsletter }) {
 
   async function deleteNewsletter(id) {
     try {
-      fetch(`/api/sintonizat-api/newsletter/${id}`, {
+      fetch(`/api/newsletter/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
