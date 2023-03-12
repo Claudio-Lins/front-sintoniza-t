@@ -85,7 +85,7 @@ export default function Equipa({ equipa }) {
 
   async function updateEquipa(id) {
     try {
-      await fetch(`/api/sintonizat-api/equipa/${id}`, {
+      await fetch(`/api/team/${id}`, {
         body: JSON.stringify({
           name,
           nationality,
@@ -155,7 +155,7 @@ export default function Equipa({ equipa }) {
     try {
       toast
         .promise(
-          fetch(`/api/sintonizat-api/equipa/${id}`, {
+          fetch(`/api/team/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
           }),
@@ -313,9 +313,6 @@ export default function Equipa({ equipa }) {
                       : '/assets/user-circle-fill.svg'
                   }
                 />
-                {/* <pre>
-                  {JSON.stringify(equipa, null, 2)}
-                </pre> */}
               </div>
             )
           })}

@@ -54,7 +54,7 @@ export default function Imprensa({ imprensa }) {
 
   async function create(data) {
     try {
-      await fetch(`/api/sintonizat-api/imprensa/`, {
+      await fetch(`/api/press/`, {
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default function Imprensa({ imprensa }) {
   async function update(id) {
     console.log('update: ', id)
     try {
-      await fetch(`/api/sintonizat-api/imprensa/${id}`, {
+      await fetch(`/api/press/${id}`, {
         body: JSON.stringify(dataForm),
         headers: {
           'Content-Type': 'application/json',
