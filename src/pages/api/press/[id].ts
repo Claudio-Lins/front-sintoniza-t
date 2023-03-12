@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../../../lib/prisma'
+import prisma from '../../../../lib/prisma'
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,7 +8,7 @@ export default async function handler(
   let imprensaId = req.query.id
 
   if (req.method === 'DELETE') {
-    const imprensa = await prisma.imprensa.delete({
+    const imprensa = await prisma.press.delete({
       where: {
         id: Number(imprensaId),
       },
@@ -19,7 +19,7 @@ export default async function handler(
   if (req.method === 'PUT') {
     try {
       const { id, title, linkYoutube, datePublished, fileUrl } = req.body
-    await prisma.imprensa.update({
+    await prisma.press.update({
       where: {
         id: Number(req.query.id),
       },

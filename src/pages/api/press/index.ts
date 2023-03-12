@@ -1,19 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../../../lib/prisma'
+import prisma from '../../../../lib/prisma'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const imprensas = await prisma.imprensa.findMany()
+    const imprensas = await prisma.press.findMany()
     return res.status(200).json({
       data: imprensas,
     })
   }
   if (req.method === 'POST') {
     const { title, linkYoutube, datePublished, fileUrl } = req.body
-    const imprensa = await prisma.imprensa.create({
+    const imprensa = await prisma.press.create({
       data: {
         title,
         linkYoutube,
@@ -29,7 +29,7 @@ export default async function handler(
   if (req.method === 'PUT') {
     const imprensaId = req.query.id
     const { title, linkYoutube, datePublished, fileUrl } = req.body
-    const imprensa = await prisma.imprensa.update({
+    const imprensa = await prisma.press.update({
       where: {
         id: Number(imprensaId),
       },
@@ -45,7 +45,7 @@ export default async function handler(
 
   if (req.method === 'DELETE') {
     const imprensaId = req.query.id
-    const imprensa = await prisma.imprensa.delete({
+    const imprensa = await prisma.press.delete({
       where: {
         id: Number(imprensaId),
       },

@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/Destaque/ArticleCard.jsx", "src/components/Destaque/index.jsx", "src/components/Team/TeamCard.jsx", "src/components/Team/TeamCardV2.jsx", "src/pages/api/auth/[...nextauth].js", "src/pages/api/sintonizat-api/newsletter/create.ts", "lib/newsletter-db.js", "src/pages/_app.jsx", "src/pages/admin/equipa.jsx"  ],
+, "src/components/Destaque/ArticleCard.jsx", "src/components/Destaque/index.jsx", "src/components/Team/TeamCard.jsx", "src/components/Team/TeamCardV2.jsx", "src/pages/api/auth/[...nextauth].js", "src/pages/api/newsletter/create.ts", "lib/newsletter-db.js", "src/pages/_app.jsx", "src/pages/admin/equipa.jsx"  ],
   "exclude": [
     "node_modules"
   ]
